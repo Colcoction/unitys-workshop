@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.2"
+   viewBox="0 0 150 150"
+   width="150"
+   height="150"
+   id="svg8"
+   sodipodi:docname="phase icon play - high contrast.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     id="namedview10"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="5.7466667"
+     inkscape:cx="74.912993"
+     inkscape:cy="75.087007"
+     inkscape:window-width="1920"
+     inkscape:window-height="1051"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <title
+     id="title2">phase shapes</title>
+  <style
+     id="style4">tspan { white-space:pre }.s0 { fill: #fff200;stroke: #231f20;paint-order:stroke fill markers;stroke-width: 24.8 } </style>
+  <path
+     class="s0"
+     d="m30.98 74.07l44.09-44.09l44.09 44.09l-44.09 44.09l-44.09-44.09z"
+     id="path6"
+     style="fill:#fff72f;fill-opacity:1" />
+</svg>
