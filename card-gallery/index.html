@@ -35,6 +35,9 @@
       position: relative;
       margin: 5px;
     }
+    .environmentCard {
+      width: 400px;
+    }
 
     .cardImage {
       width: 100%;
@@ -86,7 +89,14 @@
         loadCards(data, "Villain Cards");
       }
     });
+    $.ajax({
+      url: '/card-gallery/Environment Cards.tsv',
+      success: function (data) {
+        loadCards(data, "Environment Cards");
+      }
+    });
 
+    // Function to load cards, used one type at a time
     function loadCards(tsvData, dataGroup) {
       // Get each row of card data
       dataLines = tsvData.split('\n');
@@ -112,9 +122,15 @@
           detailsElement += `<p><strong>${labels[ii]}:</strong> ${cardData[ii]}</p>`;
         }
 
+        let extraClass = '';
+
+        if (dataGroup === "Environment Cards") {
+          extraClass += ' environmentCard'
+        }
+
         // Assemble a card element with the image and the details
         let newHTML = `
-    <div class="card">
+    <div class="card${extraClass}">
       <img class="cardImage" src="${path}" />
       <details class="cardDetails">
         <summary>Details</summary>
