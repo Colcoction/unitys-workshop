@@ -80,6 +80,12 @@
         loadCards(data, "Hero Cards");
       }
     });
+    $.ajax({
+      url: '/card-gallery/Villain Cards.tsv',
+      success: function (data) {
+        loadCards(data, "Villain Cards");
+      }
+    });
 
     function loadCards(tsvData, dataGroup) {
       // Get each row of card data
