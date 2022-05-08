@@ -94,7 +94,7 @@
         // Separate out the values by splitting the line by tabs
         let cardData = dataLines[i].split('\t');
         // Find the image for each set of data
-        let path = "/_resources/Scans/Heroes/" + cardData[0] + "/" + cardData[1] + ".jpg";
+        let path = "/_resources/Scans/" + dataGroup + "/" + cardData[0] + "/" + cardData[1] + ".jpg";
         // Strip out quotation marks because the files name's can't have them
         path = path.replaceAll('"', '');
 
