@@ -35,10 +35,12 @@
       position: relative;
       margin: 5px;
     }
+
     .cardImage {
       width: 100%;
       display: block;
     }
+
     .cardDetails {
       position: absolute;
       bottom: -5px;
@@ -48,6 +50,7 @@
       border: 2px solid black;
       font-size: 12px;
     }
+
     .cardDetails[open] {
       position: static;
     }
@@ -74,46 +77,50 @@
     $.ajax({
       url: '/card-gallery/Hero Cards.tsv',
       success: function (data) {
-        // Get each row of card data
-        dataLines = data.split('\n');
-
-        // Get value labels (table headings in the spreadsheet)
-        // Separate out the values by splitting the line by tabs
-        const labels = dataLines[0].split('\t');
-
-        // Iterate through each line past the first (the first is table headings)
-        for (i = 1; i < dataLines.length; i++) {
-          // Separate out the values by splitting the line by tabs
-          let cardData = dataLines[i].split('\t');
-          // Find the image for each set of data
-          let path = "/_resources/Scans/Heroes/" + cardData[0] + "/" + cardData[1] + ".jpg";
-          // Strip out quotation marks because the files name's can't have them
-          path = path.replaceAll('"', '');
-
-          // Create new card HTML
-
-          // Create details element
-          let detailsElement = '';
-          for (ii = 0; ii < cardData.length - 1; ii++) {
-            detailsElement += `<p><strong>${labels[ii]}:</strong> ${cardData[ii]}</p>`;
-          }
-
-          // Assemble a card element with the image and the details
-          let newHTML = `
-            <div class="card">
-              <img class="cardImage" src="${path}" />
-              <details class="cardDetails">
-                <summary>Details</summary>
-                ${detailsElement}
-                </div>
-              </details>
-              `;
-
-          // Add the card element to the display
-          $(".cardFlexDisplay").append(newHTML);
-        }
+        loadCards(data, "Hero Cards");
       }
     });
+
+    function loadCards(tsvData, dataGroup) {
+      // Get each row of card data
+      dataLines = tsvData.split('\n');
+
+      // Get value labels (table headings in the spreadsheet)
+      // Separate out the values by splitting the line by tabs
+      const labels = dataLines[0].split('\t');
+
+      // Iterate through each line past the first (the first is table headings)
+      for (i = 1; i < dataLines.length; i++) {
+        // Separate out the values by splitting the line by tabs
+        let cardData = dataLines[i].split('\t');
+        // Find the image for each set of data
+        let path = "/_resources/Scans/Heroes/" + cardData[0] + "/" + cardData[1] + ".jpg";
+        // Strip out quotation marks because the files name's can't have them
+        path = path.replaceAll('"', '');
+
+        // Create new card HTML
+
+        // Create details element
+        let detailsElement = '';
+        for (ii = 0; ii < cardData.length - 1; ii++) {
+          detailsElement += `<p><strong>${labels[ii]}:</strong> ${cardData[ii]}</p>`;
+        }
+
+        // Assemble a card element with the image and the details
+        let newHTML = `
+    <div class="card">
+      <img class="cardImage" src="${path}" />
+      <details class="cardDetails">
+        <summary>Details</summary>
+        ${detailsElement}
+        </div>
+      </details>
+      `;
+
+        // Add the card element to the display
+        $(".cardFlexDisplay").append(newHTML);
+      }
+    }
 
 
     // Filter display based on search input
@@ -122,7 +129,7 @@
       const query = $(this).val().toLowerCase();
 
       // Show or hide each card
-      $(".card").each(function(index, element) {
+      $(".card").each(function (index, element) {
         // Get card content (text of cardDetails element basically) and make it not case-sensitive
         let cardContent = $(this).text().toLowerCase();
         // See if the card content contains the query
