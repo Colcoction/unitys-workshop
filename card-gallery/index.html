@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,350;0,370;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-  
+
   <!-- Other fonts -->
   <link href="https://fonts.cdnfonts.com/css/unmasked-bb" rel="stylesheet">
   <link href="https://fonts.cdnfonts.com/css/avengeance-mightiest-avenger" rel="stylesheet">
@@ -20,7 +20,7 @@
 
   <style>
     .searchInput {
-      width:100%;
+      width: 100%;
     }
 
     .cardFlexDisplay {
@@ -28,29 +28,53 @@
       flex-flow: row wrap;
     }
 
+    .cardImage {
+      width: 300px;
+    }
   </style>
+
 </head>
 
 <body>
-  
+
   <h1>Card Gallery</h1>
 
-  <input type="text" class="searchInput" placeholder="Search by deck name, card name, keywords, or game text"/>
+  <input type="text" class="searchInput" placeholder="Search by deck name, card name, keywords, or game text" />
 
   <div class="cardFlexDisplay"></div>
 
 
   <!-- Scripts -->
-  
+
   <!-- jQuery -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 
-  <!-- Common script -->
-  <script src="../common-before.js"></script>
-  <!-- Script specific to this page -->
-  <script src="./script.js"></script>
-  <!-- Common script -->
-  <script src="../common-after.js"></script>
+  <script>
+    // Load cards into the display
+    $.ajax({
+        url: '/card-gallery/hero-cards.tsv',
+        success: function (data) {
+          // Get each row of card data
+          dataLines = data.split('\n');
+
+          // Get value labels
+          // Separate out the values by splitting the line by tabs
+          const labels = dataLines[0].split('\t');
+
+          // Iterate through each line past the first (the first is table headings)
+          for (i = 1; i < dataLines.length; i++) {
+            // Separate out the values by splitting the line by tabs
+            const cardData = dataLines[i].split('\t');
+            // Find the image for each set of data
+            let path = "/_resources/Scans/Heroes/" + cardData[0] + "/" + cardData[1] + ".jpg";
+            // Strip out quotation marks because the files name's can't have them
+            path = path.replaceAll('"', '');
+            // Create an img element and add it to the display
+            $(".cardFlexDisplay").append('<img class="cardImage" src="' + path + '" />');
+          }
+        }
+      });
+  </script>
 
 
 </body>
