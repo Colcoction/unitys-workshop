@@ -21,7 +21,6 @@
   <style>
     .searchInput {
       width: 100%;
-      margin-bottom: 10px;
     }
 
     .cardFlexDisplay {
@@ -35,6 +34,7 @@
       position: relative;
       margin: 5px;
     }
+
     .environmentCard {
       width: 400px;
     }
@@ -65,8 +65,12 @@
 
   <h1>Card Gallery</h1>
 
-  <input type="text" class="searchInput" placeholder='Search for any string of text. You can use detail type to narrow your search (ex: "Fanatic" vs. "Deck: Fanatic").' />
+  <div class="inputGroup">
+    <div style="margin-bottom:5px;"><a href="/">Home</a></div>
+    <input type="text" class="searchInput" placeholder='Search for a string of text in the details of a card. You can use detail type to narrow your search (ex: "Fanatic" vs. "Deck: Fanatic").' />
+  </div>
 
+  <!-- Cards get loaded here -->
   <div class="cardFlexDisplay"></div>
 
 
