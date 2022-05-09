@@ -1,0 +1,5 @@
+added webp library to path
+
+then ran this in _resources folder (future uses would need to be more narrow to not re-convert images):
+
+for file in Scans/*/*/*; do cwebp -q 20 "$file" -o "${file%.*}.webp"; done
