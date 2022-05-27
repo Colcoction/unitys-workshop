@@ -80,25 +80,35 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 
   <script>
-    // Load cards into the display
-    $.ajax({
-      url: '/card-gallery/Hero Cards.tsv',
-      success: function (data) {
-        loadCards(data, "Hero Cards");
-      }
-    });
-    $.ajax({
-      url: '/card-gallery/Villain Cards.tsv',
-      success: function (data) {
-        loadCards(data, "Villain Cards");
-      }
-    });
-    $.ajax({
-      url: '/card-gallery/Environment Cards.tsv',
-      success: function (data) {
-        loadCards(data, "Environment Cards");
-      }
-    });
+    // Load cards into the display (setTimeout to ensure order)
+    setTimeout(function () {
+      $.ajax({
+        url: '/card-gallery/Hero Cards.tsv',
+        success: function (data) {
+          loadCards(data, "Hero Cards");
+        }
+      });
+    }, 1)
+
+    setTimeout(function () {
+      $.ajax({
+        url: '/card-gallery/Villain Cards.tsv',
+        success: function (data) {
+          loadCards(data, "Villain Cards");
+        }
+      });
+    }, 100)
+
+    setTimeout(function () {
+      $.ajax({
+        url: '/card-gallery/Environment Cards.tsv',
+        success: function (data) {
+          loadCards(data, "Environment Cards");
+        }
+      });
+    }, 200)
+
+
 
     // Function to load cards, used one type at a time
     function loadCards(tsvData, dataGroup) {
