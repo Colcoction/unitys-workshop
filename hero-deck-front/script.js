@@ -414,7 +414,7 @@ function drawCardKeywords() {
     keywords = keywords.toUpperCase();
     // Adjust space width
     keywords = keywords.replaceAll(' ', String.fromCharCode(8202) + String.fromCharCode(8202));
-	// add whitespace to make room for suddenly tag
+    // add whitespace to make room for suddenly tag
     if (suddenly) {
       keywords = 'SUDDENLY  ' + keywords
     }
@@ -449,8 +449,8 @@ function drawCardKeywords() {
     ctx.fillText(keywords, keywordsX, keywordsY);
     // Undo the squish for future drawings
     ctx.restore();
-	// add suddenly tag
-	if (suddenly) {
+    // add suddenly tag
+    if (suddenly) {
       ctx.drawImage(loadedGraphics['Suddenly Tag'], pw(5.5), ph(51), pw(20), ph(7.5));
     }
   }
