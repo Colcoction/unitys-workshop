@@ -78,6 +78,12 @@ $('#inputUseHighConstrast').on('input', function () {
   drawCardCanvas();
 })
 
+// Toggle Suddenly!
+$('#suddenly').on('input', function () {
+  suddenly = this.checked;
+  drawCardCanvas();
+})
+
 // Draw the canvas on window load. Helpful for situations like testing with a hardcoded effect text
 $(window).on('load', function () {
   drawCardCanvas();
@@ -106,6 +112,7 @@ const colorEndPhaseOriginal = '#ee2d35';
 const colorEndPhaseHighContrast = '#f34747';
 
 let useHighContrastPhaseLabels = true;
+let suddenly = false;
 
 const effectBaseFontSize = pw(4.05); // Font size for most effect text
 let effectFontScale = 1; // This will update with the user input value
@@ -175,7 +182,10 @@ let imagesToPreload = [
   ['Power Phase Icon High Contrast', '../_resources/phase icon power - high contrast.svg'],
   ['Draw Phase Icon High Contrast', '../_resources/phase icon draw - high contrast.svg'],
   ['End Phase Icon High Contrast', '../_resources/phase icon end - high contrast.svg'],
-  ['HP Graphic', '../_resources/HP Graphic.svg']
+  ['HP Graphic', '../_resources/HP Graphic.svg'],
+  ['Base Hero Card', '../_resources/hero deck card front frame.png'],
+  ['Suddenly Hero Card', '../_resources/hero deck card front frame suddenly.png'],
+  ['Suddenly Tag', '../_resources/suddenly-tag.png']
 ]
 let loadedGraphics = {};
 imagesToPreload.forEach((image) => {
@@ -248,9 +258,13 @@ function drawCardCanvas() {
   ctx.restore();
   ctx.save();
 
-  // Draw the card frame
-  ctx.drawImage(cardFrameImage, 0, 0, canvas.width, canvas.height);
-
+  // Draw the card frame, check if suddenly
+  if (suddenly) {
+    ctx.drawImage(loadedGraphics['Suddenly Hero Card'], 0, 0, canvas.width, canvas.height);
+  } else {
+    ctx.drawImage(loadedGraphics['Base Hero Card'], 0, 0, canvas.width, canvas.height);
+  }
+  
   // Draw the card title and HP
   drawCardTitle();
 
@@ -366,13 +380,22 @@ function drawCardTitle() {
   ctx.lineWidth = pw(0.8);
   ctx.lineJoin = "miter";
   ctx.miterLimit = 3;
-  ctx.fillStyle = '#fcb024';
+  // if this is a suddenly card, text color needs to be white
+  if (suddenly) {
+    ctx.fillStyle = '#ffffff';
+  } else {
+    ctx.fillStyle = '#fcb024';
+  }
   let titleX = pw(50);
   // Offset horizontal center if card has HP
   if (hasHP) {
     titleX = pw(46);
   }
   let titleY = ph(10.3);
+  // the suddenly frame is slightly lower than the default frame
+  if (suddenly) {
+	  titleY = ph(10.8);
+  }
   let squish = 1.06; // Stretch the font a little
   ctx.save();
   ctx.scale(squish, 1); // Apply the stretch
@@ -391,6 +414,10 @@ function drawCardKeywords() {
     keywords = keywords.toUpperCase();
     // Adjust space width
     keywords = keywords.replaceAll(' ', String.fromCharCode(8202) + String.fromCharCode(8202));
+	// add whitespace to make room for suddenly tag
+    if (suddenly) {
+      keywords = 'SUDDENLY  ' + keywords
+    }
     // Keyword font
     let keywordFontSize = pw(4.5);
     ctx.font = '400 ' + keywordFontSize + 'px Boogaloo';
@@ -422,6 +449,10 @@ function drawCardKeywords() {
     ctx.fillText(keywords, keywordsX, keywordsY);
     // Undo the squish for future drawings
     ctx.restore();
+	// add suddenly tag
+	if (suddenly) {
+      ctx.drawImage(loadedGraphics['Suddenly Tag'], pw(5.5), ph(51), pw(20), ph(7.5));
+    }
   }
 }
 
