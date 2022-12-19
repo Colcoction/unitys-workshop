@@ -72,6 +72,16 @@ $('#imageAdjustmentResetButton').on('click', function () {
   drawCardCanvas();
 })
 
+// Parse JSON input buttom
+$('#parseJsonInputButton').on('click', function () {
+  // attempt to parse the JSON
+  let jsonString = $('#jsonInput').prop('value');
+  jsonString = jsonString.replace(/(?:\r|\n|\r\n)/g, '\\n');
+  let jsonData = JSON.parse(jsonString);
+  console.log(jsonData);
+  parseJSONData(jsonData);
+})
+
 // Toggle high contrast phase labels
 $('#inputUseHighConstrast').on('input', function () {
   useHighContrastPhaseLabels = this.checked;
@@ -82,6 +92,71 @@ $('#inputUseHighConstrast').on('input', function () {
 $(window).on('load', function () {
   drawCardCanvas();
 })
+
+/*
+============================================================================
+JSON Parsing
+============================================================================
+*/
+
+function parseJSONData(data) {
+  if('Title' in data) {
+    $('#inputTitle').val(data.Title);
+  } else {
+    $('#inputTitle').val('');
+  }
+  if('HP' in data) {
+    $('#inputHP').val(data.HP);
+  } else {
+    $('#inputHP').val('');
+  }
+  if('Keywords' in data) {
+    $('#inputKeywords').val(data.Keywords);
+  } else {
+    $('#inputKeywords').val('');
+  }
+  if('GameText' in data) {
+    $('#inputEffect').val(data.GameText);
+  } else {
+    $('#inputEffect').val('');
+  }
+  if('Quote' in data) {
+    $('#inputQuote').val(data.Quote);
+  } else {
+    $('#inputQuote').val('');
+  }
+  if('Attribution' in data) {
+    $('#inputAttribution').val(data.Attribution);
+  } else {
+    $('#inputAttribution').val('');
+  }
+  if('ImageURL' in data) {
+    cardArtImage = new Image();
+    cardArtImage.src = data.ImageURL;
+    cardArtImage.onload = function (e) {
+      // Once the Image has loaded, redraw the canvas so it immediately appears
+      drawCardCanvas();
+    }
+  } else {
+    cardArtImage = undefined;
+  }
+  if('ImageX' in data) {
+    $('#inputImageOffsetX').val(data.ImageX);
+  } else {
+    $('#inputImageOffsetX').val(0);
+  }
+  if('ImageY' in data) {
+    $('#inputImageOffsetY').val(data.ImageY);
+  } else {
+    $('#inputImageOffsetY').val(0);
+  }
+  if('ImageZoom' in data) {
+    $('#inputImageScale').val(data.ImageZoom);
+  } else {
+    $('#inputImageScale').val(100);
+  }
+  drawCardCanvas();
+}
 
 
 /*
