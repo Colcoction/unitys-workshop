@@ -77,9 +77,14 @@ $('#parseJsonInputButton').on('click', function () {
   // attempt to parse the JSON
   let jsonString = $('#jsonInput').prop('value');
   jsonString = jsonString.replace(/(?:\r|\n|\r\n)/g, '\\n');
-  let jsonData = JSON.parse(jsonString);
-  console.log(jsonData);
-  parseJSONData(jsonData);
+  try {
+    let jsonData = JSON.parse(jsonString);
+    parseJSONData(jsonData);
+  } catch(err) {
+    $('#jsonError').text("JSON Parse error:" + err.message);
+    return;
+  }
+  $('#jsonError').text("");
 })
 
 // Toggle high contrast phase labels
