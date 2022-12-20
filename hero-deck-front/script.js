@@ -76,7 +76,7 @@ $('#imageAdjustmentResetButton').on('click', function () {
 $('#parseJsonInputButton').on('click', function () {
   // attempt to parse the JSON
   let jsonString = $('#jsonInput').prop('value');
-  jsonString = jsonString.replace(/(?:\r|\n|\r\n)/g, '\\n');
+  //jsonString = jsonString.replace(/(?:\r|\n|\r\n)/g, '\\n');
   try {
     let jsonData = JSON.parse(jsonString);
     parseJSONData(jsonData);
@@ -125,8 +125,17 @@ function parseJSONData(data) {
   } else {
     $('#inputEffect').val('');
   }
+  if('GameTextSize' in data) {
+    $('#inputEffectTextSize').val(data.GameTextSize);
+  } else {
+    $('#inputEffectTextSize').val(100);
+  }
   if('Quote' in data) {
-    $('#inputQuote').val(data.Quote);
+    let quoteText = data.Quote;
+    if (!quoteText.startsWith('"')) {
+      quoteText = '"' + quoteText + '"';
+    }
+    $('#inputQuote').val(quoteText);
   } else {
     $('#inputQuote').val('');
   }
@@ -158,7 +167,7 @@ function parseJSONData(data) {
   if('ImageZoom' in data) {
     $('#inputImageScale').val(data.ImageZoom);
   } else {
-    $('#inputImageScale').val(100);
+    $('#inputImageScale').val(0);
   }
   drawCardCanvas();
 }
