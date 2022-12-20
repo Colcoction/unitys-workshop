@@ -289,9 +289,9 @@ function drawCardArt() {
   // Crunch some numbers to get the crop, position, and scale of the image
   let outerX = 4; // Margin between left/right edge and crop area
   let imageAreaWidth = pw(100 - outerX * 2);
-  let imageAreaHeight = ph(49);
+  let imageAreaHeight = ph(50);
   let imageAreaRatio = imageAreaWidth / imageAreaHeight;
-  let imageAreaTop = ph(10);
+  let imageAreaTop = ph(9.5);
   let imageWidth = cardArtImage.width;
   let imageHeight = cardArtImage.height;
   let imageRatio = imageWidth / imageHeight;
