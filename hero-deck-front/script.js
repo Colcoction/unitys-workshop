@@ -807,7 +807,7 @@ function parseAndDrawCardEffectBlock(block, index) {
     labelWord = 'REACTION:';
   }
 
-  // If it's a POWER: or REACTION:, draw that label and then prepare the rest of the block for being indented 
+  // If it's a POWER: or REACTION:, draw that label and then prepare the rest of the block for being indented
   if (isIndentBlock) {
     // Draw POWER:
     ctx.fillStyle = colorBlack;
