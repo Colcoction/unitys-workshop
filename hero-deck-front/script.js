@@ -35,7 +35,7 @@ $('#downloadButton').on('click', function () {
   else {
     link.download = 'untitled.png';
   }
-  
+
   link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
   link.click();
 })
@@ -76,6 +76,10 @@ $('#imageAdjustmentResetButton').on('click', function () {
 $('#parseJsonInputButton').on('click', function () {
   // attempt to parse the JSON
   let jsonString = $('#jsonInput').prop('value');
+  // get rid of extra commas that happen when pasting from array
+  if (jsonString.slice(-1) == ',') {
+    jsonString = jsonString.slice(0,-1)
+  }
   //jsonString = jsonString.replace(/(?:\r|\n|\r\n)/g, '\\n');
   try {
     let jsonData = JSON.parse(jsonString);
@@ -131,11 +135,7 @@ function parseJSONData(data) {
     $('#inputEffectTextSize').val(100);
   }
   if('Quote' in data) {
-    let quoteText = data.Quote;
-    if (!quoteText.startsWith('"')) {
-      quoteText = '"' + quoteText + '"';
-    }
-    $('#inputQuote').val(quoteText);
+    $('#inputQuote').val(data.Quote);
   } else {
     $('#inputQuote').val('');
   }
@@ -165,7 +165,13 @@ function parseJSONData(data) {
     $('#inputImageOffsetY').val(0);
   }
   if('ImageZoom' in data) {
-    $('#inputImageScale').val(data.ImageZoom);
+    // special parsing for the zoom value, as if it's fed a non-number, it will
+    // default to the middle of the bar, which is not the default
+    let zoomVal = parseInt(data.ImageZoom);
+    if (zoomVal == NaN) {
+      zoomVal = 0;
+    }
+    $('#inputImageScale').val(zoomVal);
   } else {
     $('#inputImageScale').val(0);
   }
