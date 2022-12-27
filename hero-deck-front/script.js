@@ -35,7 +35,7 @@ $('#downloadButton').on('click', function () {
   else {
     link.download = 'untitled.png';
   }
-  
+
   link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
   link.click();
 })
@@ -75,8 +75,10 @@ $('#imageAdjustmentResetButton').on('click', function () {
 // Parse JSON input buttom
 $('#parseJsonInputButton').on('click', function () {
   // attempt to parse the JSON
-  let jsonString = $('#jsonInput').prop('value');
-  //jsonString = jsonString.replace(/(?:\r|\n|\r\n)/g, '\\n');
+  let jsonString = $('#jsonInput').prop('value').trim();
+  if (jsonString.endsWith(',')) {
+    jsonString = jsonString.slice(0,-1);
+  }
   try {
     let jsonData = JSON.parse(jsonString);
     parseJSONData(jsonData);
@@ -131,11 +133,7 @@ function parseJSONData(data) {
     $('#inputEffectTextSize').val(100);
   }
   if('Quote' in data) {
-    let quoteText = data.Quote;
-    if (!quoteText.startsWith('"')) {
-      quoteText = '"' + quoteText + '"';
-    }
-    $('#inputQuote').val(quoteText);
+    $('#inputQuote').val(data.Quote);
   } else {
     $('#inputQuote').val('');
   }
@@ -229,9 +227,9 @@ let currentOffsetY = 0; // Current y position for draw commands
 
 
 // These phrases will be automatically bolded
-var effectBoldList = ["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY"];
+var effectBoldList = ["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY", "RAP", "REAP"];
 // These phrases will be automatically italicized
-var effectItalicsList = ["PERFORM", "ACCOMPANY"];
+var effectItalicsList = ["PERFORM", "ACCOMPANY", "RAP", "REAP"];
 
 
 /*
@@ -801,7 +799,7 @@ function parseAndDrawCardEffectBlock(block, index) {
     labelWord = 'REACTION:';
   }
 
-  // If it's a POWER: or REACTION:, draw that label and then prepare the rest of the block for being indented 
+  // If it's a POWER: or REACTION:, draw that label and then prepare the rest of the block for being indented
   if (isIndentBlock) {
     // Draw POWER:
     ctx.fillStyle = colorBlack;
