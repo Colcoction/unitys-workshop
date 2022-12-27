@@ -75,9 +75,10 @@ $('#imageAdjustmentResetButton').on('click', function () {
 // Parse JSON input buttom
 $('#parseJsonInputButton').on('click', function () {
   // attempt to parse the JSON
-  let jsonString = $('#jsonInput').prop('value').trim();
-  if (jsonString.endsWith(',')) {
-    jsonString = jsonString.slice(0,-1);
+  let jsonString = $('#jsonInput').prop('value');
+  // get rid of extra commas that happen when pasting from array
+  if (jsonString.slice(-1) == ',') {
+    jsonString = jsonString.slice(0,-1)
   }
   try {
     let jsonData = JSON.parse(jsonString);
@@ -163,7 +164,13 @@ function parseJSONData(data) {
     $('#inputImageOffsetY').val(0);
   }
   if('ImageZoom' in data) {
-    $('#inputImageScale').val(data.ImageZoom);
+    // special parsing for the zoom value, as if it's fed a non-number, it will
+    // default to the middle of the bar, which is not the default
+    let zoomVal = parseInt(data.ImageZoom);
+    if (zoomVal == NaN) {
+      zoomVal = 0;
+    }
+    $('#inputImageScale').val(zoomVal);
   } else {
     $('#inputImageScale').val(0);
   }
