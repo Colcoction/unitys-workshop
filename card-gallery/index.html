@@ -45,7 +45,7 @@
       width: 350px;
     }
 
-    .criticalEvent.flipped {
+    .criticalEvent.flipped, .villainCharacterCard {
       width: 550px;
     }
 
@@ -101,17 +101,18 @@
     //   'Hero Character Cards',
     //   'Hero Cards',
     //   'Villain Character Cards',
-    //   'Villain Cards',
     //   'Events',
     //   'Critical Events',
+    //   'Villain Cards',
     //   'Environment Cards'
     // ]
 
     const cardCategories = [
       'Hero Character Cards',
       'Hero Cards',
-      'Villain Cards',
+      'Villain Character Cards',
       'Critical Events',
+      'Villain Cards',
       'Environment Cards'
     ]
     
@@ -223,6 +224,18 @@
             // Strip out quotation marks because the files name's can't have them
             imagePath2 = imagePath2.replaceAll('"', '');
             break;
+
+          case 'Villain Character Cards':
+            fileName = `${cardData[0]} Front`;
+            imagePath1 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath1 = imagePath1.replaceAll('"', '');
+            // Then repeat for the back side
+            fileName = `${cardData[0]} Back`;
+            imagePath2 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath2 = imagePath2.replaceAll('"', '');
+            break;
         }
 
 
@@ -250,6 +263,9 @@
             break;
           case 'Hero Character Cards':
             extraClasses += ' heroCharacterCard flippable';
+            break;
+          case 'Villain Character Cards':
+            extraClasses += ' villainCharacterCard flippable';
             break;
           case 'Critical Events':
             extraClasses += ' criticalEvent flippable';
