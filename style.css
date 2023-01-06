@@ -170,8 +170,12 @@ h1 {
   grid-column: 2;
 }
 .layout > div:nth-child(4) {
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 3;
   grid-column: 3;
+}
+.layout > div:nth-child(5) {
+  grid-row: 3;
+  grid-column: 1 / span 2;
 }
 
 label, input, textarea {
@@ -182,6 +186,10 @@ label, input, textarea {
 
 label {
   margin-bottom: 5px;
+}
+
+.errorMessage {
+  color: red;
 }
 
 .inputGroup {

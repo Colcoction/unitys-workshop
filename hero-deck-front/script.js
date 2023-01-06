@@ -35,7 +35,7 @@ $('#downloadButton').on('click', function () {
   else {
     link.download = 'untitled.png';
   }
-  
+
   link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
   link.click();
 })
@@ -72,6 +72,24 @@ $('#imageAdjustmentResetButton').on('click', function () {
   drawCardCanvas();
 })
 
+// Parse JSON input buttom
+$('#parseJsonInputButton').on('click', function () {
+  // attempt to parse the JSON
+  let jsonString = $('#jsonInput').prop('value');
+  // get rid of extra commas that happen when pasting from array
+  if (jsonString.slice(-1) == ',') {
+    jsonString = jsonString.slice(0,-1)
+  }
+  try {
+    let jsonData = JSON.parse(jsonString);
+    parseJSONData(jsonData);
+  } catch(err) {
+    $('#jsonError').text("JSON Parse error:" + err.message);
+    return;
+  }
+  $('#jsonError').text("");
+})
+
 // Toggle high contrast phase labels
 $('#inputUseHighConstrast').on('input', function () {
   useHighContrastPhaseLabels = this.checked;
@@ -88,6 +106,82 @@ $('#suddenly').on('input', function () {
 $(window).on('load', function () {
   drawCardCanvas();
 })
+
+/*
+============================================================================
+JSON Parsing
+============================================================================
+*/
+
+function parseJSONData(data) {
+  if('Title' in data) {
+    $('#inputTitle').val(data.Title);
+  } else {
+    $('#inputTitle').val('');
+  }
+  if('HP' in data) {
+    $('#inputHP').val(data.HP);
+  } else {
+    $('#inputHP').val('');
+  }
+  if('Keywords' in data) {
+    $('#inputKeywords').val(data.Keywords);
+  } else {
+    $('#inputKeywords').val('');
+  }
+  if('GameText' in data) {
+    $('#inputEffect').val(data.GameText);
+  } else {
+    $('#inputEffect').val('');
+  }
+  if('GameTextSize' in data) {
+    $('#inputEffectTextSize').val(data.GameTextSize);
+  } else {
+    $('#inputEffectTextSize').val(100);
+  }
+  if('Quote' in data) {
+    $('#inputQuote').val(data.Quote);
+  } else {
+    $('#inputQuote').val('');
+  }
+  if('Attribution' in data) {
+    $('#inputAttribution').val(data.Attribution);
+  } else {
+    $('#inputAttribution').val('');
+  }
+  if('ImageURL' in data) {
+    cardArtImage = new Image();
+    cardArtImage.src = data.ImageURL;
+    cardArtImage.onload = function (e) {
+      // Once the Image has loaded, redraw the canvas so it immediately appears
+      drawCardCanvas();
+    }
+  } else {
+    cardArtImage = undefined;
+  }
+  if('ImageX' in data) {
+    $('#inputImageOffsetX').val(data.ImageX);
+  } else {
+    $('#inputImageOffsetX').val(0);
+  }
+  if('ImageY' in data) {
+    $('#inputImageOffsetY').val(data.ImageY);
+  } else {
+    $('#inputImageOffsetY').val(0);
+  }
+  if('ImageZoom' in data) {
+    // special parsing for the zoom value, as if it's fed a non-number, it will
+    // default to the middle of the bar, which is not the default
+    let zoomVal = parseInt(data.ImageZoom);
+    if (zoomVal == NaN) {
+      zoomVal = 0;
+    }
+    $('#inputImageScale').val(zoomVal);
+  } else {
+    $('#inputImageScale').val(0);
+  }
+  drawCardCanvas();
+}
 
 
 /*
@@ -147,9 +241,9 @@ let currentOffsetY = 0; // Current y position for draw commands
 
 
 // These phrases will be automatically bolded
-var effectBoldList = ["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY"];
+var effectBoldList = ["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY", "RAP", "REAP"];
 // These phrases will be automatically italicized
-var effectItalicsList = ["PERFORM", "ACCOMPANY"];
+var effectItalicsList = ["PERFORM", "ACCOMPANY", "RAP", "REAP"];
 
 
 /*
@@ -743,7 +837,7 @@ function parseAndDrawCardEffectBlock(block, index) {
     labelWord = 'REACTION:';
   }
 
-  // If it's a POWER: or REACTION:, draw that label and then prepare the rest of the block for being indented 
+  // If it's a POWER: or REACTION:, draw that label and then prepare the rest of the block for being indented
   if (isIndentBlock) {
     // Draw POWER:
     ctx.fillStyle = colorBlack;
