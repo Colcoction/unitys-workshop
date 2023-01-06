@@ -41,11 +41,11 @@
       width: 400px;
     }
 
-    .criticalEvent {
+    .event, .criticalEvent {
       width: 350px;
     }
 
-    .criticalEvent.flipped, .villainCharacterCard {
+    .event.flipped, .criticalEvent.flipped, .villainCharacterCard {
       width: 550px;
     }
 
@@ -96,21 +96,11 @@
   <script>
 
     // This array contains the card category folder names, as well as dictating the order they will be loaded in
-
-    // const cardCategories = [
-    //   'Hero Character Cards',
-    //   'Hero Cards',
-    //   'Villain Character Cards',
-    //   'Events',
-    //   'Critical Events',
-    //   'Villain Cards',
-    //   'Environment Cards'
-    // ]
-
     const cardCategories = [
       'Hero Character Cards',
       'Hero Cards',
       'Villain Character Cards',
+      'Events',
       'Critical Events',
       'Villain Cards',
       'Environment Cards'
@@ -201,18 +191,6 @@
             imagePath1 = imagePath1.replaceAll('"', '');
             break;
 
-          case 'Critical Events':
-            fileName = `${cardData[5]} Front`;
-            imagePath1 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
-            // Strip out quotation marks because the files name's can't have them
-            imagePath1 = imagePath1.replaceAll('"', '');
-            // Then repeat for the back side
-            fileName = `${cardData[5]} Back`;
-            imagePath2 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
-            // Strip out quotation marks because the files name's can't have them
-            imagePath2 = imagePath2.replaceAll('"', '');
-            break;
-
           case 'Hero Character Cards':
             fileName = `${cardData[1]} ${cardData[0]} Front`;
             imagePath1 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
@@ -236,10 +214,31 @@
             // Strip out quotation marks because the files name's can't have them
             imagePath2 = imagePath2.replaceAll('"', '');
             break;
+
+          case 'Events':
+            fileName = `${cardData[0]} Front`;
+            imagePath1 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath1 = imagePath1.replaceAll('"', '');
+            // Then repeat for the back side
+            fileName = `${cardData[0]} Back`;
+            imagePath2 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath2 = imagePath2.replaceAll('"', '');
+            break;
+
+          case 'Critical Events':
+            fileName = `${cardData[5]} Front`;
+            imagePath1 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath1 = imagePath1.replaceAll('"', '');
+            // Then repeat for the back side
+            fileName = `${cardData[5]} Back`;
+            imagePath2 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath2 = imagePath2.replaceAll('"', '');
+            break;
         }
-
-
-        
 
         // Create new card HTML
 
@@ -266,6 +265,9 @@
             break;
           case 'Villain Character Cards':
             extraClasses += ' villainCharacterCard flippable';
+            break;
+          case 'Events':
+            extraClasses += ' event flippable';
             break;
           case 'Critical Events':
             extraClasses += ' criticalEvent flippable';
