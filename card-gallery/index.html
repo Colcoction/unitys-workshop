@@ -202,12 +202,12 @@
             break;
 
           case 'Critical Events':
-            fileName = `${cardData[4]} Front`;
+            fileName = `${cardData[5]} Front`;
             imagePath1 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
             // Strip out quotation marks because the files name's can't have them
             imagePath1 = imagePath1.replaceAll('"', '');
             // Then repeat for the back side
-            fileName = `${cardData[4]} Back`;
+            fileName = `${cardData[5]} Back`;
             imagePath2 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
             // Strip out quotation marks because the files name's can't have them
             imagePath2 = imagePath2.replaceAll('"', '');
