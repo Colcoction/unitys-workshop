@@ -134,36 +134,53 @@
       dataLines = tsvData.split('\n');
 
       // Get data labels (headings in the spreadsheet) and number of first data line
-      let labels, firstDataLine;
-      
-      // Get labels differently depending on the category (due to spreadsheet formatting)
-      switch (dataGroup) {
-        case 'Hero Cards':
-        case 'Villain Cards':
-        case 'Environment Cards':
-        case 'Critical Events':
-          // Split the first row by tabs
-          labels = dataLines[0].split('\t');
-          // First data line is 2nd row in spreadsheet
-          firstDataLine = 1;
-          break;
+      let labels = [], firstDataLine = 0;
 
-        case 'Hero Character Cards':
-          // Split the first row by tabs
-          labels = dataLines[0].split('\t');
-          // Special cases
-          labels[1] = 'Deck';
-          labels[5] = 'Innate Power Name';
-          labels[6] = 'Innate Power Effect';
-          labels[7] = 'Incapacitated Caption';
-          labels[8] = 'Incapacitated Option 1';
-          labels[9] = 'Incapacitated Option 2';
-          labels[10] = 'Incapacitated Option 3';
-          // First data line is 3nd row in spreadsheet
-          firstDataLine = 2;
-          break;
-      }
+      // Check if it's a one-row heading spreadsheet or two-row heading spreadsheet
+      const firstRow = dataLines[0].split('\t');
+      const secondRow = dataLines[1].split('\t');
       
+      // If the first cell of the second row isn't blank...
+      if (secondRow[0] != '') {
+        // It's a one-row heading
+
+        // First data line is 2nd row in spreadsheet
+        firstDataLine = 1;
+
+        // To get labels, split the first row by tabs
+        labels = dataLines[0].split('\t');
+      }
+      // Otherwise...
+      else {
+        // It's a two-row heading
+
+        // First data line is 3nd row in spreadsheet
+        firstDataLine = 2;
+
+        // To get labels, split the first and second row by tabs and combine when needed
+        for (let i = 0; i < firstRow.length; i++) {
+          const firstRowCell = firstRow[i];
+          const secondRowCell = secondRow[i];
+          // If second row cell isn't blank, combine the two rows
+          if (secondRowCell != '') {
+            // Find the appropriate first row part by going backwards in the row until we find something
+            for (let ii = 0; ii < 10; ii++) {
+              const firstRowTestCell = firstRow[i - ii];
+              // If this cell isn't blank...
+              if (firstRowTestCell != '') {
+                // We found something
+                // Combine first row cell and second row cell to make the label
+                labels.push(firstRowTestCell + ' ' + secondRowCell);
+                break;
+              }
+            }
+          }
+          // Otherwise, just use the first row's cell
+          else {
+            labels.push(firstRowCell);
+          }
+        }
+      }
 
       // Iterate through each data line
       for (i = firstDataLine; i < dataLines.length; i++) {
