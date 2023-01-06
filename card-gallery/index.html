@@ -35,15 +35,27 @@
       width: 300px;
       position: relative;
       margin: 5px;
-    }
+    }    
 
     .environmentCard {
       width: 400px;
     }
 
+    .criticalEvent {
+      width: 350px;
+    }
+
+    .criticalEvent.flipped {
+      width: 550px;
+    }
+
     .cardImage {
       width: 100%;
       display: block;
+    }
+
+    .flippable .cardImage {
+      cursor: pointer;
     }
 
     .cardDetails {
@@ -96,8 +108,10 @@
     // ]
 
     const cardCategories = [
+      'Hero Character Cards',
       'Hero Cards',
       'Villain Cards',
+      'Critical Events',
       'Environment Cards'
     ]
     
@@ -115,21 +129,87 @@
 
     // Function to load cards, used one category at a time
     function loadCards(tsvData, dataGroup) {
+
       // Get each row of card data
       dataLines = tsvData.split('\n');
 
-      // Get value labels (table headings in the spreadsheet)
-      // Separate out the values by splitting the line by tabs
-      const labels = dataLines[0].split('\t');
+      // Get data labels (headings in the spreadsheet) and number of first data line
+      let labels, firstDataLine;
+      
+      // Get labels differently depending on the category (due to spreadsheet formatting)
+      switch (dataGroup) {
+        case 'Hero Cards':
+        case 'Villain Cards':
+        case 'Environment Cards':
+        case 'Critical Events':
+          // Split the first row by tabs
+          labels = dataLines[0].split('\t');
+          // First data line is 2nd row in spreadsheet
+          firstDataLine = 1;
+          break;
 
-      // Iterate through each line past the first (the first is table headings)
-      for (i = 1; i < dataLines.length; i++) {
+        case 'Hero Character Cards':
+          // Split the first row by tabs
+          labels = dataLines[0].split('\t');
+          // Special cases
+          labels[1] = 'Deck';
+          labels[5] = 'Innate Power Name';
+          labels[6] = 'Innate Power Effect';
+          labels[7] = 'Incapacitated Caption';
+          labels[8] = 'Incapacitated Option 1';
+          labels[9] = 'Incapacitated Option 2';
+          labels[10] = 'Incapacitated Option 3';
+          // First data line is 3nd row in spreadsheet
+          firstDataLine = 2;
+          break;
+      }
+      
+
+      // Iterate through each data line
+      for (i = firstDataLine; i < dataLines.length; i++) {
         // Separate out the values by splitting the line by tabs
-        let cardData = dataLines[i].split('\t');
-        // Find the image for each set of data
-        let path = "/_resources/Scans/" + dataGroup + "/" + cardData[0] + "/" + cardData[1] + ".webp";
-        // Strip out quotation marks because the files name's can't have them
-        path = path.replaceAll('"', '');
+        const cardData = dataLines[i].split('\t');
+
+        // Get image path differently depending on the category (due to spreadsheet formatting)
+        let imagePath1, imagePath2, folderName, fileName;
+        switch (dataGroup) {
+          case 'Hero Cards':
+          case 'Villain Cards':
+          case 'Environment Cards':
+            folderName = cardData[0];
+            fileName = cardData[1];
+            imagePath1 = "/_resources/Scans/" + dataGroup + "/" + folderName + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath1 = imagePath1.replaceAll('"', '');
+            break;
+
+          case 'Critical Events':
+            fileName = `${cardData[4]} Front`;
+            imagePath1 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath1 = imagePath1.replaceAll('"', '');
+            // Then repeat for the back side
+            fileName = `${cardData[4]} Back`;
+            imagePath2 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath2 = imagePath2.replaceAll('"', '');
+            break;
+
+          case 'Hero Character Cards':
+            fileName = `${cardData[1]} ${cardData[0]} Front`;
+            imagePath1 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath1 = imagePath1.replaceAll('"', '');
+            // Then repeat for the back side
+            fileName = `${cardData[1]} ${cardData[0]} Back`;
+            imagePath2 = "/_resources/Scans/" + dataGroup + "/" + fileName + ".webp";
+            // Strip out quotation marks because the files name's can't have them
+            imagePath2 = imagePath2.replaceAll('"', '');
+            break;
+        }
+
+
+        
 
         // Create new card HTML
 
@@ -139,16 +219,31 @@
           detailsElement += `<p><strong>${labels[ii]}:</strong> ${cardData[ii]}</p>`;
         }
 
-        let extraClass = '';
-
-        if (dataGroup === "Environment Cards") {
-          extraClass += ' environmentCard'
+        // Add extra classes to the cards if necessary
+        let extraClasses = '';
+        switch (dataGroup) {
+          case 'Hero Cards':
+            extraClasses += ' heroCard';
+            break;
+          case 'Villain Cards':
+            extraClasses += ' villainCard';
+            break;
+          case 'Environment Cards':
+            extraClasses += ' environmentCard';
+            break;
+          case 'Hero Character Cards':
+            extraClasses += ' heroCharacterCard flippable';
+            break;
+          case 'Critical Events':
+            extraClasses += ' criticalEvent flippable';
+            break;
         }
 
-        // Assemble a card element with the image and the details
+        // Assemble a card element with the image(s) and the details
         let newHTML = `
-    <div class="card${extraClass}">
-      <img class="cardImage" src="${path}" />
+    <div class="card${extraClasses}">
+      <img class="cardImage" src="${imagePath1}" />
+      ${imagePath2 ? `<img class="cardImage" src="${imagePath2}" style="display: none;" />` : ''}
       <details class="cardDetails">
         <summary>Details</summary>
         ${detailsElement}
@@ -163,7 +258,7 @@
       // Start loading next card category
       currentCardCategory++;
       const nextCategoryName = cardCategories[currentCardCategory];
-      // Safety check
+      // Check if we're done
       if (nextCategoryName != undefined) {
         // Load card data
         setTimeout(function () {
@@ -174,6 +269,16 @@
             }
           });
         }, 1)
+      }
+      else {
+        // Once all the cards have been generated...
+        // Flip cards when needed
+        $('.flippable .cardImage').click(function() {
+          // Mark as flipped
+          $(this).parent().toggleClass('flipped');
+          // Toggle image
+          $(this).parent().children('.cardImage').toggle();
+        })
       }
 
     }
@@ -197,6 +302,9 @@
         }
       })
     })
+
+
+    
   </script>
 
 
