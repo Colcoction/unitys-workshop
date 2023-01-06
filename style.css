@@ -106,7 +106,7 @@ img {
   width: 50px;
 }
 
-h1 {
+h1, h2 {
   margin-top: 0;
   font-size: 30px;
   font-family: 'Boogaloo';
@@ -144,6 +144,15 @@ h1 {
   2px 1px 0 #231f20,
   2px 2px 0 #231f20
   ;
+}
+
+h2 {
+  font-size: 24px;
+  margin: 25px 0 15px;
+}
+
+h2:first-child {
+  margin-top: 15px;
 }
 
 .layout {
