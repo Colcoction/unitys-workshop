@@ -180,6 +180,13 @@ function parseJSONData(data) {
   } else {
     $('#inputImageScale').val(0);
   }
+  if('Suddenly' in data) {
+    $('#suddenly')[0].checked = true;
+    suddenly = true;
+  } else {
+    $('#suddenly')[0].checked = false;
+    suddenly = false;
+  }
   drawCardCanvas();
 }
 
@@ -358,7 +365,7 @@ function drawCardCanvas() {
   } else {
     ctx.drawImage(loadedGraphics['Base Hero Card'], 0, 0, canvas.width, canvas.height);
   }
-  
+
   // Draw the card title and HP
   drawCardTitle();
 
