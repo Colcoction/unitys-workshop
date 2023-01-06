@@ -82,37 +82,38 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 
   <script>
-    // Load cards into the display (setTimeout to ensure order)
+
+    // This array contains the card category folder names, as well as dictating the order they will be loaded in
+
+    // const cardCategories = [
+    //   'Hero Character Cards',
+    //   'Hero Cards',
+    //   'Villain Character Cards',
+    //   'Villain Cards',
+    //   'Events',
+    //   'Critical Events',
+    //   'Environment Cards'
+    // ]
+
+    const cardCategories = [
+      'Hero Cards',
+      'Villain Cards',
+      'Environment Cards'
+    ]
+    
+    let currentCardCategory = 0;
+
+    // Load first set of card data (the rest will follow)
     setTimeout(function () {
       $.ajax({
-        url: '/card-gallery/Hero Cards.tsv',
+        url: `/card-gallery/${cardCategories[0]}.tsv`,
         success: function (data) {
-          loadCards(data, "Hero Cards");
+          loadCards(data, cardCategories[0]);
         }
       });
     }, 1)
 
-    setTimeout(function () {
-      $.ajax({
-        url: '/card-gallery/Villain Cards.tsv',
-        success: function (data) {
-          loadCards(data, "Villain Cards");
-        }
-      });
-    }, 100)
-
-    setTimeout(function () {
-      $.ajax({
-        url: '/card-gallery/Environment Cards.tsv',
-        success: function (data) {
-          loadCards(data, "Environment Cards");
-        }
-      });
-    }, 200)
-
-
-
-    // Function to load cards, used one type at a time
+    // Function to load cards, used one category at a time
     function loadCards(tsvData, dataGroup) {
       // Get each row of card data
       dataLines = tsvData.split('\n');
@@ -158,6 +159,23 @@
         // Add the card element to the display
         $(".cardFlexDisplay").append(newHTML);
       }
+
+      // Start loading next card category
+      currentCardCategory++;
+      const nextCategoryName = cardCategories[currentCardCategory];
+      // Safety check
+      if (nextCategoryName != undefined) {
+        // Load card data
+        setTimeout(function () {
+          $.ajax({
+            url: `/card-gallery/${nextCategoryName}.tsv`,
+            success: function (data) {
+              loadCards(data, nextCategoryName);
+            }
+          });
+        }, 1)
+      }
+
     }
 
 
