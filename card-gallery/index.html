@@ -71,6 +71,13 @@
     .cardDetails[open] {
       position: static;
     }
+
+    .tips {
+      font-size: 14px;
+    }
+    .tips ul {
+      margin: 0;
+    }
   </style>
 
 </head>
@@ -81,9 +88,18 @@
 
   <div class="inputGroup">
     <div style="margin-bottom:5px;"><a href="/">Home</a></div>
-    <input type="text" class="searchInput" placeholder='Search for a string of text in the details of a card. You can use detail type to narrow your search (ex: "Fanatic" vs. "Deck: Fanatic").' />
+    <input type="text" class="searchInput" placeholder='Search for a string of text in the details of a card.' />
+    <details class="tips">
+      <summary>Tips</summary>
+      <ul>
+        <li>Searches are not case-sensitive.</li>
+        <li>You can click on a character card or event to see the other side of that card.</li>
+        <li>You can see all the materials associated with a specific deck by searching with this format: "Deck: Baron Blade".</li>
+      </ul>
+    </details>
   </div>
-
+    
+   
   <!-- Cards get loaded here -->
   <div class="cardFlexDisplay"></div>
 
