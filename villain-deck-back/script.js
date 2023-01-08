@@ -128,7 +128,7 @@ function drawCardCanvas() {
   // I might want to try adding in a contrast(120%) filter to the artFilter, before the first brightness filter, to try to bring more consistent darks into the render
 
   let graphicFilter = 'grayscale(100%)              contrast(30%) brightness(145%)';
-  let artFilter = 'grayscale(100%) brightness(150%) contrast(30%) brightness(145%)';
+  let artFilter = 'grayscale(100%) contrast(150%) brightness(60%)';
 
   // 1-grayscale: makes monochromatic (when combined with color filter farther down in code)
   // 2-brightness: (artFilter only) compresses high end of value range (brings everything closer to "white")
