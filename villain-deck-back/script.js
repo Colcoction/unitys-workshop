@@ -127,9 +127,22 @@ function drawCardCanvas() {
 
   // I might want to try adding in a contrast(120%) filter to the artFilter, before the first brightness filter, to try to bring more consistent darks into the render
 
-  let graphicFilter = 'grayscale(100%)              contrast(30%) brightness(145%)';
-  let artFilter = 'grayscale(100%) contrast(150%) brightness(60%)';
+  let graphicFilter = 'grayscale(100%)';
+  let artFilter = 'grayscale(100%) contrast(120%) brightness(270%) brightness(60%)';
 
+  // Current
+  // 1-grayscale: self explanatory
+  // 2-contrast >100%: move the dark end of the value range lower, to make near-blacks true black
+  // 3-brightness >100%: move the light end of the value range higher, to make everything except true blacks lighter and flatter.
+  // 4-brightness <100%: move the light end of the value range lower, to make everything except true blacks darker
+
+  // It seems that...
+  // Brightness moves the light end of the value range (to be mathematically higher in value)
+  // Contrast moves both ends of the value range (away or towards the center)
+  // The value range framework is normalized after every transformation
+
+
+  // The Original Notes
   // 1-grayscale: makes monochromatic (when combined with color filter farther down in code)
   // 2-brightness: (artFilter only) compresses high end of value range (brings everything closer to "white")
   // 3-contrast: compresses whole value range (brings everything closer to a middle "gray")
@@ -159,15 +172,7 @@ function drawCardCanvas() {
   ctx.filter = 'none';
   ctx.save();
 
-  // Get user input color settings
-  let hue = $('#inputColorHueSlider').val();
-  let saturation = $('#inputColorSaturationSlider').val();
-
-  // Colorize the whole background
-  ctx.globalCompositeOperation = 'color';
-  ctx.fillStyle = `rgb(148, 149, 153)`; // Max values: (360, 100%, 100%)
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.globalCompositeOperation = 'source-over'; // Reset to normal drawing mode
+  // (Here is where the color choice would come in, but it was removed from this page since villains are always pure grayscale.)
 
   // Last of all, draw the card border
   ctx.globalCompositeOperation = 'source-over';
