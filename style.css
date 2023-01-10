@@ -20,6 +20,8 @@ body {
 
   margin: 0;
   padding: 20px;
+
+  word-break: break-word;
 }
 
 img {
