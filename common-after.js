@@ -156,7 +156,7 @@ imageAreas = {
       [2.5, 2.5],
       [97.5, 2.5],
       [97.5, 33],
-      [66, 40],
+      [65, 41],
       [2.5, 32]
     ]),
     scaleStyle: 'fill',
@@ -171,7 +171,7 @@ imageAreas = {
   // Right Art
   vdb_leftArt: {
     pathShape: coordinatesToPathShape([
-      [66, 40],
+      [65, 41],
       [97.5, 33],
       [97.5, 90],
       [40, 81]
@@ -189,7 +189,7 @@ imageAreas = {
   vdb_rightArt: {
     pathShape: coordinatesToPathShape([
       [2.5, 32],
-      [66, 40],
+      [65, 41],
       [40, 81],
       [2.5, 77]
     ]),
