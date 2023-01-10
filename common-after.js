@@ -3,7 +3,7 @@
 // Regions for drawing images
 imageAreas = {
   /*==========================================================
-  Hero Character Card Front 
+  Hero Character Card Front
   ==========================================================*/
   // Art in Foreground
   hccf_foregroundArt: {
@@ -60,7 +60,7 @@ imageAreas = {
     }
   },
   /*==========================================================
-  Hero Deck Back 
+  Hero Deck Back
   ==========================================================*/
   // Hero Name Art
   hdb_heroNameArt: {
@@ -128,6 +128,78 @@ imageAreas = {
     },
     getAdjustments: function () {
       return getUserImageAdjustments('bottomArt');
+    }
+  },
+  /*==========================================================
+  Villain Deck Back
+  ==========================================================*/
+  // Villain Name Art
+  vdb_villainNameArt: {
+    pathShape: coordinatesToPathShape([
+      [2.5, 80],
+      [97.5, 80],
+      [97.5, 100],
+      [2.5, 100]
+    ]),
+    scaleStyle: 'fit',
+    vAlign: 'top',
+    getImage: function () {
+      return getUserImage('villainNameArt');
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments('villainNameArt');
+    }
+  },
+  // Top Art
+  vdb_topArt: {
+    pathShape: coordinatesToPathShape([
+      [2.5, 2.5],
+      [97.5, 2.5],
+      [97.5, 33],
+      [66, 40],
+      [2.5, 32]
+    ]),
+    scaleStyle: 'fill',
+    vAlign: 'center',
+    getImage: function () {
+      return getUserImage('topArt');
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments('topArt');
+    }
+  },
+  // Right Art
+  vdb_leftArt: {
+    pathShape: coordinatesToPathShape([
+      [66, 40],
+      [97.5, 33],
+      [97.5, 90],
+      [40, 81]
+    ]),
+    scaleStyle: 'fill',
+    vAlign: 'center',
+    getImage: function () {
+      return getUserImage('rightArt');
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments('rightArt');
+    }
+  },
+  // Left Art
+  vdb_rightArt: {
+    pathShape: coordinatesToPathShape([
+      [2.5, 32],
+      [66, 40],
+      [40, 81],
+      [2.5, 77]
+    ]),
+    scaleStyle: 'fill',
+    vAlign: 'center',
+    getImage: function () {
+      return getUserImage('leftArt');
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments('leftArt');
     }
   }
 }
