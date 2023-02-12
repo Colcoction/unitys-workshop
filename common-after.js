@@ -5,6 +5,23 @@ imageAreas = {
   /*==========================================================
   Hero Character Card Front
   ==========================================================*/
+  // Hero Name
+  hccf_heroNameArt: {
+    pathShape: coordinatesToPathShape([
+      [2.5, 2],
+      [97.5, 2],
+      [97.5, 30],
+      [2.5, 30]
+    ]),
+    scaleStyle: 'fit',
+    vAlign: 'top',
+    getImage: function () {
+      return getUserImage('heroNameArt');
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments('heroNameArt');
+    }
+  },
   // Art in Foreground
   hccf_foregroundArt: {
     pathShape: coordinatesToPathShape([
