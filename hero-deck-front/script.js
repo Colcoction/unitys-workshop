@@ -325,7 +325,7 @@ $('#inputImageFile').on('input', function (e) {
 $('#inputImageFile').on('input', function () {
   $('#inputImageOffsetX').prop('value', '0');
   $('#inputImageOffsetY').prop('value', '0');
-  $('#inputImageScale').prop('value', '0');
+  $('#inputImageScale').prop('value', '100');
 });
 
 // Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
