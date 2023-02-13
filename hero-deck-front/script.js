@@ -246,12 +246,38 @@ let currentIndentX = effectStartX; // Different x position to reset to when draw
 let currentOffsetX = 0; // Current x position for draw commands
 let currentOffsetY = 0; // Current y position for draw commands
 
+// Set of default bolded terms
+const defaultBoldList = new Set(["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY"]);
+// Set of default italicized terms
+const defaultItalicsList = new Set(["PERFORM", "ACCOMPANY"]);
 
 // These phrases will be automatically bolded
-var effectBoldList = ["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY", "RAP", "REAP"];
+var effectBoldList = Array.from(defaultBoldList);
 // These phrases will be automatically italicized
-var effectItalicsList = ["PERFORM", "ACCOMPANY", "RAP", "REAP"];
+var effectItalicsList = Array.from(defaultItalicsList);
 
+// load custom effect list if it exists
+function loadEffectList() {
+  let customEffectList = $('#inputBoldWords').prop('value');
+  if (customEffectList) {
+    customEffectList = customEffectList.toUpperCase();
+    customEffectList = customEffectList.split(",").map(x => x.trim());
+    customEffectList = customEffectList.filter(effect => effect != "");
+  } else {
+    customEffectList = [];
+  }
+  // reset the lists
+  let newBoldList = new Set(defaultBoldList);
+  let newItalicsList = new Set(defaultItalicsList);
+  // add new elements
+  customEffectList.forEach((effect) => {
+    newBoldList.add(effect);
+    newItalicsList.add(effect);
+  });
+  // change back to arrays
+  effectBoldList = Array.from(newBoldList);
+  effectItalicsList = Array.from(newItalicsList);
+}
 
 /*
 ============================================================================
@@ -365,6 +391,8 @@ function drawCardCanvas() {
   } else {
     ctx.drawImage(loadedGraphics['Base Hero Card'], 0, 0, canvas.width, canvas.height);
   }
+  // load new list of effects
+  loadEffectList();
 
   // Draw the card title and HP
   drawCardTitle();
