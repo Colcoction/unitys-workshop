@@ -151,6 +151,8 @@ function drawCardCanvas() {
   // Draw the foreground art
   drawArtInCroppedArea('hccf_foregroundArt');
 
+  drawArtInCroppedArea('hccf_heroNameArt');
+
   // === Draw the text box
 
   // 1) create the shape
