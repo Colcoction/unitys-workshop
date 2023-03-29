@@ -211,6 +211,7 @@ function drawCardCanvas() {
   ctx.strokeText(powerName, powerNameX, powerNameY);
   ctx.fillText(powerName, powerNameX, powerNameY);
 
+  loadEffectList();
 
   // === Draw the power text
   drawPowerText();
@@ -365,11 +366,38 @@ let currentOffsetY = 0; // Current y position for draw commands
 
 let savedBoxHeightOffset = 0; // For the text box expanding to accomodate longer innate powers
 
+// Set of default bolded terms
+const defaultBoldList = new Set(["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY"]);
+// Set of default italicized terms
+const defaultItalicsList = new Set(["PERFORM", "ACCOMPANY"]);
 
 // These phrases will be automatically bolded
-var effectBoldList = ["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY"];
+var effectBoldList = Array.from(defaultBoldList);
 // These phrases will be automatically italicized
-var effectItalicsList = ["PERFORM", "ACCOMPANY"];
+var effectItalicsList = Array.from(defaultItalicsList);
+
+// load custom effect list if it exists
+function loadEffectList() {
+  let customEffectList = $('#inputBoldWords').prop('value');
+  if (customEffectList) {
+    customEffectList = customEffectList.toUpperCase();
+    customEffectList = customEffectList.split(",").map(x => x.trim());
+    customEffectList = customEffectList.filter(effect => effect != "");
+  } else {
+    customEffectList = [];
+  }
+  // reset the lists
+  let newBoldList = new Set(defaultBoldList);
+  let newItalicsList = new Set(defaultItalicsList);
+  // add new elements
+  customEffectList.forEach((effect) => {
+    newBoldList.add(effect);
+    newItalicsList.add(effect);
+  });
+  // change back to arrays
+  effectBoldList = Array.from(newBoldList);
+  effectItalicsList = Array.from(newItalicsList);
+}
 
 
 /*
@@ -580,7 +608,7 @@ function parseAndDrawCardEffectBlock(block, index) {
     labelWord = 'REACTION:';
   }
 
-  // If it's a POWER: or REACTION:, draw that label and then prepare the rest of the block for being indented 
+  // If it's a POWER: or REACTION:, draw that label and then prepare the rest of the block for being indented
   if (isIndentBlock) {
     // Draw POWER:
     ctx.fillStyle = colorBlack;
@@ -638,7 +666,16 @@ function parseAndDrawCardEffectBlock(block, index) {
   blockString = blockString.replaceAll('-', '–');
 
   // Extract all the words
-  let words = blockString.split(' ');
+  // add special processing for spaces after numbers
+  let words = blockString.split(' ').flatMap((word) => {
+    let newWord = word;
+    // double count the word afterwards
+    if (word.indexOf('\xa0') != -1) {
+      newWord = word.split('\xa0');
+      newWord[0] = word
+    }
+    return newWord;
+  });
 
   // Analyze and draw each 'word' (including special phrases as 1 word...U.u)
   words.forEach((word, index) => {
@@ -670,6 +707,12 @@ function parseAndDrawCardEffectBlock(block, index) {
         currentOffsetX = currentIndentX;
         wrapped = true;
       }
+
+      // remove double counted word since we already calculated if we need to go to the next line
+      if (wordString.indexOf('\xa0') != -1) {
+        wordString = wordString.split('\xa0')[0];
+        wordWidth = ctx.measureText(wordString).width;
+      }
       // Determine string to draw
       let stringToDraw = '';
       // Check if there's a punctuation mark at the end of a bold/italicized word
@@ -683,40 +726,22 @@ function parseAndDrawCardEffectBlock(block, index) {
       if (wrapped == false && thisIndex > 0) {
         // If the line did not wrap and it's not the first word of the block, draw the word with a space
         currentOffsetX += spaceWidth;
-        stringToDraw = wordString;
-        // Draw the string
-        ctx.fillText(stringToDraw, currentOffsetX, currentOffsetY);
-        // If there was ending punctuation after a bold/italicized word, draw that now
-        if (endingPunctuation != '') {
-          // Get width of word without ending punctuation
-          let mainWordWidth = ctx.measureText(stringToDraw).width;
-          // Set the font styles to effect text default
-          ctx.font = effectFontWeight + ' ' + 'normal' + ' ' + effectFontSize + 'px ' + effectFontFamily;
-          // Draw the punctuation
-          let drawX = currentOffsetX + mainWordWidth;
-          ctx.fillText(endingPunctuation, drawX, currentOffsetY);
-        }
-        // Prepare currentOffsetX for next word
-        currentOffsetX += wordWidth;
       }
-      else {
-        // If the line wrapped (or if it was the first word in the whole block), draw the word with no space
-        stringToDraw = wordString;
-        // Draw the string
-        ctx.fillText(stringToDraw, currentOffsetX, currentOffsetY);
-        // If there was ending punctuation after a bold/italicized word, draw that now
-        if (endingPunctuation != '') {
-          // Get width of word without ending punctuation
-          let mainWordWidth = ctx.measureText(stringToDraw).width;
-          // Set the font styles to effect text default
-          ctx.font = effectFontWeight + ' ' + 'normal' + ' ' + effectFontSize + 'px ' + effectFontFamily;
-          // Draw the punctuation
-          let drawX = currentOffsetX + mainWordWidth;
-          ctx.fillText(endingPunctuation, drawX, currentOffsetY);
-        }
-        // Prepare currentOffsetX for next word
-        currentOffsetX += wordWidth;
+      stringToDraw = wordString;
+      // Draw the string
+      ctx.fillText(stringToDraw, currentOffsetX, currentOffsetY);
+      // If there was ending punctuation after a bold/italicized word, draw that now
+      if (endingPunctuation != '') {
+        // Get width of word without ending punctuation
+        let mainWordWidth = ctx.measureText(stringToDraw).width;
+        // Set the font styles to effect text default
+        ctx.font = effectFontWeight + ' ' + 'normal' + ' ' + effectFontSize + 'px ' + effectFontFamily;
+        // Draw the punctuation
+        let drawX = currentOffsetX + mainWordWidth;
+        ctx.fillText(endingPunctuation, drawX, currentOffsetY);
       }
+      // Prepare currentOffsetX for next word
+      currentOffsetX += wordWidth;
 
       // Increase the index (only necessary for multi-word phrases)
       thisIndex++;

@@ -930,7 +930,16 @@ function parseAndDrawCardEffectBlock(block, index) {
   blockString = blockString.replaceAll('-', '–');
 
   // Extract all the words
-  let words = blockString.split(' ');
+  // add special processing for spaces after numbers
+  let words = blockString.split(' ').flatMap((word) => {
+    let newWord = word;
+    // double count the word afterwards
+    if (word.indexOf('\xa0') != -1) {
+      newWord = word.split('\xa0');
+      newWord[0] = word
+    }
+    return newWord;
+  });
 
   // Analyze and draw each 'word' (including special phrases as 1 word...U.u)
   words.forEach((word, index) => {
@@ -962,6 +971,11 @@ function parseAndDrawCardEffectBlock(block, index) {
         currentOffsetX = currentIndentX;
         wrapped = true;
       }
+      // remove double counted word since we already calculated if we need to go to the next line
+      if (wordString.indexOf('\xa0') != -1) {
+        wordString = wordString.split('\xa0')[0];
+        wordWidth = ctx.measureText(wordString).width;
+      }
       // Determine string to draw
       let stringToDraw = '';
       // Check if there's a punctuation mark at the end of a bold/italicized word
@@ -975,40 +989,22 @@ function parseAndDrawCardEffectBlock(block, index) {
       if (wrapped == false && thisIndex > 0) {
         // If the line did not wrap and it's not the first word of the block, draw the word with a space
         currentOffsetX += spaceWidth;
-        stringToDraw = wordString;
-        // Draw the string
-        ctx.fillText(stringToDraw, currentOffsetX, currentOffsetY);
-        // If there was ending punctuation after a bold/italicized word, draw that now
-        if (endingPunctuation != '') {
-          // Get width of word without ending punctuation
-          let mainWordWidth = ctx.measureText(stringToDraw).width;
-          // Set the font styles to effect text default
-          ctx.font = effectFontWeight + ' ' + 'normal' + ' ' + effectFontSize + 'px ' + effectFontFamily;
-          // Draw the punctuation
-          let drawX = currentOffsetX + mainWordWidth;
-          ctx.fillText(endingPunctuation, drawX, currentOffsetY);
-        }
-        // Prepare currentOffsetX for next word
-        currentOffsetX += wordWidth;
       }
-      else {
-        // If the line wrapped (or if it was the first word in the whole block), draw the word with no space
-        stringToDraw = wordString;
-        // Draw the string
-        ctx.fillText(stringToDraw, currentOffsetX, currentOffsetY);
-        // If there was ending punctuation after a bold/italicized word, draw that now
-        if (endingPunctuation != '') {
-          // Get width of word without ending punctuation
-          let mainWordWidth = ctx.measureText(stringToDraw).width;
-          // Set the font styles to effect text default
-          ctx.font = effectFontWeight + ' ' + 'normal' + ' ' + effectFontSize + 'px ' + effectFontFamily;
-          // Draw the punctuation
-          let drawX = currentOffsetX + mainWordWidth;
-          ctx.fillText(endingPunctuation, drawX, currentOffsetY);
-        }
-        // Prepare currentOffsetX for next word
-        currentOffsetX += wordWidth;
+      stringToDraw = wordString;
+      // Draw the string
+      ctx.fillText(stringToDraw, currentOffsetX, currentOffsetY);
+      // If there was ending punctuation after a bold/italicized word, draw that now
+      if (endingPunctuation != '') {
+        // Get width of word without ending punctuation
+        let mainWordWidth = ctx.measureText(stringToDraw).width;
+        // Set the font styles to effect text default
+        ctx.font = effectFontWeight + ' ' + 'normal' + ' ' + effectFontSize + 'px ' + effectFontFamily;
+        // Draw the punctuation
+        let drawX = currentOffsetX + mainWordWidth;
+        ctx.fillText(endingPunctuation, drawX, currentOffsetY);
       }
+      // Prepare currentOffsetX for next word
+      currentOffsetX += wordWidth;
 
       // Increase the index (only necessary for multi-word phrases)
       thisIndex++;
