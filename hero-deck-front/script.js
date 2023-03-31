@@ -90,6 +90,11 @@ $('#parseJsonInputButton').on('click', function () {
   $('#jsonError').text("");
 })
 
+// Output JSON Input button
+$('#outputJsonButton').on('click', function () {
+  outputJSONData();
+})
+
 // Toggle high contrast phase labels
 $('#inputUseHighConstrast').on('input', function () {
   useHighContrastPhaseLabels = this.checked;
@@ -178,9 +183,9 @@ function parseJSONData(data) {
     }
     $('#inputImageScale').val(zoomVal);
   } else {
-    $('#inputImageScale').val(0);
+    $('#inputImageScale').val(100);
   }
-  if('Suddenly' in data) {
+  if('Suddenly' in data && data.Suddenly.toUpperCase() == "TRUE") {
     $('#suddenly')[0].checked = true;
     suddenly = true;
   } else {
@@ -188,6 +193,29 @@ function parseJSONData(data) {
     suddenly = false;
   }
   drawCardCanvas();
+}
+
+function outputJSONData() {
+  var imageURL = "";
+  if (cardArtImage != null) {
+    imageURL = cardArtImage.src;
+  }
+  var outputJSON = `{
+    "Title": ${JSON.stringify($('#inputTitle').val())},
+    "HP": ${JSON.stringify($('#inputHP').val())},
+    "Keywords": ${JSON.stringify($('#inputKeywords').val())},
+    "BoldedTerms": ${JSON.stringify($('#inputBoldWords').val())},
+    "GameText": ${JSON.stringify($('#inputEffect').val())},
+    "GameTextSize": ${JSON.stringify($('#inputEffectTextSize').val())},
+    "Quote": ${JSON.stringify($('#inputQuote').val())},
+    "Attribution": ${JSON.stringify($('#inputAttribution').val())},
+    "ImageURL": ${JSON.stringify(imageURL)},
+    "ImageX": ${JSON.stringify($('#inputImageOffsetX').val())},
+    "ImageY": ${JSON.stringify($('#inputImageOffsetY').val())},
+    "ImageZoom": ${JSON.stringify($('#inputImageScale').val())},
+    "Suddenly": "${JSON.stringify($('#suddenly')[0].checked)}"
+  },`;
+  $('#jsonInput').val(outputJSON);
 }
 
 
