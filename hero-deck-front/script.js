@@ -134,6 +134,11 @@ function parseJSONData(data) {
   } else {
     $('#inputKeywords').val('');
   }
+  if('BoldedTerms' in data) {
+    $('#inputBoldWords').val(data.BoldedTerms);
+  } else {
+    $('#inputBoldWords').val('');
+  }
   if('GameText' in data) {
     $('#inputEffect').val(data.GameText);
   } else {
