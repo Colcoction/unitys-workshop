@@ -1,7 +1,3 @@
-// Establish canvas
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-ctx.save();
 
 // Default canvas preview size
 $(canvasContainer).css({ width: 600 });
@@ -196,8 +192,6 @@ function parseJSONData(data) {
 Effect text values
 ============================================================================
 */
-
-const colorBlack = '#231f20';
 
 // I don't think the high contrast values are actually CYMK... >:|
 

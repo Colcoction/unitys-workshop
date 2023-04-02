@@ -1,0 +1,239 @@
+/*
+Colors:
+
+Black: #231f20
+Dark blue: #0c54a6
+Light blue: #0f76bc
+
+*/
+
+
+
+body {
+  background-color: #0f76bc;
+  background-image: url('./_resources/halftone background 2.png');
+  background-position: top left;
+  background-repeat: repeat-x;
+
+  font-family: 'noto sans', sans-serif;
+  font-size: 16px;
+
+  margin: 0;
+  padding: 20px;
+
+  word-break: break-word;
+}
+
+img {
+  max-width: 100%;
+}
+
+.screenOverlay, .overlayBox {
+  display: none;
+}
+
+.screenOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0000002c;
+  z-index: 100;
+}
+
+.screenOverlayNegativeSpace {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.overlayBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+
+  width: 900px;
+  max-width: 85vw;
+  max-height: 90vh;
+  overflow-y: scroll;
+  box-sizing: border-box;
+
+  background-color: white;
+  border: 4px solid #231f20;
+  box-shadow: -4px -4px #231f20;
+  padding: 20px;
+}
+
+.overlayBox h2 {
+  margin-top: 0;
+  line-height: 1;
+}
+
+.closeButton {
+  float: right;
+}
+
+.overlayBox summary {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.inputGroup summary {
+  margin-top: 5px;
+}
+
+.example {
+  padding: 10px;
+  border: 1px solid #231f20;
+}
+
+#myCanvas, #canvasImage {
+  width: 100%;
+  height: auto;
+}
+
+.rangeSlider {
+  display: inline-block;
+  width: calc(100% - 50px - 10px);
+}
+
+.rangeText {
+  display: inline-block;
+  width: 50px;
+}
+
+h1, h2 {
+  margin-top: 0;
+  font-size: 30px;
+  font-family: 'Boogaloo';
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #fcb024;
+  text-shadow:
+  -2px -2px 0 #231f20,
+  -2px -1px 0 #231f20,
+  -2px 0px 0 #231f20,
+  -2px 1px 0 #231f20,
+  -2px 2px 0 #231f20,
+
+  -1px -2px 0 #231f20,
+  -1px -1px 0 #231f20,
+  -1px 0px 0 #231f20,
+  -1px 1px 0 #231f20,
+  -1px 2px 0 #231f20,
+
+  0px -2px 0 #231f20,
+  0px -1px 0 #231f20,
+  0px 0px 0 #231f20,
+  0px 1px 0 #231f20,
+  0px 2px 0 #231f20,
+
+  1px -2px 0 #231f20,
+  1px -1px 0 #231f20,
+  1px 0px 0 #231f20,
+  1px 1px 0 #231f20,
+  1px 2px 0 #231f20,
+
+  2px -2px 0 #231f20,
+  2px -1px 0 #231f20,
+  2px 0px 0 #231f20,
+  2px 1px 0 #231f20,
+  2px 2px 0 #231f20
+  ;
+}
+
+h2 {
+  font-size: 24px;
+  margin: 25px 0 15px;
+}
+
+h2:first-child {
+  margin-top: 15px;
+}
+
+.layout {
+  /* display: flex;
+  flex-flow: row wrap; */
+  display: grid;
+  grid-template-columns: 215px 310px auto;
+  grid-template-rows: 63px auto;
+  grid-gap: 10px 20px;
+}
+.layout.deckBack {
+  grid-template-columns: 250px 250px auto;
+}
+.layout > div:nth-child(1) {
+  grid-row: 1;
+  grid-column: 1 / span 2;
+}
+.layout > div:nth-child(2) {
+  grid-row: 2;
+  grid-column: 1;
+}
+.layout > div:nth-child(3) {
+  grid-row: 2;
+  grid-column: 2;
+}
+.layout > div:nth-child(4) {
+  grid-row: 1 / span 3;
+  grid-column: 3;
+}
+.layout > div:nth-child(5) {
+  grid-row: 3;
+  grid-column: 1 / span 2;
+}
+
+label, input, textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+label {
+  margin-bottom: 5px;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.inputGroup {
+  background-color: white;
+  border: 4px solid #231f20;
+  box-shadow: -4px -4px #231f20;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.checkboxGroup input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+/* .checkboxGroup label {
+  margin-bottom: 0;
+} */
+
+
+
+
+/* #myCanvas {
+  display: none;
+} */
+
+/* #canvasImage {
+  display: none;
+} */
+
+
+

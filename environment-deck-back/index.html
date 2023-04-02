@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Environment Deck Front</title>
+  <title>Environment Deck Back</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="../style.css">
@@ -113,7 +113,7 @@
 
   </div>
 
-  <h1>Environment Deck Front</h1>
+  <h1>Environment Deck Back</h1>
 
   <div class="layout">
     <div class="inputGroup">
@@ -139,10 +139,6 @@
         <input type="text" class="contentInput" id="inputTitle">
       </div>
       <div class="inputGroup">
-        <label for="inputHP">HP</label>
-        <input type="text" class="contentInput" id="inputHP">
-      </div>
-      <div class="inputGroup">
         <label for="inputImageFile">Art</label>
         <input type="file" accept="image/*" class="contentInput" id="inputImageFile">
         <!-- These ranges all represent percents, ex: 50 = 50% or times 0.5 -->
@@ -156,41 +152,9 @@
       </div>
     </div>
     <div>
-      <div class="inputGroup">
-        <label for="inputKeywords">Keywords</label>
-        <input type="text" class="contentInput" id="inputKeywords">
-        <div class="checkboxGroup" style="margin-top: 10px;">
-          <input type="checkbox" class="contentInput" id="suddenly">
-          <label for="suddenly"> Suddenly toggle </label>
-        </div>
-      </div>
-      <div class="inputGroup">
-        <label for="inputEffect">Game Text</label>
-        <textarea rows="8" class="contentInput" id="inputEffect"></textarea>
-        <label for="inputEffectTextSize" style="margin-top: 10px;">Size</label>
-        <input type="range" class="contentInput" id="inputEffectTextSize" min="80" max="100" value="100">
-        <div class="checkboxGroup" style="margin-top: 10px;">
-          <input type="checkbox" class="contentInput" id="inputUseHighConstrast" checked=”true”>
-          <label for="inputUseHighConstrast">Use higher contrast phase labels</label>
-        </div>
-      </div>
-      <div class="inputGroup">
-        <label for="inputQuote">Quote</label>
-        <textarea rows="3" class="contentInput" id="inputQuote"></textarea>
-        <label for="inputAttribution" style="margin-top: 10px;">Attribution</label>
-        <input type="text" class="contentInput" id="inputAttribution">
-      </div>
-    </div>
-    <div>
       <div id="canvasContainer">
         <canvas id="myCanvas" width="1039" height="744"></canvas>
       </div>
-    </div>
-    <div class="inputGroup">
-      <label for="jsonInput">JSON Input</label>
-      <div id="jsonError" class="errorMessage"></div>
-      <textarea rows="10" class="contentInput" id="jsonInput"></textarea>
-      <button style="margin-top: 10px;" id="parseJsonInputButton">Parse JSON</button>
     </div>
   </div>
 
