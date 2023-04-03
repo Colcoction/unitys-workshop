@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Environment Deck Back</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../style.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,350;0,370;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Other fonts -->
+  <link href="https://fonts.cdnfonts.com/css/unmasked-bb" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/avengeance-mightiest-avenger" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Ensure that fonts are loaded -->
+  <div>
+    <span style="font-family: 'Boogaloo'"></span>
+    <span style="font-family: 'Work Sans'"></span>
+    <span style="font-family: 'Unmasked BB'; font-style: italic"></span>
+    <span style="font-family: 'Avengeance Mightiest Avenger';"></span>
+    <span style="font-family: 'Noto Sans'"></span>
+    <span style="font-family: 'Noto Sans'; font-style: italic"></span>
+    <span style="font-family: 'Noto Sans'; font-weight: bold"></span>
+    <span style="font-family: 'Noto Sans'; font-weight: bold; font-style: italic"></span>
+  </div>
+
+  <div class="screenOverlay">
+    <div class="screenOverlayNegativeSpace"></div>
+
+    <div class="overlayBox documentation">
+      <button class="closeButton">Close</button>
+      <h2>Documentation</h2>
+
+      <p>Current Version: 1.1.1</p>
+
+      <details>
+        <summary>Current Limitations</summary>
+        <ul>
+          <li>This app only uses free fonts, which means the text will never look exactly the same as official cards.</li>
+          <li>There is no manual formatting to do things like make certain words bold or wrap lines at certain points.</li>
+          <li>There is no way to add custom icons.</li>
+          <li>There is no way to add an (H) or (Flip) symbol.</li>
+          <li>The app may have issues on some devices or browsers, especially mobile.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Usage Tips</summary>
+        <ul>
+          <li>In general, the app has been coded to take input in a plain text format and convert it to the desired output. The intention is to make it easy to copy and paste designs from a simple text document, without having to make many changes to how you would naturally format things.</li>
+          <li>When you download the image, it will be at a resolution fit for printing at 300dpi.</li>
+          <li>In general, special formatting detection is not case-sensitive. (Ex: "Power:" and "POWER:" are both valid.)</li>
+          <li>To make the arrow bullet points on the Hero Character Card Back, use ">" or "-".</li>
+          <li>To make phase sections, you can use "Start Phase: " or "Start Phase" or "[Start Phase]". You can put the corresponding game text on the same line as the label or on the line below the label.</li>
+          <li>
+            <details>
+              <summary>JSON Input</summary>
+              <p>The JSON Input field takes in standard JSON input, although to assist in copying from a large list of JSON objects, trailing commas are trimmed.</p>
+              <p>This feature is intended to have some ability to "save" card layouts for easy editing in the future. (In the future, there may be an Export to JSON option!)</p>
+              <p>The following fields are parsed by the application:</p>
+              <ul>
+                <li>Title: The name of the card</li>
+                <li>Keywords: Keywords like Item, Ongoing</li>
+                <li>HP: Hit point value, if anyGameText: The text in the game text box field of the card</li>
+                <li>Quote: Text to go in the quote box</li>
+                <li>Attribution: Quote attribution</li>
+                <li>ImageURL: External URL to retrieve a card image from</li>
+                <li>ImageX: X position adjustment for card image (negative goes left, positive right) (from -50 to 50)</li>
+                <li>ImageY: Y position adjustment for card image (negative goes up, positive goes down) (from -50 to 50)</li>
+                <li>GameTextSize: scaling of text in the GameText box (from 80 to 100)</li>
+                <li>ImageZoom: How much to zoom in on the card image (from 100 to 500)</li>
+                <li>Suddenly: toggle for if card should be rendered using the SUDDENLY template (any value works, delete field if you don't want suddenly)</li>
+              </ul>
+              <p>I recommend using https://opensheet.elk.sh to convert a google spreadsheet into a JSON file that will be easy to copy/paste into the application.</p>
+              <p>An example:</p>
+              <ul>
+                <li>https://docs.google.com/spreadsheets/d/1HwPeSsrAI2GYZuSJuTjFhAxM5Dtlbl_jBoBMk5EfLiA/edit#gid=1672119651</li>
+                <li>https://opensheet.elk.sh/1HwPeSsrAI2GYZuSJuTjFhAxM5Dtlbl_jBoBMk5EfLiA/1</li>
+                <li>https://jsonformatter.org/json-pretty-print (to convert it into an easy to copy layout, any JSON prettifier works)</li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Credits</summary>
+        <p>This app was designed and coded by Colin (they/them), a.k.a. Colcoction.</p>
+        <p>Additional features were contributed by TheWyrmSuperior.</p>
+        <p>The card gallery uses card details transcribed by BartKF.</p>
+        <p>The fonts in use are as follows:</p>
+        <ul>
+          <li>Title and keywords: Boogaloo</li>
+          <li>Normal game text: Noto Sans</li>
+          <li>Power and reaction labels: Work Sans</li>
+          <li>Phase labels: Avengeance Mightiest Avenger</li>
+          <li>Quote and attribution: Unmasked BB</li>
+        </ul>
+        <p>Special thanks to Angille and Dean/Meat for their support in the early stages of this project.</p>
+        <p>This project was partially inspired by <a href="https://spiritforge.app">spiritforge.app</a>.</p>
+      </details>
+
+    </div>
+
+  </div>
+
+  <h1>Environment Deck Back</h1>
+
+  <div class="layout">
+    <div class="inputGroup">
+      <div style="float: left;">
+        <a href="/index.html">Home</a>
+        <button class="infoButton">Documentation</button>
+      </div>
+      <div style="float: right;">
+        <button id="downloadButton">Download PNG</button>
+      </div>
+    </div>
+    <div>
+      <div class="inputGroup">
+        <label for="inputImageOffsetY">Card Preview Size</label>
+        <!-- Value = CSS width of canvas -->
+        <!-- <input type="range" class="" id="inputCardPreviewSize" min="300" max="600" value="400"> -->
+        <button class="previewSizeButton">Small</button>
+        <button class="previewSizeButton">Medium</button>
+        <button class="previewSizeButton">Large</button>
+      </div>
+      <div class="inputGroup">
+        <label for="inputTitle">Title</label>
+        <input type="text" class="contentInput" id="inputTitle">
+      </div>
+      <div class="inputGroup">
+        <label for="inputImageFile">Art</label>
+        <input type="file" accept="image/*" class="contentInput" id="inputImageFile">
+        <!-- These ranges all represent percents, ex: 50 = 50% or times 0.5 -->
+        <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
+        <input type="range" class="contentInput" id="inputImageOffsetX" min="-50" max="50" value="0">
+        <label for="inputImageOffsetY">Y Position</label>
+        <input type="range" class="contentInput" id="inputImageOffsetY" min="-50" max="50" value="0">
+        <label for="inputImageScale">Zoom</label>
+        <input type="range" class="contentInput" id="inputImageScale" min="50" max="500" value="100">
+        <button style="margin-top: 10px;" id="imageAdjustmentResetButton">Reset Adjustments</button>
+      </div>
+    </div>
+    <div>
+      <div id="canvasContainer">
+        <canvas id="myCanvas" width="1039" height="744"></canvas>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Scripts -->
+
+  <!-- jQuery -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+  <!-- Common script -->
+  <script src="../common-before.js"></script>
+  <!-- Script specific to this page -->
+  <script src="./script.js"></script>
+  <!-- Common script -->
+  <script src="../common-after.js"></script>
+
+</body>
+
+</html>
