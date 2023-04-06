@@ -1,8 +1,3 @@
-// Establish canvas
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-ctx.save();
-
 // Default canvas preview size
 $(canvasContainer).css({ width: 400 });
 
@@ -229,8 +224,6 @@ function outputJSONData() {
 Effect text values
 ============================================================================
 */
-
-const colorBlack = '#231f20';
 
 // I don't think the high contrast values are actually CYMK... >:|
 
@@ -933,29 +926,33 @@ function parseAndDrawCardEffectBlock(block, index) {
 
   // First, identify special word strings and replace their spaces with underscores
   effectBoldList.forEach((phrase) => {
+    // find the phrase standalone (not part of another word)
+    let phraseRegex = new RegExp("\\W" + phrase + "\\b");
     // Make an all-caps copy of the block string
     let testString = blockString.toUpperCase();
     // Find the position of each instance of this phrase in the string
-    let position = testString.indexOf(phrase);
+    let position = regexIndexOf(testString, phraseRegex, 0);
     while (position !== -1) {
       // Replace this instance of this phrase in the real block string with the all-caps + underscore format for detecting later
-      let thisSubString = blockString.substr(position, phrase.length);
+      let thisSubString = blockString.substr(position + 1, phrase.length);
       blockString = blockString.replace(thisSubString, phrase.replaceAll(' ', '_'));
       // Repeat if there's another instance of this phrase
-      position = testString.indexOf(phrase, position + 1);
+      position = regexIndexOf(testString, phraseRegex, position + 1);
     }
   })
   effectItalicsList.forEach((phrase) => {
+    // find the phrase standalone (not part of another word)
+    let phraseRegex = new RegExp("\\W" + phrase + "\\b");
     // Make an all-caps copy of the block string
     let testString = blockString.toUpperCase();
     // Find the position of each instance of this phrase in the string
-    let position = testString.indexOf(phrase);
+    let position = regexIndexOf(testString, phraseRegex, 0);
     while (position !== -1) {
       // Replace this instance of this phrase in the real block string with the all-caps + underscore format for detecting later
-      let thisSubString = blockString.substr(position, phrase.length);
+      let thisSubString = blockString.substr(position + 1, phrase.length);
       blockString = blockString.replace(thisSubString, phrase.replaceAll(' ', '_'));
       // Repeat if there's another instance of this phrase
-      position = testString.indexOf(phrase, position + 1);
+      position = regexIndexOf(testString, phraseRegex, position + 1);
     }
   })
 
@@ -964,7 +961,7 @@ function parseAndDrawCardEffectBlock(block, index) {
 
   // Extract all the words
   // add special processing for spaces after numbers
-  let words = blockString.split(' ').flatMap((word) => {
+  let words = blockString.split(/[– ]/).flatMap((word) => {
     let newWord = word;
     // double count the word afterwards
     if (word.indexOf('\xa0') != -1) {
