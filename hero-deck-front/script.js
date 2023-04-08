@@ -1,8 +1,3 @@
-// Establish canvas
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-ctx.save();
-
 // Default canvas preview size
 $(canvasContainer).css({ width: 400 });
 
@@ -229,21 +224,6 @@ function outputJSONData() {
 Effect text values
 ============================================================================
 */
-
-const colorBlack = '#231f20';
-
-// I don't think the high contrast values are actually CYMK... >:|
-
-const colorStartPhaseOriginal = '#3fae49';
-const colorStartPhaseHighContrast = '#4bc244';
-const colorPlayPhaseOriginal = '#fff200';
-const colorPlayPhaseHighContrast = '#fff72f';
-const colorPowerPhaseOriginal = '#79509e';
-const colorPowerPhaseHighContrast = '#a76fb9';
-const colorDrawPhaseOriginal = '#00aeef';
-const colorDrawPhaseHighContrast = '#3db7e2';
-const colorEndPhaseOriginal = '#ee2d35';
-const colorEndPhaseHighContrast = '#f34747';
 
 let useHighContrastPhaseLabels = true;
 let suddenly = false;

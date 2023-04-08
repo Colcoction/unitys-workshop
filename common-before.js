@@ -77,3 +77,22 @@ $('.closeButton, .screenOverlayNegativeSpace').on('click', function (e) {
     // Make screen overlay and info boxes invisible
     $('.screenOverlay, .overlayBox').css({ 'display': 'none' });
 })
+
+
+/*
+============================================================================
+Shared effect text values
+============================================================================
+*/
+// I don't think the high contrast values are actually CYMK... >:|
+
+const colorStartPhaseOriginal = '#3fae49';
+const colorStartPhaseHighContrast = '#4bc244';
+const colorPlayPhaseOriginal = '#fff200';
+const colorPlayPhaseHighContrast = '#fff72f';
+const colorPowerPhaseOriginal = '#79509e';
+const colorPowerPhaseHighContrast = '#a76fb9';
+const colorDrawPhaseOriginal = '#00aeef';
+const colorDrawPhaseHighContrast = '#3db7e2';
+const colorEndPhaseOriginal = '#ee2d35';
+const colorEndPhaseHighContrast = '#f34747';
