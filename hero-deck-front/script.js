@@ -1,25 +1,3 @@
-// Default canvas preview size
-$(canvasContainer).css({ width: 400 });
-
-// Resize canvas preview size upon user input (old range method)
-// $('#inputCardPreviewSize').on('input', function(e) {
-//   let previewWidth = e.target.value;
-//   $('#canvasContainer').css({width: previewWidth});
-// })
-
-// Canvas preview size button
-$('.previewSizeButton').on('click', function (e) {
-  // Get the button's text (the name of the size)
-  let sizeName = e.target.textContent;
-  // Based on name, determine new size
-  let sizeValue = 0;
-  if (sizeName === 'Small') { sizeValue = 300; }
-  else if (sizeName === 'Medium') { sizeValue = 400; }
-  else if (sizeName === 'Large') { sizeValue = 500; }
-  // Apply the new display size of the canvas
-  $('#canvasContainer').css({ width: sizeValue });
-})
-
 // Download button
 $('#downloadButton').on('click', function () {
   let link = document.createElement('a');
