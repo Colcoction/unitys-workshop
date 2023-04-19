@@ -19,9 +19,9 @@ const canvasSizes = new Map([
         [LARGE,   450],
     ])],
     [HORIZONTAL, new Map([
-        [SMALL,   600],
-        [MEDIUM,  800],
-        [LARGE,  1000],
+        [SMALL,   400],
+        [MEDIUM,  500],
+        [LARGE,  600],
     ])]
 ]);
 // Colors for card effects
