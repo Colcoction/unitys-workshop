@@ -25,7 +25,6 @@ const canvasSizes = new Map([
     ])]
 ]);
 // Colors for card effects
-// I don't think the high contrast values are actually CYMK... >:|
 const colorBlack = '#231f20';
 const colorStartPhaseOriginal = '#3fae49';
 const colorStartPhaseHighContrast = '#4bc244';
