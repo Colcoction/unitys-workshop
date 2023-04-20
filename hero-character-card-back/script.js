@@ -55,8 +55,6 @@ for (let i = 0; i < imagesToPreload.length; i++) {
 }
 
 
-// Needs Attention
-
 // Save the uploaded image so it doesn't have to load each time
 var cardArtImage;
 $('#inputImageFile').on('input', function (e) {
