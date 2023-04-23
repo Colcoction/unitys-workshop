@@ -1,9 +1,12 @@
 /*
 ============================================================================
-Global variables
+Static global variables
 ============================================================================
 */
-// Orientations. This should be declared in the page's script configurations.
+// Card forms. This should be declared in the page's script configurations as CARD_FORM.
+const DECK = "deck";
+const CHARACTER = "character";
+// Orientations. This should be declared in the page's script configurations as ORIENTATION.
 const VERTICAL = "vertical";
 const HORIZONTAL = "horizontal";
 // Card preview sizes. These should match the text content of buttons on the page.
@@ -11,7 +14,7 @@ const SMALL = "Small";
 const MEDIUM = "Medium";
 const LARGE = "Large";
 const CARD_PREVIEW_SIZES = [SMALL, MEDIUM, LARGE];
-/** Maps canvas container widths based on user-provided sizes (small, med, large) and card orientation. Used in {@link setCanvasWidth()}. */
+// Maps canvas container widths based on user-provided sizes (small, med, large) and card orientation. Used in {@link setCanvasWidth()}.
 const canvasSizes = new Map([
     [VERTICAL, new Map([
         [SMALL,   250],
@@ -22,9 +25,52 @@ const canvasSizes = new Map([
         [SMALL,   400],
         [MEDIUM,  500],
         [LARGE,  600],
-    ])]
+    ])],
 ]);
+// Block types when parsing card text
+const PHASE_BLOCK = "phase";
+const INDENT_BLOCK = "indent";
+const SIMPLE_BLOCK = "simple";
+const BLOCK_TYPES = [PHASE_BLOCK, INDENT_BLOCK, SIMPLE_BLOCK];
+// Phase names
+const START_PHASE = "start";
+const PLAY_PHASE = "play";
+const POWER_PHASE = "power";
+const DRAW_PHASE = "draw";
+const END_PHASE = "end";
+const PHASE_LABELS = [START_PHASE, PLAY_PHASE, POWER_PHASE, DRAW_PHASE, END_PHASE];
+// Phase color contrasts
+const HIGH_CONTRAST = "high";
+const ORIGINAL_CONTRAST = "original"
+// Gross RegeEx for identifying phase blocks
+const _phaseSymbols = "[.,!;:<>[\\](){}\\-|]"; // "\" and "]" need to be escaped inside regex brackets
+const PHASE_REGEX = new RegExp(`^${_phaseSymbols}* ?(${PHASE_LABELS.join("|")}) phase ?${_phaseSymbols}? *`);
+const PHASE_INDEX = 1; // the position of the phase word that is identified in PHASE_REGEX
+
+// Map of phases to various rendering strings
+const PHASE_TEXT_MAP = new Map([
+    [START_PHASE, "Start Phase"],
+    [PLAY_PHASE, "Play Phase"],
+    [POWER_PHASE, "Power Phase"],
+    [DRAW_PHASE, "Draw Phase"],
+    [END_PHASE, "End Phase"],
+]);
+const PHASE_ICON_MAP = new Map([
+    [START_PHASE, "Start Phase Icon"],
+    [PLAY_PHASE, "Play Phase Icon"],
+    [POWER_PHASE, "Power Phase Icon"],
+    [DRAW_PHASE, "Draw Phase Icon"],
+    [END_PHASE, "End Phase Icon"],
+]);
+// Labels for indented effects (power, reaction) and (less gross) regex
+const POWER_LABEL = "power:";
+const REACTION_LABEL = "reaction:";
+const INDENT_LABELS = [POWER_LABEL, REACTION_LABEL];
+const INDENT_REGEX = new RegExp(`^(${INDENT_LABELS.join("|")})`);
+const INDENT_INDEX = 1;
 // Colors for card effects
+//  TODO: Once colors everywhere are refactored to use PHASE_COLOR_MAP, the individually-set
+//  colors can be removed
 const colorBlack = '#231f20';
 const colorStartPhaseOriginal = '#3fae49';
 const colorStartPhaseHighContrast = '#4bc244';
@@ -36,7 +82,31 @@ const colorDrawPhaseOriginal = '#00aeef';
 const colorDrawPhaseHighContrast = '#3db7e2';
 const colorEndPhaseOriginal = '#ee2d35';
 const colorEndPhaseHighContrast = '#f34747';
-
+const PHASE_COLOR_MAP = new Map([
+    [ORIGINAL_CONTRAST, new Map([
+        [START_PHASE, "#3fae49"],
+        [PLAY_PHASE, "#fff200"],
+        [POWER_PHASE, "#79509e"],
+        [DRAW_PHASE, "#00aeef"],
+        [END_PHASE, "#ee2d35"],
+    ])],
+    [HIGH_CONTRAST, new Map([
+        [START_PHASE, "#4bc244"],
+        [PLAY_PHASE, "#fff72f"],
+        [POWER_PHASE, "#a76fb9"],
+        [DRAW_PHASE, "#3db7e2"],
+        [END_PHASE, "#f34747"],
+    ])],
+]);
+// Map of phase text properties
+// PHASE_FONT_SIZE_MAP is declared at the bottom of the page because it depends on canvas size
+const PHASE_FONT_FAMILY = 'Avengeance Mightiest Avenger';
+const PHASE_SIZE_FACTOR = 1;
+// Map of indented label properties
+const INDENT_LABEL_FONT_FAMILY = "Work Sans";
+const INDENT_LABEL_SIZE_FACTOR = 1.08;
+// Line joins (we only use miter)
+const MITER = "miter";
 
 /*
 ============================================================================
@@ -148,3 +218,21 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 ctx.save();
 setCanvasWidth(MEDIUM);
+
+/*
+============================================================================
+Initialization-Dependent Global Variables
+============================================================================
+*/
+const PHASE_FONT_SIZE_MAP = new Map([
+    [DECK, new Map([
+        [VERTICAL, pw(4.1)],
+        [HORIZONTAL, ph(4.1)],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, pw(4)],
+        [HORIZONTAL, ph(4)],
+    ])],
+]);
+
+const effectPhaseFontSize = PHASE_FONT_SIZE_MAP.get(CARD_FORM).get(ORIENTATION);

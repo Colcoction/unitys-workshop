@@ -310,7 +310,6 @@ const effectPowerFontFamily = 'Work Sans'; // Font family for POWER: and REACTIO
 const effectPowerFontSizeFactor = 1.08; // POWER: will be drawn at effectFontSize times this value
 const effectPhaseFontFamily = 'Avengeance Mightiest Avenger';
 const effectPhaseFontSizeFactor = 1;
-const effectPhaseFontSize = pw(4);
 
 // Space between words
 const spaceWidthFactor = 0.26;

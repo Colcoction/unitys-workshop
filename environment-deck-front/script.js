@@ -182,7 +182,6 @@ const effectPowerFontFamily = 'Work Sans'; // Font family for POWER: and REACTIO
 const effectPowerFontSizeFactor = 1.08; // POWER: will be drawn at effectFontSize times this value
 const effectPhaseFontFamily = 'Avengeance Mightiest Avenger';
 const effectPhaseFontSizeFactor = 1;
-const effectPhaseFontSize = ph(4.1);
 
 // Space between words
 const spaceWidthFactor = 0.26;
@@ -728,7 +727,7 @@ function parseAndDrawCardEffectBlock(block, index) {
 
     // Style and draw the text after the icon
     // Set basic font properties
-    ctx.font = '400 ' + effectPhaseFontSize + 'px ' + effectPhaseFontFamily;
+    ctx.font = '400 ' + effectPhaseFontSize + 'px ' + PHASE_FONT_FAMILY;
     // Get phase color
     let phaseColor = '';
     if (useHighContrastPhaseLabels) {

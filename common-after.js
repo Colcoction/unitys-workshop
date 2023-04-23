@@ -301,7 +301,6 @@ function coordinatesToPathShape(coordinates) {
   };
 }
 
-
 function drawArtInCroppedArea(areaName) {
 
   // Get image area information
@@ -372,8 +371,323 @@ function drawArtInCroppedArea(areaName) {
   ctx.save();
 }
 
+/** Parses a line of text inside a card's body, returning an array of blocks to draw when rendering that card. */
+function parseBodyText(originalLine) {
+  // We may butcher the string a bit. In case the caller needs to reuse that string (maybe unnecessary), we perform
+  // a deep copy. ECMAScript string-copying implementations vary, with Chrome being the most well-known offender
+  // (see https://bugs.chromium.org/p/v8/issues/detail?id=2869), but this method should work on all browsers.
+  let line = `${originalLine}`;
 
+  // Multiple blocks may be generated during the parsing process. We save them here.
+  const blocks = [];
 
+  // First, check for the presence of a phase block at the start of the string using a regular expression.
+  // If we find one, extract it out before proceeding with text parsing
+  const phaseRegexResult = PHASE_REGEX.exec(line.toLowerCase());
+  if (phaseRegexResult) {
+    // The result should always contain an entry in PHASE_LABELS, but we check just in case.
+    const phaseLabel = phaseRegexResult[PHASE_INDEX]
+    if (!PHASE_LABELS.includes(phaseLabel)) {
+      throw new Error(`The phase regex identified a phase, but it wasn't in the array of known phase labels. This should never happen. Acceptable labels: [${PHASE_LABELS.join(", ")}]; Identified: ${phaseLabel}`);
+    }
+    blocks.push({
+      type: PHASE_BLOCK,
+      label: phaseLabel,
+    });
+    // Remove the contents of the phase string from the line.
+    line = line.substring(phaseRegexResult[0].length);
+  }
 
+  // Check if there is anything else to render. If not, only the phase block will be returned. 
+  if (line.length == 0) {
+    return blocks;
+  }
 
+  // Assume that additional whitespace at the start of a string is for custom formatting,
+  // but remove excess whitespace at the end of a string. 
+  line = line.trimEnd();
 
+  // Check if what remains is an indented block. If this parser were propertly opinionated, it would
+  // not allow powers and reactions after phase labels. But who knows if that will be useful at some
+  // point later on?
+  const indentRegexResult = INDENT_REGEX.exec(line.toLowerCase());
+  if (indentRegexResult) {
+    // The result should always contain an entry in INDENT_LABELS, but we check just in case
+    const indentLabel = indentRegexResult[INDENT_INDEX];
+    if (!INDENT_LABELS.includes(indentLabel)) {
+      throw new Error(`The indent regex identified an indentation label, but it wasn't in the array of known indent labels. This should never happen. Acceptable labels: [${INDENT_LABELS.join(", ")}; Identified: ${indentLabel}]`);
+    }
+    // Remove the label from the content before adding it to the block. Then return all blocks,
+    // because simple blocks can't follow indented blocks.
+    blocks.push({
+      type: INDENT_BLOCK,
+      label: indentLabel,
+      content: line.substring(Math.min(indentRegexResult[0].length + 1, line.length)),
+    });
+    return blocks;
+  }
+
+  // If there is no indentated block, the remainder of the line is a simple block.
+  blocks.push({
+    type: SIMPLE_BLOCK,
+    content: line,
+  })
+  return blocks;
+}
+
+/**
+ * Draws the body of a card.
+ * TODO: As the name implies, this is only set up for vertical cards from decks (neither character cards nor environment decks).
+ *       This should be integrated into cards of other orientations and forms... eventually.
+ */
+function drawCardBodyVerticalDeck() {
+  // Initialize positioning values
+  currentOffsetX = effectStartX;
+  currentOffsetY = effectStartY;
+
+  // Get the text the user entered into the textarea
+  let inputValue = $('#inputEffect').prop('value');
+
+  // Get and apply the text scale the user chose
+  effectFontScale = $('#inputEffectTextSize').prop('value') / 100; // Result is between 0 and 1
+  effectFontSize = effectBaseFontSize * effectFontScale;
+  lineHeight = effectBaseLineHeight * effectFontScale;
+  spaceWidth = effectFontSize * spaceWidthFactor;
+
+  // Split at line returns, then iterate through the array to build an ordered list of blocks
+  let parsedBlocks = inputValue
+          .split("\n")
+          .map(line => parseBodyText(line))
+          .flat();
+  parsedBlocks.forEach((block, index) => {
+    drawBlock(block, index == 0);
+  });
+}
+
+/** Draws a single block from the array of parsed blocks. */
+function drawBlock(block, isFirstBlock) {
+  // Reset indentation to default
+  currentIndentX = effectStartX;
+
+  if (block.type === PHASE_BLOCK) {
+    drawPhaseBlock(block.label, isFirstBlock);
+  } else if (block.type === INDENT_BLOCK) {
+    drawIndentBlock(block.label.toUpperCase(), block.content, isFirstBlock);
+  } else if (block.type === SIMPLE_BLOCK) {
+    drawSimpleBlock(block.content, isFirstBlock);
+  } else {
+    throw new Error(`The frontend attempting to draw a block of a type it did not recognize. Acceptable types: [${BLOCK_TYPES.join(", ")}]; Identified: ${block.type}`);
+  }
+}
+
+/**
+ * Draws the phase label on a card. Not to be confused with the Draw Phase, an actual concept in SotM.
+ * This function will draw any phase. Words are hard.
+ */
+function drawPhaseBlock(phase, isFirstBlock) {
+  // Get some information specific to this phase
+  const phaseColor = PHASE_COLOR_MAP.get(useHighContrastPhaseLabels ? HIGH_CONTRAST : ORIGINAL_CONTRAST).get(phase);
+  const phaseText = PHASE_TEXT_MAP.get(phase);
+
+  // Adjust line height based on whether this is the first block
+  currentOffsetY = isFirstBlock ? effectStartY : currentOffsetY - lineHeight + lineHeight * prePhaseLineHeightFactor;
+
+  // Get the phase icon to use
+  const phaseIconKey = PHASE_ICON_MAP.get(phase) + (useHighContrastPhaseLabels ? " High Contrast" : "");
+  const phaseIcon = loadedGraphics[phaseIconKey];
+  if (!phaseIcon) {
+    throw new Error(`Failed to get a phase icon: {phase: ${phase}, icon: ${phaseIcon}}.`)
+  }
+
+  // Draw the icon
+  const effectPhaseIconX = pw(8.9); // Keep the icon aligned to left edge of text box
+  const iconWidth = pw(5)
+  const iconHeight = pw(5); // Icon graphics have 1:1 proportions
+  const iconX = effectPhaseIconX - iconWidth / 2;
+  const iconY = currentOffsetY - effectPhaseFontSize; // == iconHeight / 2.
+  ctx.drawImage(phaseIcon, iconX, iconY, iconWidth, iconHeight);
+
+  // Draw the text after the icon
+  ctx.font = `400 ${effectPhaseFontSize}px ${PHASE_FONT_FAMILY}`;
+  ctx.strokeStyle = colorBlack;
+  ctx.line = effectPhaseFontSize
+  ctx.lineWidth = effectPhaseFontSize * 0.2;
+  ctx.lineJoin = MITER;
+  ctx.miterLimit = 3;
+  ctx.strokeText(phaseText, currentOffsetX, currentOffsetY);
+  ctx.fillStyle = phaseColor;
+  ctx.fillText(phaseText, currentOffsetX, currentOffsetY);
+
+  // Prepare for next block
+  currentOffsetY = currentOffsetY + lineHeight * postPhaseLineHeightFactor;
+}
+
+/** Draws a block that uses identation, such as power and reaction effects. */
+function drawIndentBlock(indentLabel, indentContent, isFirstBlock) {
+  // If this is the first block, adjust the Y position, bringing the text up a little more if the font is smaller.
+  if (isFirstBlock) {
+    currentOffsetY = currentOffsetY - effectBaseFontSize + effectFontSize;
+  }
+  
+  // Draw the label
+  ctx.fillStyle = colorBlack;
+  const effectPowerFontSize = effectFontSize * INDENT_LABEL_SIZE_FACTOR;
+  const s = `900 ${effectPowerFontSize}px ${INDENT_LABEL_FONT_FAMILY}`;
+  ctx.font = s;
+  ctx.fillText(indentLabel, currentOffsetX, currentOffsetY);
+
+  // Indent all subsequent text
+  currentIndentX += ctx.measureText(indentLabel).width + spaceWidth + pw(0.2);
+  currentOffsetX = currentIndentX;
+
+  // Aside from indentation, the remaining rendering process is identical to simple block rendering, so we just call that.
+  drawSimpleBlock(indentContent, false);
+}
+
+/** Draws a block of simple text. The name is deceiving, this function is very complex! */
+function drawSimpleBlock(simpleContent, isFirstBlock) {
+  // If this is the first block, adjust the Y position, bringing the text up a little more if the font is smaller
+  if (isFirstBlock) {
+    currentOffsetY = currentOffsetY - effectBaseFontSize + effectBaseFontSize;
+  }
+
+  // Replace spaces after numbers (and X variables) with non-breaking spaces
+  let blockString = simpleContent.replaceAll(/([0-9X]) /g, '$1\xa0'); // Non-breakable space is char 0xa0 (160 dec)
+
+  // First, identify special word strings and replace their spaces with underscores
+  effectBoldList.forEach((phrase) => {
+    // Make an all-caps copy of the block string
+    let testString = blockString.toUpperCase();
+    // Find the position of each instance of this phrase in the string
+    let position = testString.indexOf(phrase);
+    while (position !== -1) {
+      // Replace this instance of this phrase in the real block string with the all-caps + underscore format for detecting later
+      let thisSubString = blockString.substr(position, phrase.length);
+      blockString = blockString.replace(thisSubString, phrase.replaceAll(' ', '_'));
+      // Repeat if there's another instance of this phrase
+      position = testString.indexOf(phrase, position + 1);
+    }
+  });
+  effectItalicsList.forEach((phrase) => {
+    // Make an all-caps copy of the block string
+    let testString = blockString.toUpperCase();
+    // Find the position of each instance of this phrase in the string
+    let position = testString.indexOf(phrase);
+    while (position !== -1) {
+      // Replace this instance of this phrase in the real block string with the all-caps + underscore format for detecting later
+      let thisSubString = blockString.substr(position, phrase.length);
+      blockString = blockString.replace(thisSubString, phrase.replaceAll(' ', '_'));
+      // Repeat if there's another instance of this phrase
+      position = testString.indexOf(phrase, position + 1);
+    }
+  });
+
+  // Make minus signs more readable by replacing hyphens with en-dashes
+  blockString = blockString.replaceAll('-', '–');
+
+  // Extract all the words
+  // add special processing for spaces after numbers
+  let words = blockString.split(' ').flatMap((word) => {
+    let newWord = word;
+    // double count the word afterwards
+    if (word.indexOf('\xa0') != -1) {
+      newWord = word.split('\xa0');
+      newWord[0] = word
+    }
+    return newWord;
+  });
+  
+  // Analyze and draw each 'word' (including special phrases as 1 word...U.u)
+  words.forEach((word, index) => {
+    let thisIndex = index;
+    // Find out it this word should be bolded or italicized
+    let thisWord = getWordProperties(word); // returns an object: {text, isBold, isItalics}
+
+    // Set drawing styles
+    let weightValue = effectFontWeight;
+    let styleValue = "normal";
+    if (thisWord.isBold) { weightValue = "600" }
+    if (thisWord.isItalics) { styleValue = "italic" }
+    ctx.font = weightValue + ' ' + styleValue + ' ' + effectFontSize + 'px ' + effectFontFamily;
+    ctx.fillStyle = colorBlack;
+
+    // Break up special bold/italics phrases into their component words
+    let phraseParts = thisWord.text.split(' ');
+
+    // For each word in the phrase (and there will usually be just one)
+    phraseParts.forEach((wordString) => {
+      // Get how much width the word and a space would add to the line
+      let wordWidth = ctx.measureText(wordString).width;
+      // Check to see if the line should wrap
+      let wrapped = false;
+      // Looks forward to see if adding this word to the current line would make the line exceed the maximum x position
+      if (currentOffsetX + spaceWidth + wordWidth > effectEndX) {
+        // If it would, then start the next line
+        currentOffsetY += lineHeight;
+        currentOffsetX = currentIndentX;
+        wrapped = true;
+      }
+      // remove double counted word since we already calculated if we need to go to the next line
+      if (wordString.indexOf('\xa0') != -1) {
+        wordString = wordString.split('\xa0')[0];
+        wordWidth = ctx.measureText(wordString).width;
+      }
+      // Determine string to draw
+      let stringToDraw = '';
+      // Check if there's a punctuation mark at the end of a bold/italicized word
+      let endingPunctuation = '';
+      if ((thisWord.isBold || thisWord.isItalics) && wordString[wordString.length - 1].match(/[.,!;:\?]/g)) {
+        endingPunctuation = wordString.charAt(wordString.length - 1); // Get the punctuation at the end of the string
+        wordString = wordString.slice(0, wordString.length - 1); // Remove the punctuation from the main string
+      }
+
+      // Check line wrapping status
+      if (wrapped == false && thisIndex > 0) {
+        // If the line did not wrap and it's not the first word of the block, draw the word with a space
+        currentOffsetX += spaceWidth;
+      }
+      stringToDraw = wordString;
+      // Draw the string
+      ctx.fillText(stringToDraw, currentOffsetX, currentOffsetY);
+      // If there was ending punctuation after a bold/italicized word, draw that now
+      if (endingPunctuation != '') {
+        // Get width of word without ending punctuation
+        let mainWordWidth = ctx.measureText(stringToDraw).width;
+        // Set the font styles to effect text default
+        ctx.font = effectFontWeight + ' ' + 'normal' + ' ' + effectFontSize + 'px ' + effectFontFamily;
+        // Draw the punctuation
+        let drawX = currentOffsetX + mainWordWidth;
+        ctx.fillText(endingPunctuation, drawX, currentOffsetY);
+      }
+      // Prepare currentOffsetX for next word
+      currentOffsetX += wordWidth;
+
+      // Increase the index (only necessary for multi-word phrases)
+      thisIndex++;
+    })
+  });
+
+  // After drawing all the words, prepare for the next block
+  currentOffsetX = effectStartX;
+  currentOffsetY += lineHeight * blockSpacingFactor;
+}
+
+function getWordProperties(word) {
+  // Minimize the word for easier analyzing
+  var minimizedWord = '';
+  // Remove any punctuation
+  minimizedWord = word.replaceAll(/[.,!;:\?]/g, '');
+  // Restore spaces that were replaced with underscores earlier
+  minimizedWord = minimizedWord.replaceAll('_', ' ');
+  // Check minimized word against lists of words to bold and italicize
+  let isBold = false;
+  let isItalics = false;
+  if (effectBoldList.indexOf(minimizedWord) != -1) { isBold = true; }
+  if (effectItalicsList.indexOf(minimizedWord) != -1) { isItalics = true; }
+
+  // Restore spaces that were replaced with underscores earlier
+  let restoredWord = word.replaceAll('_', ' ');
+
+  // Output
+  return { text: restoredWord, isBold: isBold, isItalics: isItalics };
+}
