@@ -1,14 +1,3 @@
-// Download button
-$('#downloadButton').on('click', function () {
-  let link = document.createElement('a');
-  link.download = 'Deck Back.png';
-  link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
-  link.click();
-})
-
-
-
-
 /*
 ============================================================================
 Loading and app prep-work

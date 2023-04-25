@@ -1,11 +1,3 @@
-// Download button
-$('#downloadButton').on('click', function () {
-  let link = document.createElement('a');
-  link.download = 'Deck Back.png';
-  link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
-  link.click();
-})
-
 // Reset art adjustments button
 $('#imageAdjustmentResetButton').on('click', function () {
   // Reset input values

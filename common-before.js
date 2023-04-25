@@ -148,21 +148,22 @@ $('.previewSizeButton').on('click', function (e) {
 // Range sliders with text box - when one changes, copy its value to the other
 $('.rangeSlider').on('input', function (e) {
     $(this).next().val($(this).val());
-})
+});
 $('.rangeText').on('input', function (e) {
     $(this).prev().val($(this).val());
-})
+});
 // Also, when the page loads, copy the default value from the slider into the text box
 $('.rangeText').each(function (e) {
     $(this).val($(this).prev().val());
-})
+});
+
 
 // Populate inputs with default values on startup
 $('*[data-image-purpose]').each(function () {
     if (this.dataset.default) {
         this.value = this.dataset.default;
     }
-})
+});
 
 
 // Reset art adjustments button
@@ -181,7 +182,7 @@ $('.adjustmentResetButton').on('click', function () {
     });
     // Redraw canvas (since "on input" event didn't trigger)
     drawCardCanvas();
-})
+});
 
 
 // Info buttons
@@ -198,15 +199,25 @@ $('.infoButton').on('click', function (e) {
         boxId = 'credits';
     }
     $('.' + boxId).css({ 'display': 'block' });
-})
+});
 
 
 // Close buttons (in info boxes)
 $('.closeButton, .screenOverlayNegativeSpace').on('click', function (e) {
     // Make screen overlay and info boxes invisible
     $('.screenOverlay, .overlayBox').css({ 'display': 'none' });
-})
+});
 
+
+// Download button
+$('#downloadButton').on('click', function () {
+    // Use the title input for the default file name
+    const link = document.createElement('a');
+    link.download = `${$("#inputTitle")?.val()?.trim() || DEFAULT_DOWNLOAD_NAME}.png`;
+    link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    link.click();
+    link.remove();
+});
 
 /*
 ============================================================================

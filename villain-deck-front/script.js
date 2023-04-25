@@ -1,18 +1,3 @@
-// Download button
-$('#downloadButton').on('click', function () {
-  let link = document.createElement('a');
-  // Use the title input for the default file name
-  if ($('#inputTitle').val()) {
-    link.download = $('#inputTitle').val() + '.png';
-  }
-  else {
-    link.download = 'untitled.png';
-  }
-
-  link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
-  link.click();
-})
-
 // Info buttons
 $('.infoButton').on('click', function (e) {
   // Make screen overlay visible

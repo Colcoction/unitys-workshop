@@ -1,15 +1,3 @@
-// Download button
-$('#downloadButton').on('click', function () {
-  let link = document.createElement('a');
-  // Use the title input for the default file name
-  link.download = 'Character Card Back.png';
-  link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
-  link.click();
-})
-
-
-
-
 /*
 ============================================================================
 Loading and app prep-work
