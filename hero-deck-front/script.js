@@ -652,12 +652,7 @@ function drawCardAttribution() {
 
 /* NOTEPAD
 
-I could introduce manual line breaks in the effect text... or I could write a script to detect when there is a number followed by a space in the block string, then replace that space with a non-breaking space. (oh, but the non-breaking space might not have the same width as my custom space width...)
-
-After recreating the Gyrosaur deck with the app in its current state, I would really like to make special effect terms not case-sensitive. So that [Start Phase] works like [START PHASE].
-
-
-Official card contents for testings:
+Official card contents for testing:
 
 EXPENDABLE POWER BANK
 ITEM, LIMITED
@@ -684,7 +679,6 @@ Ongoing, Limited
 Either discard 1 card or destroy this card.
 [END PHASE]
 The Construct card with the lowest HP regains 2 HP.
-
 "I know little of your people, but I understand fear, and innocent lives in danger. I will keep you safe. I swear it."
 
 
