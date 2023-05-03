@@ -361,12 +361,12 @@ function parseAndDrawCardEffectBlock(block, index) {
     let iconWidth = pw(5);
     let iconHeight = iconWidth; // These graphics have 1:1 proportions
     let iconX = effectPhaseIconX - iconWidth / 2;
-    let iconY = currentOffsetY - effectPhaseFontSize;// iconHeight/2;
+    let iconY = currentOffsetY - EFFECT_PHASE_FONT_SIZE;// iconHeight/2;
     ctx.drawImage(thisIcon, iconX, iconY, iconWidth, iconHeight);
 
     // Style and draw the text after the icon
     // Set basic font properties
-    ctx.font = '400 ' + effectPhaseFontSize + 'px ' + effectPhaseFontFamily;
+    ctx.font = '400 ' + EFFECT_PHASE_FONT_SIZE + 'px ' + effectPhaseFontFamily;
     // Get phase color
     let phaseColor = '';
     if (useHighContrastPhaseLabels) {
@@ -390,7 +390,7 @@ function parseAndDrawCardEffectBlock(block, index) {
 
     // Font stroke
     ctx.strokeStyle = colorBlack;
-    ctx.lineWidth = effectPhaseFontSize * 0.2;
+    ctx.lineWidth = EFFECT_PHASE_FONT_SIZE * 0.2;
     ctx.lineJoin = "miter";
     ctx.miterLimit = 3;
     ctx.strokeText(phaseName, currentOffsetX, currentOffsetY);

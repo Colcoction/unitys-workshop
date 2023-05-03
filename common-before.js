@@ -114,11 +114,24 @@ Global functions
 ============================================================================
 */
 // Short function to convert percentage (ex: 50) into pixels
+/** Gets the pixel count that corresponds to a given percentage width. */
 function pw(percentageWidth) {
     return percentageWidth * canvas.width / 100;
 }
+/** Gets the pixel count that corresponds to a given percentage height. */
 function ph(percentageHeight) {
     return percentageHeight * canvas.height / 100;
+}
+/**
+ * Gets the pixel count that corresponds to a given percentage of the card's smallest dimension, which is
+ * height for horizontal cards and width for vertical cards.
+ */
+function ps(percentageSmall) {
+    if (ORIENTATION === HORIZONTAL) {
+        return ph(percentageSmall);
+    }
+    // else ORIENTATION === VERTICAL
+    return pw(percentageSmall);
 }
 
 // Sets canvas width given a card preview size, using the page's pre-configured orientation
@@ -235,7 +248,7 @@ setCanvasWidth(MEDIUM);
 Initialization-Dependent Global Variables
 ============================================================================
 */
-const PHASE_FONT_SIZE_MAP = new Map([
+const _phaseFontSizeMap = new Map([
     [DECK, new Map([
         [VERTICAL, pw(4.1)],
         [HORIZONTAL, ph(4.1)],
@@ -245,5 +258,18 @@ const PHASE_FONT_SIZE_MAP = new Map([
         [HORIZONTAL, ph(4)],
     ])],
 ]);
-
-const effectPhaseFontSize = PHASE_FONT_SIZE_MAP.get(CARD_FORM).get(ORIENTATION);
+const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM).get(ORIENTATION);
+const _phaseIconSizeMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, pw(8.9)],
+        [HORIZONTAL, pw(54)],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, pw(8.9)],
+        // TODO: UW hasn't set up horizontal character cards yet, so we're leaving this null.
+        //       If you're reading this comment because you hit a null error, figure this
+        //       value out and update it! 
+        [HORIZONTAL, null],
+    ])],
+]);
+const PHASE_ICON_X = _phaseIconSizeMap.get(CARD_FORM).get(ORIENTATION);

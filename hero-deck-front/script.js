@@ -376,7 +376,7 @@ function drawCardCanvas() {
   drawCardKeywords();
 
   // Draw the card effect
-  drawCardBodyVerticalDeck();
+  drawCardBodyForDeck();
 
   // Draw the card quote
   drawCardQuote();
