@@ -292,14 +292,6 @@ imagesToPreload.forEach((image) => {
   loadedGraphics[image[0]] = newImage;
 })
 
-// Short function to convert percentage (ex: 50) into pixels
-function pw(percentageWidth) {
-  return percentageWidth * canvas.width / 100;
-}
-function ph(percentageHeight) {
-  return percentageHeight * canvas.height / 100;
-}
-
 // Save the uploaded image so it doesn't have to load each time
 var cardArtImage;
 $('#inputImageFile').on('input', function (e) {

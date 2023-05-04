@@ -1,25 +1,3 @@
-// Info buttons
-$('.infoButton').on('click', function (e) {
-  // Make screen overlay visible
-  $('.screenOverlay').css({ 'display': 'block' });
-  // Make specific info box visible
-  let buttonText = e.target.textContent;
-  let boxId = '';
-  if (buttonText == 'Documentation') {
-    boxId = 'documentation';
-  }
-  else if (buttonText == 'Credits') {
-    boxId = 'credits';
-  }
-  $('.' + boxId).css({ 'display': 'block' });
-})
-
-// Close buttons (in info boxes)
-$('.closeButton, .screenOverlayNegativeSpace').on('click', function (e) {
-  // Make screen overlay and info boxes invisible
-  $('.screenOverlay, .overlayBox').css({ 'display': 'none' });
-})
-
 // Reset art adjustments button
 $('#imageAdjustmentResetButton').on('click', function () {
   // Reset input values
@@ -160,14 +138,6 @@ imagesToPreload.forEach((image) => {
   newImage.src = image[1];
   loadedGraphics[image[0]] = newImage;
 })
-
-// Short function to convert percentage (ex: 50) into pixels
-function pw(percentageWidth) {
-  return percentageWidth * canvas.width / 100;
-}
-function ph(percentageHeight) {
-  return percentageHeight * canvas.height / 100;
-}
 
 // Save the uploaded image so it doesn't have to load each time
 var cardArtImage;

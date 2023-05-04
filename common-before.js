@@ -167,7 +167,7 @@ $('*[data-image-purpose]').each(function () {
 
 
 // Reset art adjustments button
-$('.adjustmentResetButton').on('click', function () {
+$('.adjustmentResetButton.clearImageButton').on('click', function () {
     let areaName = this.dataset.imagePurpose;
     // Reset input values to their defaults, stated in "data-default" attribute
     $(`.contentInput[data-image-purpose="${areaName}"]`).each(function () {
@@ -184,6 +184,14 @@ $('.adjustmentResetButton').on('click', function () {
     drawCardCanvas();
 });
 
+$('.adjustmentResetButton:not(.clearImageButton)').on('click', function () {
+    // Reset input values
+    $('#inputImageOffsetX').val('0');
+    $('#inputImageOffsetY').val('0');
+    $('#inputImageScale').val('100');
+    // Redraw canvas (since "on input" event didn't trigger)
+    drawCardCanvas();
+});
 
 // Info buttons
 $('.infoButton').on('click', function (e) {
@@ -246,4 +254,4 @@ const PHASE_FONT_SIZE_MAP = new Map([
     ])],
 ]);
 
-const effectPhaseFontSize = PHASE_FONT_SIZE_MAP.get(CARD_FORM).get(ORIENTATION);
+const effectPhaseFontSize = PHASE_FONT_SIZE_MAP.get(CARD_FORM)?.get(ORIENTATION);
