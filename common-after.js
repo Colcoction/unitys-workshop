@@ -437,10 +437,10 @@ function parseBodyText(originalLine) {
 
 /**
  * Draws the body of a card.
- * TODO: As the name implies, this is only set up for vertical cards from decks (neither character cards nor environment decks).
+ * TODO: As the name implies, this is only set up for cards from decks (not character cards).
  *       This should be integrated into cards of other orientations and forms... eventually.
  */
-function drawCardBodyVerticalDeck() {
+function drawCardBodyForDeck() {
   // Initialize positioning values
   currentOffsetX = effectStartX;
   currentOffsetY = effectStartY;
@@ -500,18 +500,16 @@ function drawPhaseBlock(phase, isFirstBlock) {
   }
 
   // Draw the icon
-  const effectPhaseIconX = pw(8.9); // Keep the icon aligned to left edge of text box
-  const iconWidth = pw(5)
-  const iconHeight = pw(5); // Icon graphics have 1:1 proportions
-  const iconX = effectPhaseIconX - iconWidth / 2;
-  const iconY = currentOffsetY - effectPhaseFontSize; // == iconHeight / 2.
+  const iconWidth = iconHeight = ps(5); // Icon graphics have 1:1 proportions
+  const iconX = PHASE_ICON_X - iconWidth / 2;
+  const iconY = currentOffsetY - EFFECT_PHASE_FONT_SIZE; // == iconHeight / 2.
   ctx.drawImage(phaseIcon, iconX, iconY, iconWidth, iconHeight);
 
   // Draw the text after the icon
-  ctx.font = `400 ${effectPhaseFontSize}px ${PHASE_FONT_FAMILY}`;
+  ctx.font = `400 ${EFFECT_PHASE_FONT_SIZE}px ${PHASE_FONT_FAMILY}`;
   ctx.strokeStyle = colorBlack;
-  ctx.line = effectPhaseFontSize
-  ctx.lineWidth = effectPhaseFontSize * 0.2;
+  ctx.line = EFFECT_PHASE_FONT_SIZE
+  ctx.lineWidth = EFFECT_PHASE_FONT_SIZE * 0.2;
   ctx.lineJoin = MITER;
   ctx.miterLimit = 3;
   ctx.strokeText(phaseText, currentOffsetX, currentOffsetY);
