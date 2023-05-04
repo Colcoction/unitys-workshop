@@ -139,6 +139,15 @@ function setCanvasWidth(cardPreviewSize) {
     $('#canvasContainer').css({ width: canvasSizes.get(ORIENTATION).get(cardPreviewSize) });
 }
 
+/** Resets the settings for a given data image input with the specified purpose (e.g. "mainArt", "backgroundArt") */
+function resetDataImageSettings(imagePurpose) {
+    $(`.contentInput[data-image-purpose="${imagePurpose}"]`).each(function () {
+        if (this.dataset.default) {
+            this.value = this.dataset.default;
+        }
+    });
+}
+
 /*
 ============================================================================
 Common listeners
@@ -179,15 +188,11 @@ $('*[data-image-purpose]').each(function () {
 });
 
 
-// Reset art adjustments button
+// Resets art adjustments and removes an image for buttons that are tagged with both relevant classes. This allows us to avoid
+// making multiple redundant calsl to drawCardCanvas after the reset functions are complete.
 $('.adjustmentResetButton.clearImageButton').on('click', function () {
-    let areaName = this.dataset.imagePurpose;
-    // Reset input values to their defaults, stated in "data-default" attribute
-    $(`.contentInput[data-image-purpose="${areaName}"]`).each(function () {
-        if (this.dataset.default) {
-            this.value = this.dataset.default;
-        }
-    });
+    const areaName = this.dataset.imagePurpose;
+    resetDataImageSettings(areaName);
     // Remove uploaded image
     $(`.contentInput[data-image-purpose="${areaName}"][type="file"]`).each(function () {
         this.value = '';
@@ -197,14 +202,14 @@ $('.adjustmentResetButton.clearImageButton').on('click', function () {
     drawCardCanvas();
 });
 
+
 $('.adjustmentResetButton:not(.clearImageButton)').on('click', function () {
-    // Reset input values
-    $('#inputImageOffsetX').val('0');
-    $('#inputImageOffsetY').val('0');
-    $('#inputImageScale').val('100');
+    const areaName = this.dataset.imagePurpose;
+    resetDataImageSettings(areaName)
     // Redraw canvas (since "on input" event didn't trigger)
     drawCardCanvas();
 });
+
 
 // Info buttons
 $('.infoButton').on('click', function (e) {
@@ -266,7 +271,7 @@ const _phaseFontSizeMap = new Map([
         [HORIZONTAL, ph(4)],
     ])],
 ]);
-const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM).get(ORIENTATION);
+const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
 const _phaseIconSizeMap = new Map([
     [DECK, new Map([
         [VERTICAL, pw(8.9)],
@@ -280,4 +285,4 @@ const _phaseIconSizeMap = new Map([
         [HORIZONTAL, null],
     ])],
 ]);
-const PHASE_ICON_X = _phaseIconSizeMap.get(CARD_FORM).get(ORIENTATION);
+const PHASE_ICON_X = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);

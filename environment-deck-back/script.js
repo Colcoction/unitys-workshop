@@ -1,13 +1,3 @@
-// Reset art adjustments button
-$('#imageAdjustmentResetButton').on('click', function () {
-  // Reset input values
-  $('#inputImageOffsetX').val('0');
-  $('#inputImageOffsetY').val('0');
-  $('#inputImageScale').val('100');
-  // Redraw canvas (since "on input" event didn't trigger)
-  drawCardCanvas();
-})
-
 // Draw the canvas on window load. Helpful for situations like testing with a hardcoded effect text
 $(window).on('load', function () {
   drawCardCanvas();
@@ -112,9 +102,9 @@ function drawCardArt() {
   let initialScale = 1;
 
   // Get offset values
-  let imageOffsetX = parseInt($('#inputImageOffsetX').prop('value'));
-  let imageOffsetY = parseInt($('#inputImageOffsetY').prop('value')) * -1;
-  let userScale = parseInt($('#inputImageScale').prop('value'));
+  let imageOffsetX = parseInt($('.inputImageOffsetX').prop('value'));
+  let imageOffsetY = parseInt($('.inputImageOffsetY').prop('value')) * -1;
+  let userScale = parseInt($('.inputImageScale').prop('value'));
 
   // Draw the image
 

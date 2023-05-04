@@ -20,16 +20,6 @@ $('.closeButton, .screenOverlayNegativeSpace').on('click', function (e) {
   $('.screenOverlay, .overlayBox').css({ 'display': 'none' });
 })
 
-// Reset art adjustments button
-$('#imageAdjustmentResetButton').on('click', function () {
-  // Reset input values
-  $('#inputImageOffsetX').val('0');
-  $('#inputImageOffsetY').val('0');
-  $('#inputImageScale').val('100');
-  // Redraw canvas (since "on input" event didn't trigger)
-  drawCardCanvas();
-})
-
 // Parse JSON input buttom
 $('#parseJsonInputButton').on('click', function () {
   // attempt to parse the JSON
@@ -128,14 +118,14 @@ function parseJSONData(data) {
     cardArtImage = undefined;
   }
   if('ImageX' in data) {
-    $('#inputImageOffsetX').val(data.ImageX);
+    $('.inputImageOffsetX').val(data.ImageX);
   } else {
-    $('#inputImageOffsetX').val(0);
+    $('.inputImageOffsetX').val(0);
   }
   if('ImageY' in data) {
-    $('#inputImageOffsetY').val(data.ImageY);
+    $('.inputImageOffsetY').val(data.ImageY);
   } else {
-    $('#inputImageOffsetY').val(0);
+    $('.inputImageOffsetY').val(0);
   }
   if('ImageZoom' in data) {
     // special parsing for the zoom value, as if it's fed a non-number, it will
@@ -144,9 +134,9 @@ function parseJSONData(data) {
     if (zoomVal == NaN) {
       zoomVal = 0;
     }
-    $('#inputImageScale').val(zoomVal);
+    $('.inputImageScale').val(zoomVal);
   } else {
-    $('#inputImageScale').val(100);
+    $('.inputImageScale').val(100);
   }
   if('Suddenly' in data && data.Suddenly.toUpperCase() == "TRUE") {
     $('#suddenly')[0].checked = true;
@@ -173,9 +163,9 @@ function outputJSONData() {
     "Quote": ${JSON.stringify($('#inputQuote').val())},
     "Attribution": ${JSON.stringify($('#inputAttribution').val())},
     "ImageURL": ${JSON.stringify(imageURL)},
-    "ImageX": ${JSON.stringify($('#inputImageOffsetX').val())},
-    "ImageY": ${JSON.stringify($('#inputImageOffsetY').val())},
-    "ImageZoom": ${JSON.stringify($('#inputImageScale').val())},
+    "ImageX": ${JSON.stringify($('.inputImageOffsetX').val())},
+    "ImageY": ${JSON.stringify($('.inputImageOffsetY').val())},
+    "ImageZoom": ${JSON.stringify($('.inputImageScale').val())},
     "Suddenly": "${JSON.stringify($('#suddenly')[0].checked)}"
   },`;
   $('#jsonInput').val(outputJSON);
@@ -310,13 +300,6 @@ $('#inputImageFile').on('input', function (e) {
   }
 })
 
-// Reset the card art image adjustment controls when user uploads a new image
-$('#inputImageFile').on('input', function () {
-  $('#inputImageOffsetX').prop('value', '0');
-  $('#inputImageOffsetY').prop('value', '0');
-  $('#inputImageScale').prop('value', '100');
-});
-
 // Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
 $('.contentInput').on('input', drawCardCanvas);
 
@@ -398,9 +381,9 @@ function drawCardArt() {
   // startX, startY, width, height
   ctx.clip();
   // Get offset values
-  let imageOffsetX = parseInt($('#inputImageOffsetX').prop('value'));
-  let imageOffsetY = parseInt($('#inputImageOffsetY').prop('value')) * -1;
-  let userScale = parseInt($('#inputImageScale').prop('value'));
+  let imageOffsetX = parseInt($('.inputImageOffsetX').prop('value'));
+  let imageOffsetY = parseInt($('.inputImageOffsetY').prop('value')) * -1;
+  let userScale = parseInt($('.inputImageScale').prop('value'));
 
   // Draw the image
 

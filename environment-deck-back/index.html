@@ -148,7 +148,7 @@
         <input type="range" class="contentInput" id="inputImageOffsetY" min="-50" max="50" value="0">
         <label for="inputImageScale">Zoom</label>
         <input type="range" class="contentInput" id="inputImageScale" min="50" max="500" value="100">
-        <button style="margin-top: 10px;" id="imageAdjustmentResetButton">Reset Adjustments</button>
+        <button style="margin-top: 10px;" class="adjustmentResetButton">Reset Adjustments</button>
       </div>
     </div>
     <div>
@@ -166,6 +166,7 @@
 
   <!-- Declarations -->
   <script>
+    const CARD_FORM = "back";
     const ORIENTATION = "horizontal";
     const DEFAULT_DOWNLOAD_NAME = "environment-deck-back";
   </script>

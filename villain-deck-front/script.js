@@ -1,13 +1,3 @@
-// Reset art adjustments button
-$('#imageAdjustmentResetButton').on('click', function () {
-  // Reset input values
-  $('#inputImageOffsetX').val('0');
-  $('#inputImageOffsetY').val('0');
-  $('#inputImageScale').val('100');
-  // Redraw canvas (since "on input" event didn't trigger)
-  drawCardCanvas();
-})
-
 // Toggle high contrast phase labels
 $('#inputUseHighConstrast').on('input', function () {
   useHighContrastPhaseLabels = this.checked;
@@ -159,9 +149,9 @@ $('#inputImageFile').on('input', function (e) {
 
 // Reset the card art image adjustment controls when user uploads a new image
 $('#inputImageFile').on('input', function () {
-  $('#inputImageOffsetX').prop('value', '0');
-  $('#inputImageOffsetY').prop('value', '0');
-  $('#inputImageScale').prop('value', '100');
+  $('.inputImageOffsetX').prop('value', '0');
+  $('.inputImageOffsetY').prop('value', '0');
+  $('.inputImageScale').prop('value', '100');
 });
 
 // Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
@@ -246,9 +236,9 @@ function drawCardArt() {
   // startX, startY, width, height
   ctx.clip();
   // Get offset values
-  let imageOffsetX = parseInt($('#inputImageOffsetX').prop('value'));
-  let imageOffsetY = parseInt($('#inputImageOffsetY').prop('value')) * -1;
-  let userScale = parseInt($('#inputImageScale').prop('value'));
+  let imageOffsetX = parseInt($('.inputImageOffsetX').prop('value'));
+  let imageOffsetY = parseInt($('.inputImageOffsetY').prop('value')) * -1;
+  let userScale = parseInt($('.inputImageScale').prop('value'));
 
   // Draw the image
 
