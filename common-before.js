@@ -28,6 +28,7 @@ const canvasSizes = new Map([
     ])],
 ]);
 // Block types when parsing card text
+const SPACE_BLOCK = "space";
 const PHASE_BLOCK = "phase";
 const INDENT_BLOCK = "indent";
 const SIMPLE_BLOCK = "simple";
@@ -62,26 +63,23 @@ const PHASE_ICON_MAP = new Map([
     [DRAW_PHASE, "Draw Phase Icon"],
     [END_PHASE, "End Phase Icon"],
 ]);
-// Labels for indented effects (power, reaction) and (less gross) regex
+// Labels for indented effects (power, reaction, bullets):
 const POWER_LABEL = "power:";
 const REACTION_LABEL = "reaction:";
-const INDENT_LABELS = [POWER_LABEL, REACTION_LABEL];
-const INDENT_REGEX = new RegExp(`^(${INDENT_LABELS.join("|")})`);
+const BULLET_LABEL = "»";
+const INDENT_LABEL_MAP = new Map([
+    [POWER_LABEL, POWER_LABEL],
+    [REACTION_LABEL, REACTION_LABEL],
+    // Unlike power and reaction labels, bullet labels aren't necessarily specified in the way they are printed.
+    ["- ", BULLET_LABEL],
+    ["* ", BULLET_LABEL],
+    ["» ", BULLET_LABEL],
+]);
+const INDENT_LABELS = [POWER_LABEL, REACTION_LABEL, BULLET_LABEL];
+const INDENT_LABEL_SPECIFIERS = Array.from(INDENT_LABEL_MAP.keys());
 const INDENT_INDEX = 1;
 // Colors for card effects
-//  TODO: Once colors everywhere are refactored to use PHASE_COLOR_MAP, the individually-set
-//  colors can be removed
 const colorBlack = '#231f20';
-const colorStartPhaseOriginal = '#3fae49';
-const colorStartPhaseHighContrast = '#4bc244';
-const colorPlayPhaseOriginal = '#fff200';
-const colorPlayPhaseHighContrast = '#fff72f';
-const colorPowerPhaseOriginal = '#79509e';
-const colorPowerPhaseHighContrast = '#a76fb9';
-const colorDrawPhaseOriginal = '#00aeef';
-const colorDrawPhaseHighContrast = '#3db7e2';
-const colorEndPhaseOriginal = '#ee2d35';
-const colorEndPhaseHighContrast = '#f34747';
 const PHASE_COLOR_MAP = new Map([
     [ORIGINAL_CONTRAST, new Map([
         [START_PHASE, "#3fae49"],
@@ -286,3 +284,10 @@ const _phaseIconSizeMap = new Map([
     ])],
 ]);
 const PHASE_ICON_X = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);
+
+/*
+============================================================================
+Modifiable Global Variables
+============================================================================
+*/
+let boxHeightOffset = 0;

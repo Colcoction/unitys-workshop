@@ -362,7 +362,6 @@ function drawArtInCroppedArea(areaName) {
     drawY += adjustments.yOffset * drawHeight;
   }
 
-
   // Finally, draw the image to the canvas!
   ctx.drawImage(image, drawX, drawY, drawWidth, drawHeight);
 
@@ -371,8 +370,28 @@ function drawArtInCroppedArea(areaName) {
   ctx.save();
 }
 
+/**
+ * Determines the indent label in a line of game text. If one exists, this method returns the label and the length of the specifier that was used to identify it. If not
+ * label can be extracted, this returns null, which indicates that this line is not an indent block.
+ */
+function determineIndentLabel(line) {
+  for (const specifier of INDENT_LABEL_SPECIFIERS) {
+    if (line.startsWith(specifier)) {
+      return [INDENT_LABEL_MAP.get(specifier), specifier.length];
+    }
+  }
+  return [null, null];
+}
+
 /** Parses a line of text inside a card's body, returning an array of blocks to draw when rendering that card. */
 function parseBodyText(originalLine) {
+  // Trivial case: an empty line should create a block that only serves to add spacing
+  if (originalLine.length === 0) {
+    return {
+      type: SPACE_BLOCK,
+    };
+  }
+
   // We may butcher the string a bit. In case the caller needs to reuse that string (maybe unnecessary), we perform
   // a deep copy. ECMAScript string-copying implementations vary, with Chrome being the most well-known offender
   // (see https://bugs.chromium.org/p/v8/issues/detail?id=2869), but this method should work on all browsers.
@@ -403,26 +422,21 @@ function parseBodyText(originalLine) {
     return blocks;
   }
 
-  // Assume that additional whitespace at the start of a string is for custom formatting,
-  // but remove excess whitespace at the end of a string. 
-  line = line.trimEnd();
-
   // Check if what remains is an indented block. If this parser were propertly opinionated, it would
   // not allow powers and reactions after phase labels. But who knows if that will be useful at some
   // point later on?
-  const indentRegexResult = INDENT_REGEX.exec(line.toLowerCase());
-  if (indentRegexResult) {
+  const [indentLabel, specifierLength] = determineIndentLabel(line.toLowerCase());
+  if (indentLabel) {
     // The result should always contain an entry in INDENT_LABELS, but we check just in case
-    const indentLabel = indentRegexResult[INDENT_INDEX];
     if (!INDENT_LABELS.includes(indentLabel)) {
       throw new Error(`The indent regex identified an indentation label, but it wasn't in the array of known indent labels. This should never happen. Acceptable labels: [${INDENT_LABELS.join(", ")}; Identified: ${indentLabel}]`);
     }
-    // Remove the label from the content before adding it to the block. Then return all blocks,
-    // because simple blocks can't follow indented blocks.
+    // Remove the label from the content and trim any starting spaces before adding it to the block.
+    // Then return all blocks, because simple blocks can't follow indented blocks.
     blocks.push({
       type: INDENT_BLOCK,
       label: indentLabel,
-      content: line.substring(Math.min(indentRegexResult[0].length + 1, line.length)),
+      content: line.substring(Math.min(specifierLength, line.length)).trimStart(),
     });
     return blocks;
   }
@@ -435,18 +449,75 @@ function parseBodyText(originalLine) {
   return blocks;
 }
 
+/** Parses and returns the body text for a card. */
+function parseCardBody() {
+  // Get the text the user entered into the textarea
+  const inputValue = $('#inputEffect').prop('value');
+
+  // Split at line returns, then iterate through the array to build an ordered list of blocks
+  const parsedBlocks = inputValue
+    .split("\n")
+    .map(line => parseBodyText(line))
+    .flat();
+  return parsedBlocks;
+}
+
 /**
- * Draws the body of a card.
- * TODO: As the name implies, this is only set up for cards from decks (not character cards).
- *       This should be integrated into cards of other orientations and forms... eventually.
+ * Given an array of parsed blocks, calculate the box height offset of a card.
+ * 
+ * drawBodyText() alters the currentOffsetY, so we draw once and subtract that value from effectStartY to determine the height of the drawn body content. We add 137
+ * (the closest round number representing the height of 3 lines drawn in the same paragraph) to this in order to determine the offset that a hero body box would need in
+ * order to fit all of the blocks that we parsed from the user input. Hero character card body boxes have a minimum size, so we min this value with 0 to determine the offset
+ * of our box (increasing the offset moves our Y position *downwards*, so a positive number yields a smaller box).
  */
-function drawCardBodyForDeck() {
+function adjustBoxHeightOffset(parsedBlocks) {
+  boxHeightOffset = 0;
+  drawBodyText(parsedBlocks);
+  boxHeightOffset = Math.min(Math.round(effectStartY - currentOffsetY + 137), 0);
+  currentOffsetY = 0;
+}
+
+/** Draws the text box of a character card (but not the text inside it). */
+function drawCharacterBodyBox() {
+  // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
+  const topLeft = [pw(10), ph(79) + boxHeightOffset];
+  const topRight = [pw(90), ph(79) + boxHeightOffset];
+  const bottomLeft = [pw(10), ph(94)];
+  const bottomRight = [pw(90), ph(93)];
+
+  // Determine the initial shape of the box.
+  const boxShape = new Path2D();
+  boxShape.moveTo(topLeft[0], topLeft[1]);
+  boxShape.lineTo(topRight[0], topRight[1]);
+  boxShape.lineTo(bottomRight[0], bottomRight[1]);
+  boxShape.lineTo(bottomLeft[0], bottomLeft[1]);
+  boxShape.closePath();
+
+  // Semi-transparent white fill
+  ctx.fillStyle = "#ffffffcc"; // Last two digits are transparency
+  ctx.fill(boxShape);
+
+  // Black border
+  ctx.fillStyle = colorBlack;
+  ctx.lineWidth = pw(0.5);
+  ctx.stroke(boxShape);
+
+  // Box shadow (top-left)
+  let shadowShape = new Path2D;
+  let shadowOffset = pw(-0.7);
+  shadowShape.moveTo(bottomLeft[0] + shadowOffset, bottomLeft[1] + shadowOffset);
+  shadowShape.lineTo(topLeft[0] + shadowOffset, topLeft[1] + shadowOffset);
+  shadowShape.lineTo(topRight[0] + shadowOffset, topRight[1] + shadowOffset);
+  ctx.fillStyle = colorBlack;
+  ctx.lineWidth = pw(1);
+  ctx.stroke(shadowShape);
+}
+
+/** Given an array of blocks, draw the body of a card from a deck. */
+function drawBodyText(parsedBlocks) {
   // Initialize positioning values
   currentOffsetX = effectStartX;
-  currentOffsetY = effectStartY;
-
-  // Get the text the user entered into the textarea
-  let inputValue = $('#inputEffect').prop('value');
+  currentOffsetY = effectStartY + boxHeightOffset;
 
   // Get and apply the text scale the user chose
   effectFontScale = $('#inputEffectTextSize').prop('value') / 100; // Result is between 0 and 1
@@ -454,14 +525,12 @@ function drawCardBodyForDeck() {
   lineHeight = effectBaseLineHeight * effectFontScale;
   spaceWidth = effectFontSize * spaceWidthFactor;
 
-  // Split at line returns, then iterate through the array to build an ordered list of blocks
-  let parsedBlocks = inputValue
-          .split("\n")
-          .map(line => parseBodyText(line))
-          .flat();
+  // Draw the blocks
   parsedBlocks.forEach((block, index) => {
     drawBlock(block, index == 0);
   });
+
+  return currentOffsetY;
 }
 
 /** Draws a single block from the array of parsed blocks. */
@@ -469,7 +538,9 @@ function drawBlock(block, isFirstBlock) {
   // Reset indentation to default
   currentIndentX = effectStartX;
 
-  if (block.type === PHASE_BLOCK) {
+  if (block.type === SPACE_BLOCK) {
+    drawSpaceBlock(isFirstBlock);
+  } else if (block.type === PHASE_BLOCK) {
     drawPhaseBlock(block.label, isFirstBlock);
   } else if (block.type === INDENT_BLOCK) {
     drawIndentBlock(block.label.toUpperCase(), block.content, isFirstBlock);
@@ -478,6 +549,12 @@ function drawBlock(block, isFirstBlock) {
   } else {
     throw new Error(`The frontend attempting to draw a block of a type it did not recognize. Acceptable types: [${BLOCK_TYPES.join(", ")}]; Identified: ${block.type}`);
   }
+}
+
+/** "Draws" a space block, which is just empty space on a card. */
+function drawSpaceBlock(isFirstBlock) {
+  // This wraps a call to drawSimpleBlock.
+  return drawSimpleBlock(" ", isFirstBlock);
 }
 
 /**
@@ -527,15 +604,28 @@ function drawIndentBlock(indentLabel, indentContent, isFirstBlock) {
     currentOffsetY = currentOffsetY - effectBaseFontSize + effectFontSize;
   }
   
-  // Draw the label
+  // Set shared characteristics for all labels:
   ctx.fillStyle = colorBlack;
-  const effectPowerFontSize = effectFontSize * INDENT_LABEL_SIZE_FACTOR;
-  const s = `900 ${effectPowerFontSize}px ${INDENT_LABEL_FONT_FAMILY}`;
-  ctx.font = s;
-  ctx.fillText(indentLabel, currentOffsetX, currentOffsetY);
+
+  // Set properties specific to the type of indent block. Bullet points need special handling
+  let labelContent;
+  if (indentLabel === BULLET_LABEL) {
+     // Add 5 spaces of padding in front of a bullet point to cards in decks.
+     // TODO:
+     //   - This spacing looks correct at a casual glance. We should check it more closely.
+     //   - This does NOT render the special bullet point character in hero character incap text, because we can't find the thing. It might be a custom graphic.
+    labelContent = `${CARD_FORM === DECK ? "     " : ""}${indentLabel}`;
+    ctx.font = `400 ${effectFontSize}px ${effectFontFamily}`;
+  } else {
+    labelContent = indentLabel;
+    ctx.font = `900 ${effectFontSize * INDENT_LABEL_SIZE_FACTOR}px ${INDENT_LABEL_FONT_FAMILY}`
+  }
+
+  // Draw the label
+  ctx.fillText(labelContent, currentOffsetX, currentOffsetY);
 
   // Indent all subsequent text
-  currentIndentX += ctx.measureText(indentLabel).width + spaceWidth + pw(0.2);
+  currentIndentX += ctx.measureText(labelContent).width + spaceWidth + pw(0.2);
   currentOffsetX = currentIndentX;
 
   // Aside from indentation, the remaining rendering process is identical to simple block rendering, so we just call that.
