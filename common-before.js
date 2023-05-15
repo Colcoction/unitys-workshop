@@ -72,6 +72,7 @@ const INDENT_LABEL_MAP = new Map([
     [REACTION_LABEL, REACTION_LABEL],
     // Unlike power and reaction labels, bullet labels aren't necessarily specified in the way they are printed.
     ["- ", BULLET_LABEL],
+    ["> ", BULLET_LABEL],
     ["* ", BULLET_LABEL],
     ["» ", BULLET_LABEL],
 ]);
