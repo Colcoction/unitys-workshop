@@ -1,30 +1,8 @@
-// Toggle high contrast phase labels
-$('#inputUseHighConstrast').on('input', function () {
-  useHighContrastPhaseLabels = this.checked;
-  drawCardCanvas();
-})
-
-// Toggle Suddenly!
-$('#suddenly').on('input', function () {
-  suddenly = this.checked;
-  drawCardCanvas();
-})
-
-// Draw the canvas on window load. Helpful for situations like testing with a hardcoded effect text
-$(window).on('load', function () {
-  drawCardCanvas();
-})
-
-
 /*
 ============================================================================
 Effect text values
 ============================================================================
 */
-
-let useHighContrastPhaseLabels = true;
-let suddenly = false;
-
 const effectBaseFontSize = pw(4.05); // Font size for most effect text
 let effectFontScale = 1; // This will update with the user input value
 let effectFontSize = effectBaseFontSize; // The font size that will be used (modifiable) ('px' unit is added later);
@@ -153,9 +131,6 @@ $('#inputImageFile').on('input', function () {
   $('.inputImageOffsetY').prop('value', '0');
   $('.inputImageScale').prop('value', '100');
 });
-
-// Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
-$('.contentInput').on('input', drawCardCanvas);
 
 /*
 ============================================================================

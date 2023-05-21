@@ -89,10 +89,6 @@ $('.inputImageFile').on('input', function () {
 })
 
 
-// Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
-$('.contentInput').on('input', drawCardCanvas);
-
-
 /*
 ============================================================================
 Drawing the canvas
@@ -248,8 +244,6 @@ function drawHP() {
 Effect text values
 ============================================================================
 */
-let useHighContrastPhaseLabels = true;
-
 const effectBaseFontSize = pw(3.95); // Font size for most effect text
 let effectFontScale = 1; // This will update with the user input value
 let effectFontSize = effectBaseFontSize; // The font size that will be used (modifiable) ('px' unit is added later);
@@ -312,15 +306,3 @@ function loadEffectList() {
   effectBoldList = Array.from(newBoldList);
   effectItalicsList = Array.from(newItalicsList);
 }
-
-/*
-============================================================================
-Effect text functions
-============================================================================
-*/
-
-// Toggle high contrast phase labels
-$('#inputUseHighConstrast').on('input', function () {
-  useHighContrastPhaseLabels = this.checked;
-  drawCardCanvas();
-});

@@ -1,25 +1,3 @@
-// Info buttons
-$('.infoButton').on('click', function (e) {
-  // Make screen overlay visible
-  $('.screenOverlay').css({ 'display': 'block' });
-  // Make specific info box visible
-  let buttonText = e.target.textContent;
-  let boxId = '';
-  if (buttonText == 'Documentation') {
-    boxId = 'documentation';
-  }
-  else if (buttonText == 'Credits') {
-    boxId = 'credits';
-  }
-  $('.' + boxId).css({ 'display': 'block' });
-})
-
-// Close buttons (in info boxes)
-$('.closeButton, .screenOverlayNegativeSpace').on('click', function (e) {
-  // Make screen overlay and info boxes invisible
-  $('.screenOverlay, .overlayBox').css({ 'display': 'none' });
-})
-
 // Parse JSON input buttom
 $('#parseJsonInputButton').on('click', function () {
   // attempt to parse the JSON
@@ -41,24 +19,7 @@ $('#parseJsonInputButton').on('click', function () {
 // Output JSON Input button
 $('#outputJsonButton').on('click', function () {
   outputJSONData();
-})
-
-// Toggle high contrast phase labels
-$('#inputUseHighConstrast').on('input', function () {
-  useHighContrastPhaseLabels = this.checked;
-  drawCardCanvas();
-})
-
-// Toggle Suddenly!
-$('#suddenly').on('input', function () {
-  suddenly = this.checked;
-  drawCardCanvas();
-})
-
-// Draw the canvas on window load. Helpful for situations like testing with a hardcoded effect text
-$(window).on('load', function () {
-  drawCardCanvas();
-})
+});
 
 /*
 ============================================================================
@@ -177,10 +138,6 @@ function outputJSONData() {
 Effect text values
 ============================================================================
 */
-
-let useHighContrastPhaseLabels = true;
-let suddenly = false;
-
 const effectBaseFontSize = pw(4.05); // Font size for most effect text
 let effectFontScale = 1; // This will update with the user input value
 let effectFontSize = effectBaseFontSize; // The font size that will be used (modifiable) ('px' unit is added later);

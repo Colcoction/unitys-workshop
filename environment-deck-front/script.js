@@ -14,24 +14,7 @@ $('#parseJsonInputButton').on('click', function () {
     return;
   }
   $('#jsonError').text("");
-})
-
-// Toggle high contrast phase labels
-$('#inputUseHighConstrast').on('input', function () {
-  useHighContrastPhaseLabels = this.checked;
-  drawCardCanvas();
-})
-
-// Toggle Suddenly!
-$('#suddenly').on('input', function () {
-  suddenly = this.checked;
-  drawCardCanvas();
-})
-
-// Draw the canvas on window load. Helpful for situations like testing with a hardcoded effect text
-$(window).on('load', function () {
-  drawCardCanvas();
-})
+});
 
 /*
 ============================================================================
@@ -122,9 +105,6 @@ function parseJSONData(data) {
 Effect text values
 ============================================================================
 */
-
-let useHighContrastPhaseLabels = true;
-let suddenly = false;
 
 const effectBaseFontSize = ph(4.05); // Font size for most effect text
 let effectFontScale = 1; // This will update with the user input value
@@ -223,8 +203,6 @@ $('#inputImageFile').on('input', function (e) {
   }
 })
 
-// Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
-$('.contentInput').on('input', drawCardCanvas);
 
 /*
 ============================================================================

@@ -1,8 +1,3 @@
-// Draw the canvas on window load. Helpful for situations like testing with a hardcoded effect text
-$(window).on('load', function () {
-  drawCardCanvas();
-})
-
 /*
 ============================================================================
 Loading and app prep-work
@@ -45,9 +40,6 @@ $('#inputImageFile').on('input', function (e) {
   }
 })
 
-
-// Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
-$('.contentInput').on('input', drawCardCanvas);
 
 /*
 ============================================================================

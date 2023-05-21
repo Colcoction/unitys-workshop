@@ -149,103 +149,6 @@ function resetDataImageSettings(imagePurpose) {
 
 /*
 ============================================================================
-Common listeners
-============================================================================
-*/
-// Canvas preview size button
-$('.previewSizeButton').on('click', function (e) {
-    // Get the button's text
-    let buttonText = e.target.textContent;
-    // This should never happen, but if the text content doesn't match an expected type, log a warning and set it to medium
-    if (!CARD_PREVIEW_SIZES.includes(buttonText)) {
-        console.warn(`Someone tried to set the size to ${buttonText}, but the only available sizes are [${CARD_PREVIEW_SIZES.join(", ")}]. Setting the size to ${MEDIUM}.`);
-        buttonText = MEDIUM;
-    }
-    // Based on the button's text (the name of the size), determine the new canvas size
-    setCanvasWidth(buttonText);
-});
-
-
-// Range sliders with text box - when one changes, copy its value to the other
-$('.rangeSlider').on('input', function (e) {
-    $(this).next().val($(this).val());
-});
-$('.rangeText').on('input', function (e) {
-    $(this).prev().val($(this).val());
-});
-// Also, when the page loads, copy the default value from the slider into the text box
-$('.rangeText').each(function (e) {
-    $(this).val($(this).prev().val());
-});
-
-
-// Populate inputs with default values on startup
-$('*[data-image-purpose]').each(function () {
-    if (this.dataset.default) {
-        this.value = this.dataset.default;
-    }
-});
-
-
-// Resets art adjustments and removes an image for buttons that are tagged with both relevant classes. This allows us to avoid
-// making multiple redundant calsl to drawCardCanvas after the reset functions are complete.
-$('.adjustmentResetButton.clearImageButton').on('click', function () {
-    const areaName = this.dataset.imagePurpose;
-    resetDataImageSettings(areaName);
-    // Remove uploaded image
-    $(`.contentInput[data-image-purpose="${areaName}"][type="file"]`).each(function () {
-        this.value = '';
-        loadedUserImages[areaName] = null;
-    });
-    // Redraw canvas (since "on input" event didn't trigger)
-    drawCardCanvas();
-});
-
-
-$('.adjustmentResetButton:not(.clearImageButton)').on('click', function () {
-    const areaName = this.dataset.imagePurpose;
-    resetDataImageSettings(areaName)
-    // Redraw canvas (since "on input" event didn't trigger)
-    drawCardCanvas();
-});
-
-
-// Info buttons
-$('.infoButton').on('click', function (e) {
-    // Make screen overlay visible
-    $('.screenOverlay').css({ 'display': 'block' });
-    // Make specific info box visible
-    let buttonText = e.target.textContent;
-    let boxId = '';
-    if (buttonText == 'Documentation') {
-        boxId = 'documentation';
-    }
-    else if (buttonText == 'Credits') {
-        boxId = 'credits';
-    }
-    $('.' + boxId).css({ 'display': 'block' });
-});
-
-
-// Close buttons (in info boxes)
-$('.closeButton, .screenOverlayNegativeSpace').on('click', function (e) {
-    // Make screen overlay and info boxes invisible
-    $('.screenOverlay, .overlayBox').css({ 'display': 'none' });
-});
-
-
-// Download button
-$('#downloadButton').on('click', function () {
-    // Use the title input for the default file name
-    const link = document.createElement('a');
-    link.download = `${$("#inputTitle")?.val()?.trim() || DEFAULT_DOWNLOAD_NAME}.png`;
-    link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    link.click();
-    link.remove();
-});
-
-/*
-============================================================================
 Initialization Logic
 ============================================================================
 */
@@ -292,3 +195,5 @@ Modifiable Global Variables
 ============================================================================
 */
 let boxHeightOffset = 0;
+let useHighContrastPhaseLabels = true;
+let suddenly = false;
