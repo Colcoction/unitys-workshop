@@ -540,7 +540,7 @@ function parseBodyText(originalLine) {
     line = line.substring(phaseRegexResult[0].length);
   }
 
-  // Check if there is anything else to render. If not, only the phase block will be returned. 
+  // Check if there is anything else to render. If not, only the phase block will be returned.
   if (line.length == 0) {
     return blocks;
   }
@@ -587,7 +587,7 @@ function parseCardBody() {
 
 /**
  * Given an array of parsed blocks, calculate the box height offset of a card.
- * 
+ *
  * drawBodyText() alters the currentOffsetY, so we draw once and subtract that value from effectStartY to determine the height of the drawn body content. We add 137
  * (the closest round number representing the height of 3 lines drawn in the same paragraph) to this in order to determine the offset that a hero body box would need in
  * order to fit all of the blocks that we parsed from the user input. Hero character card body boxes have a minimum size, so we min this value with 0 to determine the offset
@@ -726,7 +726,7 @@ function drawIndentBlock(indentLabel, indentContent, isFirstBlock) {
   if (isFirstBlock) {
     currentOffsetY = currentOffsetY - effectBaseFontSize + effectFontSize;
   }
-  
+
   // Set shared characteristics for all labels:
   ctx.fillStyle = colorBlack;
 
@@ -759,7 +759,7 @@ function drawIndentBlock(indentLabel, indentContent, isFirstBlock) {
 function drawSimpleBlock(simpleContent, isFirstBlock) {
   // If this is the first block, adjust the Y position, bringing the text up a little more if the font is smaller
   if (isFirstBlock) {
-    currentOffsetY = currentOffsetY - effectBaseFontSize + effectBaseFontSize;
+    currentOffsetY = currentOffsetY - effectBaseFontSize + effectFontSize;
   }
 
   // Replace spaces after numbers (and X variables) with non-breaking spaces
@@ -807,7 +807,7 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
     }
     return newWord;
   });
-  
+
   // Analyze and draw each 'word' (including special phrases as 1 word...U.u)
   words.forEach((word, index) => {
     let thisIndex = index;
