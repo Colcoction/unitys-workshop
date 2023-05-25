@@ -97,7 +97,6 @@ const PHASE_COLOR_MAP = new Map([
         [END_PHASE, "#f34747"],
     ])],
 ]);
-// Map of phase text properties
 // PHASE_FONT_SIZE_MAP is declared at the bottom of the page because it depends on canvas size
 const PHASE_FONT_FAMILY = 'Avengeance Mightiest Avenger';
 const PHASE_SIZE_FACTOR = 1;
@@ -106,6 +105,9 @@ const INDENT_LABEL_FONT_FAMILY = "Work Sans";
 const INDENT_LABEL_SIZE_FACTOR = 1.08;
 // Line joins (we only use miter)
 const MITER = "miter";
+// Body text properties
+const EFFECT_FONT_WEIGHT = 400;
+const EFFECT_FONT_FAMILY = 'Noto Sans';
 
 /*
 ============================================================================
@@ -163,6 +165,7 @@ setCanvasWidth(MEDIUM);
 Initialization-Dependent Global Variables
 ============================================================================
 */
+// Font size for phase labels
 const _phaseFontSizeMap = new Map([
     [DECK, new Map([
         [VERTICAL, pw(4.1)],
@@ -174,6 +177,8 @@ const _phaseFontSizeMap = new Map([
     ])],
 ]);
 const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
+
+// Size of the phase icons placed next to labels
 const _phaseIconSizeMap = new Map([
     [DECK, new Map([
         [VERTICAL, pw(8.9)],
@@ -189,11 +194,38 @@ const _phaseIconSizeMap = new Map([
 ]);
 const PHASE_ICON_X = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);
 
+// Font size for most effect text
+const _baseFontSizeMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, pw(4.05)],
+        [HORIZONTAL, ph(4.05)],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, pw(3.95)],
+        // TODO: UW hasn't set up horizontal character cards yet, so we're leaving this null.
+        //       If you're reading this comment because you hit a null error, figure this
+        //       value out and update it! 
+        [HORIZONTAL, null],
+    ])],
+]);
+const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
+
 /*
 ============================================================================
 Modifiable Global Variables
 ============================================================================
 */
+// The offset to apply to the height at which the body of a card is drawn.
 let boxHeightOffset = 0;
+
+// Whether to use high contrast phase labels
 let useHighContrastPhaseLabels = true;
+
+// Whether a card has the Suddenly! keyword
 let suddenly = false;
+
+// The scale of the body text and line height for a card. This is a value between 0 and 1, set by the user.
+let effectFontScale = 1;
+
+// The size of body text for a card. This is a convenience variable, derived from EFFECT_BASE_FONT_SIZE * effectFontScale 
+let effectFontSize = EFFECT_BASE_FONT_SIZE;

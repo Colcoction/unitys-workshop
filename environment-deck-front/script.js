@@ -105,17 +105,6 @@ function parseJSONData(data) {
 Effect text values
 ============================================================================
 */
-
-const effectBaseFontSize = ph(4.05); // Font size for most effect text
-let effectFontScale = 1; // This will update with the user input value
-let effectFontSize = effectBaseFontSize; // The font size that will be used (modifiable) ('px' unit is added later);
-const effectFontWeight = 400; // Font weight for most effect text
-const effectFontFamily = 'Noto Sans'; // Font family for most effect text
-const effectPowerFontFamily = 'Work Sans'; // Font family for POWER: and REACTION:
-const effectPowerFontSizeFactor = 1.08; // POWER: will be drawn at effectFontSize times this value
-const effectPhaseFontFamily = 'Avengeance Mightiest Avenger';
-const effectPhaseFontSizeFactor = 1;
-
 // Space between words
 const spaceWidthFactor = 0.26;
 let spaceWidth = effectFontSize * spaceWidthFactor;

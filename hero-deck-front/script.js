@@ -138,12 +138,6 @@ function outputJSONData() {
 Effect text values
 ============================================================================
 */
-const effectBaseFontSize = pw(4.05); // Font size for most effect text
-let effectFontScale = 1; // This will update with the user input value
-let effectFontSize = effectBaseFontSize; // The font size that will be used (modifiable) ('px' unit is added later);
-const effectFontWeight = 400; // Font weight for most effect text
-const effectFontFamily = 'Noto Sans'; // Font family for most effect text
-
 // Space between words
 const spaceWidthFactor = 0.26;
 let spaceWidth = effectFontSize * spaceWidthFactor;
@@ -258,7 +252,6 @@ $('#inputImageFile').on('input', function (e) {
 })
 
 // Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
-$('.contentInput').on('input', drawCardCanvas);
 
 /*
 ============================================================================

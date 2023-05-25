@@ -644,7 +644,7 @@ function drawBodyText(parsedBlocks) {
 
   // Get and apply the text scale the user chose
   effectFontScale = $('#inputEffectTextSize').prop('value') / 100; // Result is between 0 and 1
-  effectFontSize = effectBaseFontSize * effectFontScale;
+  effectFontSize = EFFECT_BASE_FONT_SIZE * effectFontScale;
   lineHeight = effectBaseLineHeight * effectFontScale;
   spaceWidth = effectFontSize * spaceWidthFactor;
 
@@ -724,7 +724,7 @@ function drawPhaseBlock(phase, isFirstBlock) {
 function drawIndentBlock(indentLabel, indentContent, isFirstBlock) {
   // If this is the first block, adjust the Y position, bringing the text up a little more if the font is smaller.
   if (isFirstBlock) {
-    currentOffsetY = currentOffsetY - effectBaseFontSize + effectFontSize;
+    currentOffsetY = currentOffsetY - EFFECT_BASE_FONT_SIZE + effectFontSize;
   }
 
   // Set shared characteristics for all labels:
@@ -738,7 +738,7 @@ function drawIndentBlock(indentLabel, indentContent, isFirstBlock) {
      //   - This spacing looks correct at a casual glance. We should check it more closely.
      //   - This does NOT render the special bullet point character in hero character incap text, because we can't find the thing. It might be a custom graphic.
     labelContent = `${CARD_FORM === DECK ? "     " : ""}${indentLabel}`;
-    ctx.font = `400 ${effectFontSize}px ${effectFontFamily}`;
+    ctx.font = `400 ${effectFontSize}px ${EFFECT_FONT_FAMILY}`;
   } else {
     labelContent = indentLabel;
     ctx.font = `900 ${effectFontSize * INDENT_LABEL_SIZE_FACTOR}px ${INDENT_LABEL_FONT_FAMILY}`
@@ -759,7 +759,7 @@ function drawIndentBlock(indentLabel, indentContent, isFirstBlock) {
 function drawSimpleBlock(simpleContent, isFirstBlock) {
   // If this is the first block, adjust the Y position, bringing the text up a little more if the font is smaller
   if (isFirstBlock) {
-    currentOffsetY = currentOffsetY - effectBaseFontSize + effectFontSize;
+    currentOffsetY = currentOffsetY - EFFECT_BASE_FONT_SIZE + effectFontSize;
   }
 
   // Replace spaces after numbers (and X variables) with non-breaking spaces
@@ -815,11 +815,11 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
     let thisWord = getWordProperties(word); // returns an object: {text, isBold, isItalics}
 
     // Set drawing styles
-    let weightValue = effectFontWeight;
+    let weightValue = EFFECT_FONT_WEIGHT;
     let styleValue = "normal";
     if (thisWord.isBold) { weightValue = "600" }
     if (thisWord.isItalics) { styleValue = "italic" }
-    ctx.font = weightValue + ' ' + styleValue + ' ' + effectFontSize + 'px ' + effectFontFamily;
+    ctx.font = weightValue + ' ' + styleValue + ' ' + effectFontSize + 'px ' + EFFECT_FONT_FAMILY;
     ctx.fillStyle = colorBlack;
 
     // Break up special bold/italics phrases into their component words
@@ -865,7 +865,7 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
         // Get width of word without ending punctuation
         let mainWordWidth = ctx.measureText(stringToDraw).width;
         // Set the font styles to effect text default
-        ctx.font = effectFontWeight + ' ' + 'normal' + ' ' + effectFontSize + 'px ' + effectFontFamily;
+        ctx.font = EFFECT_FONT_WEIGHT + ' ' + 'normal' + ' ' + effectFontSize + 'px ' + EFFECT_FONT_FAMILY;
         // Draw the punctuation
         let drawX = currentOffsetX + mainWordWidth;
         ctx.fillText(endingPunctuation, drawX, currentOffsetY);
