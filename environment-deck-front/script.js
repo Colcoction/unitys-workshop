@@ -105,14 +105,6 @@ function parseJSONData(data) {
 Effect text values
 ============================================================================
 */
-// Space between words
-const spaceWidthFactor = 0.26;
-let spaceWidth = effectFontSize * spaceWidthFactor;
-
-const effectMarginXPercent = 7; // Percent of width on each side of text
-const effectStartX = pw(50 + effectMarginXPercent); // Left boundary of effect text
-const effectEndX = pw(100 - effectMarginXPercent + 1); // Right boundary of effect text
-const effectStartY = ph(28); // Top boundary of effect text
 const effectPhaseStartX = pw(61.5); // Left boundary of phase label images
 
 const effectBaseLineHeight = ph(5);
@@ -121,7 +113,7 @@ const blockSpacingFactor = 1.3; // Multiply lineHeight by this to get the distan
 const prePhaseLineHeightFactor = 1.2; // Spacing above phase block
 const postPhaseLineHeightFactor = 1.05; // Spacing below phase block
 
-let currentIndentX = effectStartX; // Different x position to reset to when drawing a block with an indent (such as a POWER:)
+let currentIndentX = EFFECT_START_X; // Different x position to reset to when drawing a block with an indent (such as a POWER:)
 let currentOffsetX = 0; // Current x position for draw commands
 let currentOffsetY = 0; // Current y position for draw commands
 

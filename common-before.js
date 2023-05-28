@@ -9,6 +9,9 @@ const CHARACTER = "character";
 // Orientations. This should be declared in the page's script configurations as ORIENTATION.
 const VERTICAL = "vertical";
 const HORIZONTAL = "horizontal";
+// Faces. This should be declared in the page's script configurations as FACE.
+const FRONT = "front";
+const BACK = "back";
 // Card preview sizes. These should match the text content of buttons on the page.
 const SMALL = "Small";
 const MEDIUM = "Medium";
@@ -108,6 +111,8 @@ const MITER = "miter";
 // Body text properties
 const EFFECT_FONT_WEIGHT = 400;
 const EFFECT_FONT_FAMILY = 'Noto Sans';
+// Font-weight-normalized space between words
+const SPACE_WIDTH_FACTOR = 0.26;
 
 /*
 ============================================================================
@@ -165,6 +170,9 @@ setCanvasWidth(MEDIUM);
 Initialization-Dependent Global Variables
 ============================================================================
 */
+// TODO: HORIZONTAL CHARACTERS - UW hasn't set up horizontal character cards yet, so many mapped results for CHARACTER + VERTICAL cards
+//       are null. If you're reading this comment because you hit a null error, figure this value out and update the maps!
+
 // Font size for phase labels
 const _phaseFontSizeMap = new Map([
     [DECK, new Map([
@@ -186,9 +194,7 @@ const _phaseIconSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(8.9)],
-        // TODO: UW hasn't set up horizontal character cards yet, so we're leaving this null.
-        //       If you're reading this comment because you hit a null error, figure this
-        //       value out and update it! 
+        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
         [HORIZONTAL, null],
     ])],
 ]);
@@ -202,13 +208,64 @@ const _baseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(3.95)],
-        // TODO: UW hasn't set up horizontal character cards yet, so we're leaving this null.
-        //       If you're reading this comment because you hit a null error, figure this
-        //       value out and update it! 
+        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
         [HORIZONTAL, null],
     ])],
 ]);
 const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
+
+// The X position to begin drawing effect text
+const _effectStartXMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, pw(12.5)],
+        [HORIZONTAL, pw(57)],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, pw(14.5)],
+        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
+        [HORIZONTAL, null],
+    ])],
+]);
+const EFFECT_START_X = _effectStartXMap.get(CARD_FORM)?.get(ORIENTATION);
+
+// The X position to stop drawing effect text
+const _effectEndXMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, pw(101 - 12.5)],
+        [HORIZONTAL, pw(101 - 7)],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, pw(101 - 14.5)],
+        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
+        [HORIZONTAL, null],
+    ])],
+]);
+const EFFECT_END_X =  _effectEndXMap.get(CARD_FORM)?.get(ORIENTATION);
+
+// The Y position to begin drawing effect text
+const _effectStartYMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, new Map([
+            [FRONT, ph(61.5)],
+            // Deck backs don't have effect text
+            [BACK, null],
+        ])],
+        [HORIZONTAL, new Map([
+            [FRONT, ph(28)],
+            // Deck backs don't have effect text
+            [BACK, null],
+        ])],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, new Map([
+            [FRONT, ph(85.5)],
+            [BACK, ph(86)],
+        ])],
+        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
+        [HORIZONTAL, null],
+    ])],
+]);
+const EFFECT_START_Y = _effectStartYMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
 
 /*
 ============================================================================
@@ -219,13 +276,16 @@ Modifiable Global Variables
 let boxHeightOffset = 0;
 
 // Whether to use high contrast phase labels
-let useHighContrastPhaseLabels = true;
+let useHighContrastPhaseLabels = $('#inputUseHighConstrast').length > 0 ? $('#inputUseHighConstrast')[0].checked : false;
 
 // Whether a card has the Suddenly! keyword
-let suddenly = false;
+let suddenly = $('#suddenly').length > 0 ? $('#suddenly')[0].checked : false;
 
 // The scale of the body text and line height for a card. This is a value between 0 and 1, set by the user.
 let effectFontScale = 1;
 
-// The size of body text for a card. This is a convenience variable, derived from EFFECT_BASE_FONT_SIZE * effectFontScale 
-let effectFontSize = EFFECT_BASE_FONT_SIZE;
+// The size of body text for a card. This is a convenience variable, derived from effectFontScale * EFFECT_BASE_FONT_SIZE 
+let effectFontSize = effectFontScale * EFFECT_BASE_FONT_SIZE;
+
+// The size of the space between words. This is a convenience variable, derived from effectFontSize * SPACE_WIDTH_FACTOR
+let spaceWidth = effectFontSize * SPACE_WIDTH_FACTOR;

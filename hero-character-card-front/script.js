@@ -244,23 +244,13 @@ function drawHP() {
 Effect text values
 ============================================================================
 */
-// Space between words
-const spaceWidthFactor = 0.26;
-let spaceWidth = effectFontSize * spaceWidthFactor;
-
-const effectMarginXPercent = 12.5; // Percent of width on each side of text
-const effectStartX = pw(effectMarginXPercent); // Left boundary of effect text
-const effectEndX = pw(100 - effectMarginXPercent + 1); // Right boundary of effect text
-const effectStartY = ph(85.5); // Top boundary of effect text
-const effectPhaseStartX = pw(6.5); // Left boundary of phase label images
-
 const effectBaseLineHeight = pw(5);
 let lineHeight = effectBaseLineHeight * effectFontScale; // Distance between two lines in the same paragraph
 const blockSpacingFactor = 1.3; // Multiply lineHeight by this to get the distance between two blocks
 const prePhaseLineHeightFactor = 1.2; // Spacing above phase block
 const postPhaseLineHeightFactor = 1.05; // Spacing below phase block
 
-let currentIndentX = effectStartX; // Different x position to reset to when drawing a block with an indent (such as a POWER:)
+let currentIndentX = EFFECT_START_X; // Different x position to reset to when drawing a block with an indent (such as a POWER:)
 let currentOffsetX = 0; // Current x position for draw commands
 let currentOffsetY = 0; // Current y position for draw commands
 

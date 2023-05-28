@@ -588,7 +588,7 @@ function parseCardBody() {
 /**
  * Given an array of parsed blocks, calculate the box height offset of a card.
  *
- * drawBodyText() alters the currentOffsetY, so we draw once and subtract that value from effectStartY to determine the height of the drawn body content. We add 137
+ * drawBodyText() alters the currentOffsetY, so we draw once and subtract that value from EFFECT_START_Y to determine the height of the drawn body content. We add 137
  * (the closest round number representing the height of 3 lines drawn in the same paragraph) to this in order to determine the offset that a hero body box would need in
  * order to fit all of the blocks that we parsed from the user input. Hero character card body boxes have a minimum size, so we min this value with 0 to determine the offset
  * of our box (increasing the offset moves our Y position *downwards*, so a positive number yields a smaller box).
@@ -596,7 +596,7 @@ function parseCardBody() {
 function adjustBoxHeightOffset(parsedBlocks) {
   boxHeightOffset = 0;
   drawBodyText(parsedBlocks);
-  boxHeightOffset = Math.min(Math.round(effectStartY - currentOffsetY + 137), 0);
+  boxHeightOffset = Math.min(Math.round(EFFECT_START_Y - currentOffsetY + 137), 0);
   currentOffsetY = 0;
 }
 
@@ -639,14 +639,14 @@ function drawCharacterBodyBox() {
 /** Given an array of blocks, draw the body of a card from a deck. */
 function drawBodyText(parsedBlocks) {
   // Initialize positioning values
-  currentOffsetX = effectStartX;
-  currentOffsetY = effectStartY + boxHeightOffset;
+  currentOffsetX = EFFECT_START_X;
+  currentOffsetY = EFFECT_START_Y + boxHeightOffset;
 
   // Get and apply the text scale the user chose
   effectFontScale = $('#inputEffectTextSize').prop('value') / 100; // Result is between 0 and 1
   effectFontSize = EFFECT_BASE_FONT_SIZE * effectFontScale;
   lineHeight = effectBaseLineHeight * effectFontScale;
-  spaceWidth = effectFontSize * spaceWidthFactor;
+  spaceWidth = effectFontSize * SPACE_WIDTH_FACTOR;
 
   // Draw the blocks
   parsedBlocks.forEach((block, index) => {
@@ -659,7 +659,7 @@ function drawBodyText(parsedBlocks) {
 /** Draws a single block from the array of parsed blocks. */
 function drawBlock(block, isFirstBlock) {
   // Reset indentation to default
-  currentIndentX = effectStartX;
+  currentIndentX = EFFECT_START_X;
 
   if (block.type === SPACE_BLOCK) {
     drawSpaceBlock(isFirstBlock);
@@ -690,7 +690,7 @@ function drawPhaseBlock(phase, isFirstBlock) {
   const phaseText = PHASE_TEXT_MAP.get(phase);
 
   // Adjust line height based on whether this is the first block
-  currentOffsetY = isFirstBlock ? effectStartY : currentOffsetY - lineHeight + lineHeight * prePhaseLineHeightFactor;
+  currentOffsetY = isFirstBlock ? EFFECT_START_Y : currentOffsetY - lineHeight + lineHeight * prePhaseLineHeightFactor;
 
   // Get the phase icon to use
   const phaseIconKey = PHASE_ICON_MAP.get(phase) + (useHighContrastPhaseLabels ? " High Contrast" : "");
@@ -832,7 +832,7 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
       // Check to see if the line should wrap
       let wrapped = false;
       // Looks forward to see if adding this word to the current line would make the line exceed the maximum x position
-      if (currentOffsetX + spaceWidth + wordWidth > effectEndX) {
+      if (currentOffsetX + spaceWidth + wordWidth > EFFECT_END_X) {
         // If it would, then start the next line
         currentOffsetY += lineHeight;
         currentOffsetX = currentIndentX;
@@ -879,7 +879,7 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
   });
 
   // After drawing all the words, prepare for the next block
-  currentOffsetX = effectStartX;
+  currentOffsetX = EFFECT_START_X;
   currentOffsetY += lineHeight * blockSpacingFactor;
 }
 
