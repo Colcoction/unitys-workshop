@@ -606,7 +606,7 @@ function drawCharacterBodyBox() {
   const topLeft = [pw(10), ph(79) + boxHeightOffset];
   const topRight = [pw(90), ph(79) + boxHeightOffset];
   const bottomLeft = [pw(10), ph(94)];
-  const bottomRight = [pw(90), ph(93)];
+  const bottomRight = [pw(90), ph(93.3)];
 
   // Determine the initial shape of the box.
   const boxShape = new Path2D();
