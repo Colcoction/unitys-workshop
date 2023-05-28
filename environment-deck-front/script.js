@@ -105,8 +105,6 @@ function parseJSONData(data) {
 Effect text values
 ============================================================================
 */
-const effectPhaseStartX = pw(61.5); // Left boundary of phase label images
-
 const effectBaseLineHeight = ph(5);
 let lineHeight = effectBaseLineHeight * effectFontScale; // Distance between two lines in the same paragraph
 const blockSpacingFactor = 1.3; // Multiply lineHeight by this to get the distance between two blocks

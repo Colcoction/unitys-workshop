@@ -231,11 +231,11 @@ const EFFECT_START_X = _effectStartXMap.get(CARD_FORM)?.get(ORIENTATION);
 // The X position to stop drawing effect text
 const _effectEndXMap = new Map([
     [DECK, new Map([
-        [VERTICAL, pw(101 - 12.5)],
-        [HORIZONTAL, pw(101 - 7)],
+        [VERTICAL, pw(88.5)],
+        [HORIZONTAL, pw(94)],
     ])],
     [CHARACTER, new Map([
-        [VERTICAL, pw(101 - 14.5)],
+        [VERTICAL, pw(86.5)],
         // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
         [HORIZONTAL, null],
     ])],
