@@ -645,7 +645,7 @@ function drawBodyText(parsedBlocks) {
   // Get and apply the text scale the user chose
   effectFontScale = $('#inputEffectTextSize').prop('value') / 100; // Result is between 0 and 1
   effectFontSize = EFFECT_BASE_FONT_SIZE * effectFontScale;
-  lineHeight = effectBaseLineHeight * effectFontScale;
+  lineHeight = BODY_BASE_LINE_HEIGHT * effectFontScale;
   spaceWidth = effectFontSize * SPACE_WIDTH_FACTOR;
 
   // Draw the blocks
@@ -690,7 +690,7 @@ function drawPhaseBlock(phase, isFirstBlock) {
   const phaseText = PHASE_TEXT_MAP.get(phase);
 
   // Adjust line height based on whether this is the first block
-  currentOffsetY = isFirstBlock ? EFFECT_START_Y : currentOffsetY - lineHeight + lineHeight * prePhaseLineHeightFactor;
+  currentOffsetY = isFirstBlock ? EFFECT_START_Y : currentOffsetY + lineHeight * PRE_PHASE_LINE_HEIGHT_FACTOR;
 
   // Get the phase icon to use
   const phaseIconKey = PHASE_ICON_MAP.get(phase) + (useHighContrastPhaseLabels ? " High Contrast" : "");
@@ -717,7 +717,7 @@ function drawPhaseBlock(phase, isFirstBlock) {
   ctx.fillText(phaseText, currentOffsetX, currentOffsetY);
 
   // Prepare for next block
-  currentOffsetY = currentOffsetY + lineHeight * postPhaseLineHeightFactor;
+  currentOffsetY = currentOffsetY + lineHeight * POST_PHASE_LINE_HEIGHT_FACTOR;
 }
 
 /** Draws a block that uses identation, such as power and reaction effects. */
@@ -880,7 +880,7 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
 
   // After drawing all the words, prepare for the next block
   currentOffsetX = EFFECT_START_X;
-  currentOffsetY += lineHeight * blockSpacingFactor;
+  currentOffsetY += lineHeight * BLOCK_SPACING_FACTOR;
 }
 
 function getWordProperties(word) {

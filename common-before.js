@@ -113,21 +113,32 @@ const EFFECT_FONT_WEIGHT = 400;
 const EFFECT_FONT_FAMILY = 'Noto Sans';
 // Font-weight-normalized space between words
 const SPACE_WIDTH_FACTOR = 0.26;
+// A multiplicative factor used to determine the distance of 2 blocks
+const BLOCK_SPACING_FACTOR = 1.3;
+// A multiplicative factor used to determine where to begin drawing a phase block
+const PRE_PHASE_LINE_HEIGHT_FACTOR = 0.2;
+// A multiplicative factor used to determine where to draw blocks after a phase block
+const POST_PHASE_LINE_HEIGHT_FACTOR = 1.05;
+// The terms that should be bolded by default
+const DEFAULT_BOLD_LIST = new Set(["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY"]);
+// The terms that should be italicized by default
+const DEFAULT_ITALICS_LIST = new Set(["PERFORM", "ACCOMPANY"]);
 
 /*
 ============================================================================
 Global functions
 ============================================================================
 */
-// Short function to convert percentage (ex: 50) into pixels
 /** Gets the pixel count that corresponds to a given percentage width. */
 function pw(percentageWidth) {
     return percentageWidth * canvas.width / 100;
 }
+
 /** Gets the pixel count that corresponds to a given percentage height. */
 function ph(percentageHeight) {
     return percentageHeight * canvas.height / 100;
 }
+
 /**
  * Gets the pixel count that corresponds to a given percentage of the card's smallest dimension, which is
  * height for horizontal cards and width for vertical cards.
@@ -138,6 +149,21 @@ function ps(percentageSmall) {
     }
     // else ORIENTATION === VERTICAL
     return pw(percentageSmall);
+}
+
+/** Loads a a list of custom terms to bold and italicize alongside the default list. */
+function loadEffectList() {
+    // Get the list of user-specified terms. If it doesn't exist, return an empty array.
+    const customEffectList = $('#inputBoldWords').prop('value') ?
+        $('#inputBoldWords').prop('value')
+            .toUpperCase()
+            .split(",")
+            .map(x => x.trim())
+            .filter(x => x != "") :
+        [];
+    // Union that list with the list of default bold & default italicized terms
+    effectBoldList = Array.from(new Set([...DEFAULT_BOLD_LIST, ...customEffectList]));
+    effectItalicsList = Array.from(new Set([...DEFAULT_ITALICS_LIST, ...customEffectList]));
 }
 
 // Sets canvas width given a card preview size, using the page's pre-configured orientation
@@ -267,6 +293,10 @@ const _effectStartYMap = new Map([
 ]);
 const EFFECT_START_Y = _effectStartYMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
 
+// The base line height. Used to set the line height for body text.
+const BODY_BASE_LINE_HEIGHT = ps(5);
+
+
 /*
 ============================================================================
 Modifiable Global Variables
@@ -289,3 +319,21 @@ let effectFontSize = effectFontScale * EFFECT_BASE_FONT_SIZE;
 
 // The size of the space between words. This is a convenience variable, derived from effectFontSize * SPACE_WIDTH_FACTOR
 let spaceWidth = effectFontSize * SPACE_WIDTH_FACTOR;
+
+// The line height for body text. This is a convenience variable, derived from effectFontScale * BODY_BASE_LINE_HEIGHT
+let lineHeight = effectFontScale * BODY_BASE_LINE_HEIGHT;
+
+// These phrases will be automatically bolded. This list is updated based on user input.
+let effectBoldList = Array.from(DEFAULT_BOLD_LIST);
+
+// These phrases will be automatically italicized. This list is updated based on user input.
+let effectItalicsList = Array.from(DEFAULT_ITALICS_LIST);
+
+// The indentation of the X-position cursor when drawing indented blocks (such as Power, Reaction, and Bullet point blocks).
+let currentIndentX = EFFECT_START_X;
+
+// The X position for draw commands.
+let currentOffsetX = 0;
+
+// The Y position for draw commands.
+let currentOffsetY = 0;

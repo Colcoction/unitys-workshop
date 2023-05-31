@@ -177,25 +177,3 @@ function drawCardCanvas() {
   // Draw the character body box, and the text in the card body.
   drawBodyText(parsedBlocks);
 }
-
-
-/*
-============================================================================
-Effect text values
-============================================================================
-*/
-const effectBaseLineHeight = pw(5);
-let lineHeight = effectBaseLineHeight * effectFontScale; // Distance between two lines in the same paragraph
-const blockSpacingFactor = 1.3; // Multiply lineHeight by this to get the distance between two blocks
-const prePhaseLineHeightFactor = 1.2; // Spacing above phase block
-const postPhaseLineHeightFactor = 1.05; // Spacing below phase block
-
-let currentIndentX = EFFECT_START_X; // Different x position to reset to when drawing a block with an indent (such as a POWER:)
-let currentOffsetX = 0; // Current x position for draw commands
-let currentOffsetY = 0; // Current y position for draw commands
-
-
-// These phrases will be automatically bolded
-var effectBoldList = ["START PHASE", "PLAY PHASE", "POWER PHASE", "DRAW PHASE", "END PHASE", "PERFORM", "ACCOMPANY"];
-// These phrases will be automatically italicized
-var effectItalicsList = ["PERFORM", "ACCOMPANY"];
