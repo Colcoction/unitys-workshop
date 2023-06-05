@@ -243,16 +243,27 @@ const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
 // The X position to begin drawing effect text
 const _effectStartXMap = new Map([
     [DECK, new Map([
-        [VERTICAL, pw(12.5)],
-        [HORIZONTAL, pw(57)],
+        [VERTICAL, new Map([
+            [FRONT, pw(12.5)],
+            // Deck backs don't have effect text
+            [BACK, null],
+        ])],
+        [HORIZONTAL, new Map([
+            [FRONT, pw(57)],
+            // Deck backs don't have effect text
+            [BACK, null],
+        ])],
     ])],
     [CHARACTER, new Map([
-        [VERTICAL, pw(14.5)],
+        [VERTICAL, new Map([
+            [FRONT, pw(12.5)],
+            [BACK, pw(14.5)]
+        ])],
         // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
         [HORIZONTAL, null],
     ])],
 ]);
-const EFFECT_START_X = _effectStartXMap.get(CARD_FORM)?.get(ORIENTATION);
+const EFFECT_START_X = _effectStartXMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
 
 // The X position to stop drawing effect text
 const _effectEndXMap = new Map([
