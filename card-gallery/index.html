@@ -85,11 +85,6 @@
     .tips ul {
       margin: 0;
     }
-
-    .checkbox {
-      display: inline;
-      width: auto;
-    }
   </style>
 
 </head>
@@ -103,8 +98,10 @@
     <input type="text" class="searchInput" placeholder='Search for a string of text in the details of a card.' />
     <details class="tips">
       <summary>Advanced</summary>
-      <input type="checkbox" id="regex" name="regex" class="checkbox" value="true">
-      <label for="regex" class="checkbox"> Use regular expressions</label>
+      <div class="checkboxGroup">
+        <input type="checkbox" id="regex" value="true">
+      <label for="regex">Use regular expressions</label>
+      </div>
     </details>
     <details class="tips">
       <summary>Tips</summary>
