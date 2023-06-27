@@ -325,7 +325,7 @@ let suddenly = $('#suddenly').length > 0 ? $('#suddenly')[0].checked : false;
 // The scale of the body text and line height for a card. This is a value between 0 and 1, set by the user.
 let effectFontScale = 1;
 
-// The size of body text for a card. This is a convenience variable, derived from effectFontScale * EFFECT_BASE_FONT_SIZE 
+// The size of body text for a card. This is a convenience variable, derived from effectFontScale * EFFECT_BASE_FONT_SIZE
 let effectFontSize = effectFontScale * EFFECT_BASE_FONT_SIZE;
 
 // The size of the space between words. This is a convenience variable, derived from effectFontSize * SPACE_WIDTH_FACTOR
@@ -348,3 +348,6 @@ let currentOffsetX = 0;
 
 // The Y position for draw commands.
 let currentOffsetY = 0;
+
+// Whether to display the card border for character cards
+let showBorder = $('#inputDisplayBorder').length > 0 ? $('#inputDisplayBorder')[0].checked : true;

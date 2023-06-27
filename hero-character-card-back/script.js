@@ -113,8 +113,10 @@ function drawCardCanvas() {
 
   drawCharacterBodyBox();
 
-  // === Draw the card border
-  ctx.drawImage(loadedGraphics['Border'], 0, 0, canvas.width, canvas.height);
+  if (showBorder) {
+    // === Draw the card border
+    ctx.drawImage(loadedGraphics['Border'], 0, 0, canvas.width, canvas.height);
+  }
 
   // == Draw the power name
 

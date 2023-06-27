@@ -113,6 +113,12 @@ $('#suddenly').on('input', function () {
   drawCardCanvas();
 });
 
+// Toggle card border and re-draw
+$('#inputDisplayBorder').on('input', function () {
+  showBorder = this.checked;
+  drawCardCanvas();
+});
+
 
 /*
 ============================================================================
