@@ -84,7 +84,7 @@ img {
   font-weight: 600;
 }
 
-.inputGroup summary {
+.inputGroup details:not(:first-child) summary {
   margin-top: 5px;
 }
 
