@@ -143,12 +143,18 @@
         <input type="file" accept="image/*" class="contentInput" id="inputImageFile">
         <!-- These ranges all represent percents, ex: 50 = 50% or times 0.5 -->
         <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
-        <input type="range" class="contentInput" id="inputImageOffsetX" min="-50" max="50" value="0">
+        <input type="range" data-image-purpose="mainArt" class="contentInput inputImageOffsetX rangeSlider" min="-50" max="50" data-default="0">
+        <input type="text" data-image-purpose="mainArt" class="contentInput rangeText" data-default="0">
+
         <label for="inputImageOffsetY">Y Position</label>
-        <input type="range" class="contentInput" id="inputImageOffsetY" min="-50" max="50" value="0">
+        <input type="range" data-image-purpose="mainArt" class="contentInput inputImageOffsetY rangeSlider" min="-50" max="50" data-default="0">
+        <input type="text" data-image-purpose="mainArt" class="contentInput rangeText" data-default="0">
+
         <label for="inputImageScale">Zoom</label>
-        <input type="range" class="contentInput" id="inputImageScale" min="50" max="500" value="100">
-        <button style="margin-top: 10px;" id="imageAdjustmentResetButton">Reset Adjustments</button>
+        <input type="range" data-image-purpose="mainArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
+        <input type="text" data-image-purpose="mainArt" class="contentInput rangeText" data-default="100">
+
+        <button style="margin-top: 10px;" data-image-purpose="mainArt" class="adjustmentResetButton">Reset Adjustments</button>
       </div>
     </div>
     <div>
@@ -163,6 +169,14 @@
 
   <!-- jQuery -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+
+  <!-- Declarations -->
+  <script>
+    const CARD_FORM = "back";
+    const ORIENTATION = "horizontal";
+    const FACE = "back";
+    const DEFAULT_DOWNLOAD_NAME = "environment-deck-back";
+  </script>
   <!-- Common script -->
   <script src="../common-before.js"></script>
   <!-- Script specific to this page -->

@@ -1,44 +1,3 @@
-
-
-// Default canvas preview size
-$('#canvasContainer').css({ width: 600 });
-
-// Canvas preview size button
-$('.previewSizeButton').on('click', function (e) {
-  // Get the button's text (the name of the size)
-  let sizeName = e.target.textContent;
-  // Based on name, determine new size
-  let sizeValue = 0;
-  if (sizeName === 'Small') { sizeValue = 600; } else
-    if (sizeName === 'Medium') { sizeValue = 800; } else
-      if (sizeName === 'Large') { sizeValue = 1000; }
-  // Apply the new display size of the canvas
-  $('#canvasContainer').css({ width: sizeValue });
-})
-
-// Download button
-$('#downloadButton').on('click', function () {
-  let link = document.createElement('a');
-  link.download = 'Deck Back.png';
-  link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
-  link.click();
-})
-
-// Reset art adjustments button
-$('#imageAdjustmentResetButton').on('click', function () {
-  // Reset input values
-  $('#inputImageOffsetX').val('0');
-  $('#inputImageOffsetY').val('0');
-  $('#inputImageScale').val('100');
-  // Redraw canvas (since "on input" event didn't trigger)
-  drawCardCanvas();
-})
-
-// Draw the canvas on window load. Helpful for situations like testing with a hardcoded effect text
-$(window).on('load', function () {
-  drawCardCanvas();
-})
-
 /*
 ============================================================================
 Loading and app prep-work
@@ -81,9 +40,6 @@ $('#inputImageFile').on('input', function (e) {
   }
 })
 
-
-// Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
-$('.contentInput').on('input', drawCardCanvas);
 
 /*
 ============================================================================
@@ -138,9 +94,9 @@ function drawCardArt() {
   let initialScale = 1;
 
   // Get offset values
-  let imageOffsetX = parseInt($('#inputImageOffsetX').prop('value'));
-  let imageOffsetY = parseInt($('#inputImageOffsetY').prop('value')) * -1;
-  let userScale = parseInt($('#inputImageScale').prop('value'));
+  let imageOffsetX = parseInt($('.inputImageOffsetX').prop('value'));
+  let imageOffsetY = parseInt($('.inputImageOffsetY').prop('value')) * -1;
+  let userScale = parseInt($('.inputImageScale').prop('value'));
 
   // Draw the image
 

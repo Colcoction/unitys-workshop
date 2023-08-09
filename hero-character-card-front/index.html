@@ -175,7 +175,17 @@
           <input type="range" data-image-purpose="nemesisIcon" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
           <input type="text" data-image-purpose="nemesisIcon" class="contentInput rangeText" data-default="100">
 
-          <button style="margin-top: 10px;" data-image-purpose="nemesisIcon" class="adjustmentResetButton">Clear Image and Adjustments</button>
+          <button style="margin-top: 10px;" data-image-purpose="nemesisIcon" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
+        </details>
+      </div>
+
+      <div class="inputGroup">
+        <details>
+          <summary>Advanced Formatting</summary>
+          <div class="checkboxGroup" style="margin-top: 10px">
+            <input type="checkbox" class="contentInput" id="inputDisplayBorder" checked=”true”>
+            <label for="inputDisplayBorder">Show border</label>
+          </div>
         </details>
       </div>
 
@@ -211,7 +221,7 @@
           <input type="range" data-image-purpose="backgroundArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
           <input type="text" data-image-purpose="backgroundArt" class="contentInput rangeText" data-default="100">
 
-          <button style="margin-top: 10px;" data-image-purpose="backgroundArt" class="adjustmentResetButton">Clear Image and Adjustments</button>
+          <button style="margin-top: 10px;" data-image-purpose="backgroundArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
       </div>
 
@@ -232,7 +242,7 @@
           <input type="range" data-image-purpose="foregroundArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
           <input type="text" data-image-purpose="foregroundArt" class="contentInput rangeText" data-default="100">
 
-          <button style="margin-top: 10px;" data-image-purpose="foregroundArt" class="adjustmentResetButton">Clear Image and Adjustments</button>
+          <button style="margin-top: 10px;" data-image-purpose="foregroundArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
       </div>
 
@@ -253,7 +263,7 @@
           <input type="range" data-image-purpose="heroNameArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
           <input type="text" data-image-purpose="heroNameArt" class="contentInput rangeText" data-default="100">
 
-          <button style="margin-top: 10px;" data-image-purpose="heroNameArt" class="adjustmentResetButton">Clear Image and Adjustments</button>
+          <button style="margin-top: 10px;" data-image-purpose="heroNameArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
       </div>
 
@@ -275,6 +285,13 @@
   <!-- jQuery -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 
+  <!-- Declarations -->
+  <script>
+    const CARD_FORM = "character";
+    const ORIENTATION = "vertical";
+    const FACE = "front";
+    const DEFAULT_DOWNLOAD_NAME = "hero-character-front";
+  </script>
   <!-- Common script -->
   <script src="../common-before.js"></script>
   <!-- Script specific to this page -->

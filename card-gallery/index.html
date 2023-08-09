@@ -97,6 +97,13 @@
     <div style="margin-bottom:5px;"><a href="/">Home</a></div>
     <input type="text" class="searchInput" placeholder='Search for a string of text in the details of a card.' />
     <details class="tips">
+      <summary>Advanced</summary>
+      <div class="checkboxGroup">
+        <input type="checkbox" id="regex" value="true">
+      <label for="regex">Use regular expressions</label>
+      </div>
+    </details>
+    <details class="tips">
       <summary>Tips</summary>
       <ul>
         <li>Searches are not case-sensitive.</li>
@@ -351,21 +358,39 @@
 
     // Filter display based on search input
     $(".searchInput").on("input", function (e) {
-      // Get the query and make it not case-sensitive
-      const query = $(this).val().toLowerCase();
+      // Check if regex checkbox is checked
+      if($("#regex").is(":checked")){
+        // Create new RegExp from search value, catch errors and do nothing will malformed RegExp
+        try{
+          const regex = new RegExp( $(this).val(), "i")
 
-      // Show or hide each card
-      $(".card").each(function (index, element) {
-        // Get card content (text of cardDetails element basically) and make it not case-sensitive
-        let cardContent = $(this).text().toLowerCase();
-        // See if the card content contains the query
-        if (cardContent.includes(query)) {
-          $(this).show();
-        }
-        else {
-          $(this).hide();
-        }
-      })
+          $(".card").each(function (index, element) {
+            // Get card content (text of cardDetails element basically) and test against RegExp search
+            if (regex.test($(this).text())) {
+              $(this).show();
+            }
+            else {
+              $(this).hide();
+            }
+          })
+        } catch(e){}
+      }else{
+        // Get the query and make it not case-sensitive
+        const query = $(this).val().toLowerCase();
+
+        // Show or hide each card
+        $(".card").each(function (index, element) {
+          // Get card content (text of cardDetails element basically) and make it not case-sensitive
+          let cardContent = $(this).text().toLowerCase();
+          // See if the card content contains the query
+          if (cardContent.includes(query)) {
+            $(this).show();
+          }
+          else {
+            $(this).hide();
+          }
+        })
+      }
     })
 
 

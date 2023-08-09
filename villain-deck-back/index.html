@@ -155,7 +155,7 @@
           <input type="range" data-image-purpose="villainNameArt" class="contentInput inputImageScale rangeSlider" min="50" max="200" data-default="90">
           <input type="text" data-image-purpose="villainNameArt" class="contentInput rangeText" data-default="90">
 
-          <button style="margin-top: 10px;" data-image-purpose="villainNameArt" class="adjustmentResetButton">Clear Image and Adjustments</button>
+          <button style="margin-top: 10px;" data-image-purpose="villainNameArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
       </div>
     </div>
@@ -179,7 +179,7 @@
           <input type="range" data-image-purpose="topArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
           <input type="text" data-image-purpose="topArt" class="contentInput rangeText" data-default="100">
 
-          <button style="margin-top: 10px;" data-image-purpose="topArt" class="adjustmentResetButton">Clear Image and Adjustments</button>
+          <button style="margin-top: 10px;" data-image-purpose="topArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
       </div>
 
@@ -201,7 +201,7 @@
           <input type="range" data-image-purpose="leftArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
           <input type="text" data-image-purpose="leftArt" class="contentInput rangeText" data-default="100">
 
-          <button style="margin-top: 10px;" data-image-purpose="leftArt" class="adjustmentResetButton">Clear Image and Adjustments</button>
+          <button style="margin-top: 10px;" data-image-purpose="leftArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
       </div>
 
@@ -223,7 +223,7 @@
           <input type="range" data-image-purpose="rightArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
           <input type="text" data-image-purpose="rightArt" class="contentInput rangeText" data-default="100">
 
-          <button style="margin-top: 10px;" data-image-purpose="rightArt" class="adjustmentResetButton">Clear Image and Adjustments</button>
+          <button style="margin-top: 10px;" data-image-purpose="rightArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
       </div>
     </div>
@@ -243,6 +243,13 @@
   <!-- jQuery -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 
+  <!-- Declarations -->
+  <script>
+    const CARD_FORM = "back";
+    const ORIENTATION = "vertical";
+    const FACE = "back";
+    const DEFAULT_DOWNLOAD_NAME = "villain-deck-back";
+  </script>
   <!-- Common script -->
   <script src="../common-before.js"></script>
   <!-- Script specific to this page -->

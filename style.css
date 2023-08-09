@@ -84,7 +84,7 @@ img {
   font-weight: 600;
 }
 
-.inputGroup summary {
+.inputGroup details:not(:first-child) summary {
   margin-top: 5px;
 }
 
@@ -218,7 +218,7 @@ label {
 .checkboxGroup input[type="checkbox"] {
   width: auto;
   margin-right: 10px;
-  margin-top: 5px;
+  margin-top: 0px;
 }
 /* .checkboxGroup label {
   margin-bottom: 0;
