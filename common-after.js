@@ -366,12 +366,6 @@ function getUserImageAdjustments(areaName) {
   return adjustments;
 }
 
-// to be able to get the index of a given regex (used for special words)
-function regexIndexOf(string, regex, startPos = 0) {
-  let indexOf = string.substring(startPos).search(regex);
-  return (indexOf >= 0) ? (indexOf + startPos) : indexOf;
-}
-
 // Function to handle creating and providing information about a region to draw an image inside
 function coordinatesToPathShape(coordinates) {
 
