@@ -119,6 +119,28 @@ $('#inputDisplayBorder').on('input', function () {
   drawCardCanvas();
 });
 
+// Parse JSON input buttom
+$('#parseJsonInputButton').on('click', function () {
+  // attempt to parse the JSON
+  let jsonString = $('#jsonInput').prop('value');
+  // get rid of extra commas that happen when pasting from array
+  if (jsonString.slice(-1) == ',') {
+    jsonString = jsonString.slice(0,-1)
+  }
+  try {
+    let jsonData = JSON.parse(jsonString);
+    parseJSONData(jsonData);
+  } catch(err) {
+    $('#jsonError').text("JSON Parse error:" + err.message);
+    return;
+  }
+  $('#jsonError').text("");
+})
+
+// Output JSON Input button
+$('#outputJsonButton').on('click', function () {
+  outputJSONData();
+});
 
 /*
 ============================================================================
@@ -492,6 +514,185 @@ function drawArtInCroppedArea(areaName) {
   // Release clip
   ctx.restore();
   ctx.save();
+}
+
+/*
+============================================================================
+JSON Parsing
+============================================================================
+*/
+
+function parseJSONData(data) {
+  if('Title' in data) {
+    $('#inputTitle').val(data.Title);
+  } else {
+    $('#inputTitle').val('');
+  }
+  if('HP' in data) {
+    $('#inputHP').val(data.HP);
+  } else {
+    $('#inputHP').val('');
+  }
+  if('Keywords' in data) {
+    $('#inputKeywords').val(data.Keywords);
+  } else {
+    $('#inputKeywords').val('');
+  }
+  if('BoldedTerms' in data) {
+    $('#inputBoldWords').val(data.BoldedTerms);
+  } else {
+    $('#inputBoldWords').val('');
+  }
+  if('GameText' in data) {
+    $('#inputEffect').val(data.GameText);
+  } else {
+    $('#inputEffect').val('');
+  }
+  if('GameTextSize' in data) {
+    $('#inputEffectTextSize').val(data.GameTextSize);
+  } else {
+    $('#inputEffectTextSize').val(100);
+  }
+  if('Quote' in data) {
+    $('#inputQuote').val(data.Quote);
+  } else {
+    $('#inputQuote').val('');
+  }
+  if('QuoteTextSize' in data) {
+    $('#inputQuoteTextSize').val(data.QuoteTextSize);
+  } else {
+    $('#inputQuoteTextSize').val(100);
+  }
+  if('Attribution' in data) {
+    $('#inputAttribution').val(data.Attribution);
+  } else {
+    $('#inputAttribution').val('');
+  }
+  if('ImageURL' in data) {
+    cardArtImage = new Image();
+    cardArtImage.src = data.ImageURL;
+    cardArtImage.onload = function (e) {
+      // Once the Image has loaded, redraw the canvas so it immediately appears
+      drawCardCanvas();
+    }
+  } else {
+    cardArtImage = undefined;
+  }
+  if('ImageX' in data) {
+    $('.inputImageOffsetX').val(data.ImageX);
+  } else {
+    $('.inputImageOffsetX').val(0);
+  }
+  if('ImageY' in data) {
+    $('.inputImageOffsetY').val(data.ImageY);
+  } else {
+    $('.inputImageOffsetY').val(0);
+  }
+  if('ImageZoom' in data) {
+    // special parsing for the zoom value, as if it's fed a non-number, it will
+    // default to the middle of the bar, which is not the default
+    let zoomVal = parseInt(data.ImageZoom);
+    if (zoomVal == NaN) {
+      zoomVal = 0;
+    }
+    $('.inputImageScale').val(zoomVal);
+  } else {
+    $('.inputImageScale').val(100);
+  }
+  if ($('#suddenly').length > 0) {
+    if('Suddenly' in data && data.Suddenly.toUpperCase() == "TRUE") {
+      $('#suddenly')[0].checked = true;
+      suddenly = true;
+    } else {
+      $('#suddenly')[0].checked = false;
+      suddenly = false;
+    }
+  }
+  drawCardCanvas();
+}
+
+function outputJSONData() {
+  var imageURL = "";
+  if (cardArtImage != null) {
+    imageURL = cardArtImage.src;
+  }
+  var outputJSON = `{
+    "Title": ${JSON.stringify($('#inputTitle').val())},
+    "HP": ${JSON.stringify($('#inputHP').val())},
+    "Keywords": ${JSON.stringify($('#inputKeywords').val())},
+    "BoldedTerms": ${JSON.stringify($('#inputBoldWords').val())},
+    "GameText": ${JSON.stringify($('#inputEffect').val())},
+    "GameTextSize": ${JSON.stringify($('#inputEffectTextSize').val())},
+    "Quote": ${JSON.stringify($('#inputQuote').val())},
+    "QuoteTextSize": ${JSON.stringify($('#inputQuoteTextSize').val())},
+    "Attribution": ${JSON.stringify($('#inputAttribution').val())},
+    "ImageURL": ${JSON.stringify(imageURL)},
+    "ImageX": ${JSON.stringify($('.inputImageOffsetX').val())},
+    "ImageY": ${JSON.stringify($('.inputImageOffsetY').val())},
+    "ImageZoom": ${JSON.stringify($('.inputImageScale').val())},
+    "Suddenly": "${JSON.stringify($('#suddenly')[0].checked)}"
+  },`;
+  $('#jsonInput').val(outputJSON);
+}
+
+/*
+============================================================================
+Functions for rendering card quotes
+============================================================================
+*/
+
+function drawCardQuote() {
+  // Get input value
+  let inputValue = $('#inputQuote').prop('value');
+  // Quote style properties
+  ctx.fillStyle = colorBlack;
+  let quoteFontScale = $('#inputQuoteTextSize').prop('value') / 100;
+  let quoteFontSize = QUOTE_FONT_SIZE * quoteFontScale;
+  ctx.font = "400 normal " + quoteFontSize + "px Unmasked BB";
+  ctx.textAlign = "center";
+  let quoteMaxWidth = QUOTE_WIDTH;
+  let quoteCenterX = QUOTE_START_X;
+  let quoteCenterY = QUOTE_START_Y;
+  let quoteLineHeight = quoteFontSize * 0.93;
+
+  // Set the string of text to work with
+  let quoteString = inputValue;
+
+  // Extract all the words
+  let words = quoteString.split(' ');
+
+  // Detect when there should be a line break
+  let lines = [''];
+  let currentLineIndex = 0;
+  for (let i = 0; i < words.length; i++) {
+    // First word of quote is easy
+    if (i === 0) {
+      lines[currentLineIndex] = words[i];
+      continue;
+    }
+    // For all other words...
+    // Check if adding this word would cause the line width to exceed the maximum
+    let lineWithWordAdded = lines[currentLineIndex] + ' ' + words[i];
+    if (ctx.measureText(lineWithWordAdded).width < quoteMaxWidth) {
+      // Add word to current line
+      lines[currentLineIndex] += ' ' + words[i];
+    }
+    else {
+      // Break into new line
+      currentLineIndex++;
+      lines[currentLineIndex] = words[i];
+    }
+  }
+
+  // Iterate through lines
+  let quoteTotalHeight = quoteLineHeight * lines.length;
+  for (let i = 0; i < lines.length; i++) {
+    // Determine drawing origin
+    let drawX = quoteCenterX;
+    let drawY = quoteCenterY - (quoteTotalHeight / 2) + (quoteLineHeight * i);
+    // Draw the line of text
+    ctx.fillText(lines[i], drawX, drawY);
+  }
 }
 
 /*

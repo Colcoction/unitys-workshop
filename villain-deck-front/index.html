@@ -185,6 +185,8 @@
         <textarea rows="3" class="contentInput" id="inputQuote"></textarea>
         <label for="inputAttribution" style="margin-top: 10px;">Attribution</label>
         <input type="text" class="contentInput" id="inputAttribution">
+        <label for="inputQuoteTextSize" style="margin-top: 10px;">Size</label>
+        <input type="range" class="contentInput" id="inputQuoteTextSize" min="80" max="100" value="100">
       </div>
     </div>
     <div>
@@ -199,6 +201,7 @@
       <div id="jsonError" class="errorMessage"></div>
       <textarea rows="10" class="contentInput" id="jsonInput"></textarea>
       <button style="margin-top: 10px;" id="parseJsonInputButton">Parse JSON</button>
+      <button style="margin-top: 10px;" id="outputJsonButton">Output JSON</button>
     </div>
   </div>
 

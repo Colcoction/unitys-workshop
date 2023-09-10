@@ -307,6 +307,84 @@ const EFFECT_START_Y = _effectStartYMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FA
 // The base line height. Used to set the line height for body text.
 const BODY_BASE_LINE_HEIGHT = ps(5);
 
+// Values for quotes:
+// NOTE: All quote values have been left null for characters, given that no character card currently
+// has quote text.
+// Font size for quote text
+const _quoteFontSizeMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, pw(3.5)],
+        [HORIZONTAL, ph(3.4)],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, null],
+        [HORIZONTAL, null],
+    ])],
+]);
+const QUOTE_FONT_SIZE = _quoteFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
+
+// These values assume quotes are centered horizontally.
+const _quoteStartXMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, new Map([
+            [FRONT, pw(50)],
+            // Deck backs don't have quotes
+            [BACK, null],
+        ])],
+        [HORIZONTAL, new Map([
+            [FRONT, pw(72)],
+            // Deck backs don't have quotes
+            [BACK, null],
+        ])],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, null],
+        [HORIZONTAL, null],
+    ])],
+]);
+const QUOTE_START_X = _quoteStartXMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
+
+// These values assume quotes are centered vertically.
+const _quoteStartYMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, new Map([
+            [FRONT, ph(92.3)],
+            // Deck backs don't have quotes
+            [BACK, null],
+        ])],
+        [HORIZONTAL, new Map([
+            [FRONT, ph(87)],
+            // Deck backs don't have quotes
+            [BACK, null],
+        ])],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, null],
+        [HORIZONTAL, null],
+    ])],
+]);
+const QUOTE_START_Y = _quoteStartYMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
+
+const _quoteWidthMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, new Map([
+            [FRONT, pw(75)],
+            // Deck backs don't have quotes
+            [BACK, null],
+        ])],
+        [HORIZONTAL, new Map([
+            [FRONT, ph(68)],
+            // Deck backs don't have quotes
+            [BACK, null],
+        ])],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, null],
+        [HORIZONTAL, null],
+    ])],
+]);
+const QUOTE_WIDTH = _quoteWidthMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
+
 
 /*
 ============================================================================

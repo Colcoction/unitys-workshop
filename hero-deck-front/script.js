@@ -419,58 +419,59 @@ function drawCardKeywords() {
 }
 
 
-function drawCardQuote() {
-  // Get input value
-  let inputValue = $('#inputQuote').prop('value');
-  // Quote style properties
-  ctx.fillStyle = colorBlack;
-  let quoteFontSize = pw(3.5);
-  ctx.font = "400 normal " + quoteFontSize + "px Unmasked BB";
-  ctx.textAlign = "center";
-  let quoteMaxWidth = pw(75);
-  let quoteCenterX = pw(50);
-  let quoteCenterY = ph(92.3);
-  let quoteLineHeight = quoteFontSize * 0.93;
+// function drawCardQuote() {
+//   // Get input value
+//   let inputValue = $('#inputQuote').prop('value');
+//   // Quote style properties
+//   ctx.fillStyle = colorBlack;
+//   let quoteFontScale = $('#inputQuoteTextSize').prop('value') / 100;
+//   let quoteFontSize = QUOTE_FONT_SIZE * quoteFontScale;
+//   ctx.font = "400 normal " + quoteFontSize + "px Unmasked BB";
+//   ctx.textAlign = "center";
+//   let quoteMaxWidth = pw(75);
+//   let quoteCenterX = pw(50);
+//   let quoteCenterY = ph(92.3);
+//   let quoteLineHeight = quoteFontSize * 0.93;
 
-  // Set the string of text to work with
-  let quoteString = inputValue;
+//   // Set the string of text to work with
+//   let quoteString = inputValue;
 
-  // Extract all the words
-  let words = quoteString.split(' ');
+//   // Extract all the words
+//   let words = quoteString.split(' ');
 
-  // Detect when there should be a line break
-  let lines = [''];
-  let currentLineIndex = 0;
-  for (let i = 0; i < words.length; i++) {
-    // First word of quote is easy
-    if (i === 0) {
-      lines[currentLineIndex] = words[i];
-      continue;
-    }
-    // For all other words...
-    // Check if adding this word would cause the line width to exceed the maximum
-    let lineWithWordAdded = lines[currentLineIndex] + ' ' + words[i];
-    if (ctx.measureText(lineWithWordAdded).width < quoteMaxWidth) {
-      // Add word to current line
-      lines[currentLineIndex] += ' ' + words[i];
-    }
-    else {
-      // Break into new line
-      currentLineIndex++;
-      lines[currentLineIndex] = words[i];
-    }
-  }
+//   // Detect when there should be a line break
+//   let lines = [''];
+//   let currentLineIndex = 0;
+//   for (let i = 0; i < words.length; i++) {
+//     // First word of quote is easy
+//     if (i === 0) {
+//       lines[currentLineIndex] = words[i];
+//       continue;
+//     }
+//     // For all other words...
+//     // Check if adding this word would cause the line width to exceed the maximum
+//     let lineWithWordAdded = lines[currentLineIndex] + ' ' + words[i];
+//     if (ctx.measureText(lineWithWordAdded).width < quoteMaxWidth) {
+//       // Add word to current line
+//       lines[currentLineIndex] += ' ' + words[i];
+//     }
+//     else {
+//       // Break into new line
+//       currentLineIndex++;
+//       lines[currentLineIndex] = words[i];
+//     }
+//   }
 
-  // Iterate through lines
-  let quoteTotalHeight = quoteLineHeight * lines.length;
-  for (let i = 0; i < lines.length; i++) {
-    // Determine drawing origin
-    let drawX = quoteCenterX;
-    let drawY = quoteCenterY - (quoteTotalHeight / 2) + (quoteLineHeight * i);
-    // Draw the line of text
-    ctx.fillText(lines[i], drawX, drawY);
-  }
-}
+//   // Iterate through lines
+//   let quoteTotalHeight = quoteLineHeight * lines.length;
+//   for (let i = 0; i < lines.length; i++) {
+//     // Determine drawing origin
+//     let drawX = quoteCenterX;
+//     let drawY = quoteCenterY - (quoteTotalHeight / 2) + (quoteLineHeight * i);
+//     // Draw the line of text
+//     ctx.fillText(lines[i], drawX, drawY);
+//   }
+// }
 
 
 
