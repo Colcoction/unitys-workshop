@@ -687,7 +687,7 @@ function parseJSONData(data) {
     }
     $('.inputImageScale').val(zoomVal);
   } else {
-    $('.inputImageScale').val(100);
+    $('.inputImageScale').val(0);
   }
   if ($('#suddenly').length > 0) {
     if('Suddenly' in data && data.Suddenly.toUpperCase() == "TRUE") {
