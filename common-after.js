@@ -99,13 +99,11 @@ $('#downloadButton').on('click', function () {
 $(window).on('load', drawCardCanvas);
 $('.contentInput').on('input', drawCardCanvas);
 
-
 // Toggle high contrast phase labels and re-draw
 $('#inputUseHighConstrast').on('input', function () {
   useHighContrastPhaseLabels = this.checked;
   drawCardCanvas();
 });
-
 
 // Toggle Suddenly! and re-draw
 $('#suddenly').on('input', function () {
@@ -116,6 +114,12 @@ $('#suddenly').on('input', function () {
 // Toggle card border and re-draw
 $('#inputDisplayBorder').on('input', function () {
   showBorder = this.checked;
+  drawCardCanvas();
+});
+
+// Toggle card border and re-draw
+$('#inputVariantToggle').on('input', function () {
+  isVariant = this.checked;
   drawCardCanvas();
 });
 

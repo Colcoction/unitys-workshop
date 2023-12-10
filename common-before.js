@@ -429,3 +429,6 @@ let currentOffsetY = 0;
 
 // Whether to display the card border for character cards
 let showBorder = $('#inputDisplayBorder').length > 0 ? $('#inputDisplayBorder')[0].checked : true;
+
+// Whether to display the variant tag for Hero character cards
+let isVariant = $('#inputVariantToggle').length > 0 ? $('#inputVariantToggle')[0].checked : false;

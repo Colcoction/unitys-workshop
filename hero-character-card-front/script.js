@@ -128,6 +128,11 @@ function drawCardCanvas() {
   drawCharacterBodyBox();
   drawBodyText(parsedBlocks);
 
+  // Draw the variant tag if it's enabled
+  if (isVariant) {
+    drawVariantTag();
+  }
+
   // == Draw the power name
   const powerNameX = pw(12.5);
   const powerNameY = ph(82.5) + boxHeightOffset;
@@ -237,4 +242,20 @@ function drawHP() {
   ctx.fillText(inputHP, hpTextX, hpTextY);
   // Reset
   ctx.textAlign = "left";
+}
+
+/**
+ * Draws the Variant tag on a Hero character card.
+ */
+function drawVariantTag() {
+  let tagX = pw(77);
+  // TODO(sjzhu): Make this change when CC reminder text is applied
+  let tagY = ph(94.6);
+  let tagFontSize = pw(2.7);
+  ctx.save();
+  ctx.fillStyle = colorBlack;
+  ctx.font = "400 " + tagFontSize + "px Avengeance Mightiest Avenger";
+  ctx.textAlign = "left";
+  ctx.fillText("VARIANT", tagX, tagY);
+  ctx.restore();
 }
