@@ -124,6 +124,12 @@ const DEFAULT_BOLD_LIST = new Set(["START PHASE", "PLAY PHASE", "POWER PHASE", "
 // The terms that should be italicized by default
 const DEFAULT_ITALICS_LIST = new Set(["PERFORM", "ACCOMPANY"]);
 
+// Common Image Key Names
+const BACKGROUND_ART = "backgroundArt";
+const FOREGROUND_ART = "foregroundArt";
+const NEMESIS_ICON = "nemesisIcon";
+const HERO_NAME_ART = "heroNameArt";
+
 /*
 ============================================================================
 Global functions

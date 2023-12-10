@@ -65,10 +65,10 @@ $('#inputImageFile').on('input', function (e) {
 
 // This object is where user input images (specifically Image objects) are stored
 let loadedUserImages = {
-  backgroundArt: null,
-  foregroundArt: null,
-  nemesisIcon: null,
-  heroNameArt: null
+  BACKGROUND_ART: null,
+  FOREGROUND_ART: null,
+  NEMESIS_ICON: null,
+  HERO_NAME_ART: null
 };
 
 
