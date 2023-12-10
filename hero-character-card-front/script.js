@@ -67,7 +67,8 @@ $('#inputImageFile').on('input', function (e) {
 let loadedUserImages = {
   backgroundArt: null,
   foregroundArt: null,
-  nemesisIcon: null
+  nemesisIcon: null,
+  heroNameArt: null
 };
 
 
