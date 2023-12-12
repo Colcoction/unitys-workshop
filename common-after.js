@@ -117,9 +117,15 @@ $('#inputDisplayBorder').on('input', function () {
   drawCardCanvas();
 });
 
-// Toggle card border and re-draw
+// Toggle variant
 $('#inputVariantToggle').on('input', function () {
   isVariant = this.checked;
+  drawCardCanvas();
+});
+
+// Toggle variant text color
+$('#inputVariantColor').on('input', function () {
+  variantTextColor = this.checked;
   drawCardCanvas();
 });
 

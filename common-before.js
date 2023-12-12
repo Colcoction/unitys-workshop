@@ -432,3 +432,6 @@ let showBorder = $('#inputDisplayBorder').length > 0 ? $('#inputDisplayBorder')[
 
 // Whether to display the variant tag for Hero character cards
 let isVariant = $('#inputVariantToggle').length > 0 ? $('#inputVariantToggle')[0].checked : false;
+
+// Simple color toggle for variant text (if we ever decide to do more advanced variant stuff, this should be deleted)
+let variantTextColor = $('#inputVariantColor').length > 0 ? $('#inputVariantColor')[0].checked : false;

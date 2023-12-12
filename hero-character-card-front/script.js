@@ -115,6 +115,11 @@ function drawCardCanvas() {
   // === Draw the background art
   drawArtInCroppedArea('hccf_backgroundArt');
 
+  // Draw the variant tag if it's enabled
+  if (isVariant) {
+    drawVariantTag();
+  }
+
   if (showBorder) {
     // === Draw the card border
     ctx.drawImage(loadedGraphics['Border'], 0, 0, canvas.width, canvas.height);
@@ -128,10 +133,6 @@ function drawCardCanvas() {
   drawCharacterBodyBox();
   drawBodyText(parsedBlocks);
 
-  // Draw the variant tag if it's enabled
-  if (isVariant) {
-    drawVariantTag();
-  }
 
   // == Draw the power name
   const powerNameX = pw(12.5);
@@ -253,7 +254,11 @@ function drawVariantTag() {
   let tagY = ph(94.6);
   let tagFontSize = pw(2.7);
   ctx.save();
-  ctx.fillStyle = colorBlack;
+  if(!variantTextColor) {
+    ctx.fillStyle = colorBlack;
+  } else {
+    ctx.fillStyle = "#ffffff";
+  }
   ctx.font = "400 " + tagFontSize + "px Avengeance Mightiest Avenger";
   ctx.textAlign = "left";
   ctx.fillText("VARIANT", tagX, tagY);
