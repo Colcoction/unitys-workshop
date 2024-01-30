@@ -22,8 +22,14 @@
 
 
   <style>
-    .searchInput {
+    .searchForm {
       width: 100%;
+      display: flex;
+    }
+
+    .searchSubmit {
+      flex: 0;
+      margin-left: 10px;
     }
 
     .cardFlexDisplay {
@@ -86,6 +92,41 @@
     .tips ul {
       margin: 0;
     }
+
+    /* Set min-height of card types for better loading */
+    .heroCard, .villainCard {
+      min-height: 400px;
+    }
+    .environmentCard {
+      min-height: 280px;
+    }
+    .heroCharacterCard {
+      min-height: 490px;
+    }
+    .event, .criticalEvent {
+      min-height: 500px;
+    }
+    .event.flipped, .criticalEvent.flipped, .villainCharacterCard {
+      min-height: 360px;
+    }
+    /* Different min-height for mobile */
+    @media (max-width: 660px) {
+      .heroCard, .villainCard {
+        min-height: 210px;
+      }
+      .environmentCard {
+        min-height: 230px;
+      }
+      .heroCharacterCard {
+        min-height: 260px;
+      }
+      .event, .criticalEvent {
+        min-height: 470px;
+      }
+      .event.flipped, .criticalEvent.flipped, .villainCharacterCard {
+        min-height: 210px;
+      }
+    }
   </style>
 
 </head>
@@ -96,12 +137,19 @@
 
   <div class="inputGroup">
     <div style="margin-bottom:5px;"><a href="/">Home</a></div>
-    <input type="text" class="searchInput" placeholder='Search for a string of text in the details of a card.' />
+    <form class="searchForm" action="javascript:submitSearch()">
+      <input type="text" class="searchInput" placeholder='Search for a string of text in the details of a card.' />
+      <input type="submit" class="searchSubmit" value="Search"/>
+    </form>
     <details class="tips">
       <summary>Advanced</summary>
       <div class="checkboxGroup">
         <input type="checkbox" id="regex" value="true">
-      <label for="regex">Use regular expressions</label>
+        <label for="regex">Use regular expressions</label>
+      </div>
+      <div class="checkboxGroup">
+        <input type="checkbox" id="autoSubmit" value="true">
+        <label for="autoSubmit">Search as you type</label>
       </div>
     </details>
     <details class="tips">
@@ -315,8 +363,8 @@
         // Assemble a card element with the image(s) and the details
         let newHTML = `
     <div class="card${extraClasses}">
-      <img class="cardImage" src="${imagePath1}" />
-      ${imagePath2 ? `<img class="cardImage" src="${imagePath2}" style="display: none;" />` : ''}
+      <img class="cardImage" src="${imagePath1}" loading="lazy" />
+      ${imagePath2 ? `<img class="cardImage" src="${imagePath2}" loading="lazy" style="display: none;" />` : ''}
       <details class="cardDetails">
         <summary>Details</summary>
         ${detailsElement}
@@ -356,14 +404,21 @@
 
     }
 
+    // Submit search as user types, if enabled
+    $(".searchInput").on("input", function (e) {
+      // Check if auto submit is checked
+      if($("#autoSubmit").is(":checked")){
+        submitSearch();
+      }
+    })
 
     // Filter display based on search input
-    $(".searchInput").on("input", function (e) {
+    function submitSearch() {
       // Check if regex checkbox is checked
-      if($("#regex").is(":checked")){
+      if ($("#regex").is(":checked")) {
         // Create new RegExp from search value, catch errors and do nothing will malformed RegExp
         try{
-          const regex = new RegExp( $(this).val(), "i")
+          const regex = new RegExp( $(".searchInput").val(), "i")
 
           $(".card").each(function (index, element) {
             // Get card content (text of cardDetails element basically) and test against RegExp search
@@ -375,9 +430,10 @@
             }
           })
         } catch(e){}
-      }else{
+      }
+      else {
         // Get the query and make it not case-sensitive
-        const query = $(this).val().toLowerCase();
+        const query = $(".searchInput").val().toLowerCase();
 
         // Show or hide each card
         $(".card").each(function (index, element) {
@@ -392,9 +448,7 @@
           }
         })
       }
-    })
-
-
+    }
     
   </script>
 
