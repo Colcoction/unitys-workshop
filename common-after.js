@@ -639,9 +639,13 @@ function outputJSONData() {
     "ImageURL": ${JSON.stringify(imageURL)},
     "ImageX": ${JSON.stringify($('.inputImageOffsetX').val())},
     "ImageY": ${JSON.stringify($('.inputImageOffsetY').val())},
-    "ImageZoom": ${JSON.stringify($('.inputImageScale').val())},
-    "Suddenly": "${JSON.stringify($('#suddenly')[0].checked)}"
-  },`;
+    "ImageZoom": ${JSON.stringify($('.inputImageScale').val())}`;
+  if ($('#suddenly').length > 0) {
+    outputJSON += `,
+    "Suddenly": "${JSON.stringify($('#suddenly')[0].checked)}"`
+  }
+  outputJSON += `
+},`
   $('#jsonInput').val(outputJSON);
 }
 
