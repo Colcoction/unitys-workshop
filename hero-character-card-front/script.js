@@ -115,11 +115,6 @@ function drawCardCanvas() {
   // === Draw the background art
   drawArtInCroppedArea('hccf_backgroundArt');
 
-  // Draw the variant tag if it's enabled
-  if (isVariant) {
-    drawVariantTag();
-  }
-
   if (showBorder) {
     // === Draw the card border
     ctx.drawImage(loadedGraphics['Border'], 0, 0, canvas.width, canvas.height);
@@ -132,7 +127,11 @@ function drawCardCanvas() {
   // Draw the character body box, and the text in the card body.
   drawCharacterBodyBox();
   drawBodyText(parsedBlocks);
-
+  
+  // Draw the variant tag if it's enabled
+  if (isVariant) {
+    drawVariantTag();
+  }
 
   // == Draw the power name
   const powerNameX = pw(12.5);
