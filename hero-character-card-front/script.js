@@ -120,8 +120,8 @@ function drawCardCanvas() {
     ctx.drawImage(loadedGraphics['Border'], 0, 0, canvas.width, canvas.height);
   }
   // Draw the foreground art
-  drawArtInCroppedArea('hccf_foregroundArt');
   drawArtInCroppedArea('hccf_heroNameArt');
+  drawArtInCroppedArea('hccf_foregroundArt');
   loadEffectList();
 
   // Draw the character body box, and the text in the card body.
