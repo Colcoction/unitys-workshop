@@ -911,7 +911,12 @@ function drawPhaseBlock(phase, isFirstBlock) {
   const phaseText = PHASE_TEXT_MAP.get(phase);
 
   // Adjust line height based on whether this is the first block
-  currentOffsetY = isFirstBlock ? EFFECT_START_Y : currentOffsetY + lineHeight * PRE_PHASE_LINE_HEIGHT_FACTOR;
+  if (isFirstBlock) {
+    currentOffsetY = currentOffsetY;
+  }
+  else {
+    currentOffsetY = currentOffsetY + lineHeight * PRE_PHASE_LINE_HEIGHT_FACTOR;
+  }
 
   // Get the phase icon to use
   const phaseIconKey = PHASE_ICON_MAP.get(phase) + (useHighContrastPhaseLabels ? " High Contrast" : "");
