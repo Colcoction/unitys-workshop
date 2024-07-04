@@ -827,8 +827,8 @@ function drawCharacterBodyBox() {
   const boxValues = CHARACTER_BODY_BOX;
   const topLeft = [boxValues.topLeft.x, boxValues.topLeft.y + boxHeightOffset];
   const topRight = [boxValues.topRight.x, boxValues.topRight.y + boxHeightOffset];
-  const bottomLeft = [boxValues.bottomLeft.x, boxValues.bottomLeft.y];
   const bottomRight = [boxValues.bottomRight.x, boxValues.bottomRight.y];
+  const bottomLeft = [boxValues.bottomLeft.x, boxValues.bottomLeft.y];
 
   // Determine the initial shape of the box.
   const boxShape = new Path2D();
@@ -927,7 +927,7 @@ function drawPhaseBlock(phase, isFirstBlock) {
   }
 
   // Draw the icon
-  const iconWidth = iconHeight = ps(5); // Icon graphics have 1:1 proportions
+  const iconWidth = iconHeight = PHASE_ICON_SIZE; // Icon graphics have 1:1 proportions
   const iconX = PHASE_ICON_X - iconWidth / 2;
   const iconY = currentOffsetY - EFFECT_PHASE_FONT_SIZE; // == iconHeight / 2.
   ctx.drawImage(phaseIcon, iconX, iconY, iconWidth, iconHeight);

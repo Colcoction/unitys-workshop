@@ -207,7 +207,7 @@ const _phaseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(4)],
-        [HORIZONTAL, ph(4)], // PLACEHOLDER
+        [HORIZONTAL, ph(3.3)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -219,12 +219,24 @@ const _phaseIconXMap = new Map([
         [HORIZONTAL, pw(54)],
     ])],
     [CHARACTER, new Map([
-        [VERTICAL, pw(8.9)],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, pw(8.9)], // PLACEHOLDER
+        [VERTICAL, pw(9.2)],
+        [HORIZONTAL, pw(58)], // PLACEHOLDER
     ])],
 ]);
 const PHASE_ICON_X = _phaseIconXMap.get(CARD_FORM)?.get(ORIENTATION);
+
+// Size of the icons next to phase labels
+const _phaseIconSizeMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, ps(5)],
+        [HORIZONTAL, ps(5)],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, ps(5)],
+        [HORIZONTAL, ps(4)], // PLACEHOLDER
+    ])],
+]);
+const PHASE_ICON_SIZE = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);
 
 // Font size for most effect text
 const _baseFontSizeMap = new Map([
@@ -234,8 +246,7 @@ const _baseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(3.95)],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, ph(3.95)], // PLACEHOLDER
+        [HORIZONTAL, ph(3)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -259,10 +270,9 @@ const _effectStartXMap = new Map([
             [FRONT, pw(12.5)],
             [BACK, pw(14.5)]
         ])],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
         [HORIZONTAL, new Map([
-            [FRONT, pw(12.5)], // PLACEHOLDER
-            [BACK, pw(14.5)], // PLACEHOLDER
+            [FRONT, pw(60)], // PLACEHOLDER
+            [BACK, null], // PLACEHOLDER
         ])],
     ])],
 ]);
@@ -276,8 +286,7 @@ const _effectEndXMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(86.5)],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, pw(86.5)], // PLACEHOLDER
+        [HORIZONTAL, pw(92.5)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_END_X =  _effectEndXMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -301,10 +310,9 @@ const _effectStartYMap = new Map([
             [FRONT, ph(85.5)],
             [BACK, ph(86)],
         ])],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
         [HORIZONTAL, new Map([
-            [FRONT, ph(85.5)], // PLACEHOLDER
-            [BACK, ph(86)], // PLACEHOLDER
+            [FRONT, ph(84)], // PLACEHOLDER
+            [BACK, null], // PLACEHOLDER
         ])],
     ])],
 ]);
@@ -322,20 +330,22 @@ const _characterBodyBoxMap = new Map([
         [HORIZONTAL, null],
     ])],
     [CHARACTER, new Map([
+        // Hero character cards
         [VERTICAL, {
             topLeft: {x: pw(10), y: ph(79)},
             topRight: {x: pw(90), y: ph(79)},
-            bottomLeft: {x: pw(10), y: ph(94)},
             bottomRight: {x: pw(90), y: ph(93.3)},
+            bottomLeft: {x: pw(10), y: ph(94)},
             bgColor: '#ffffffcc',  // Last two digits are transparency
             borderThickness: pw(0.5),
             shadowThickness: pw(1),
         }],
+        // Villain character cards
         [HORIZONTAL, {
-            topLeft: {x: pw(10), y: ph(79)},
-            topRight: {x: pw(90), y: ph(79)},
-            bottomLeft: {x: pw(10), y: ph(94)},
-            bottomRight: {x: pw(90), y: ph(94)},
+            topLeft: {x: pw(58), y: ph(79)},
+            topRight: {x: pw(93), y: ph(79)},
+            bottomRight: {x: pw(93), y: ph(94)},
+            bottomLeft: {x: pw(58), y: ph(94)},
             bgColor: '#ffffffff',  // Last two digits are transparency,
             borderThickness: pw(0.3),
             shadowThickness: pw(0.6),
