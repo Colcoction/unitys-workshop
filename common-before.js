@@ -26,8 +26,8 @@ const canvasSizes = new Map([
     ])],
     [HORIZONTAL, new Map([
         [SMALL,   400],
-        [MEDIUM,  500],
-        [LARGE,  600],
+        [MEDIUM,  550],
+        [LARGE,   700],
     ])],
 ]);
 // Block types when parsing card text
@@ -207,7 +207,7 @@ const _phaseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(4)],
-        [HORIZONTAL, ph(4)],
+        [HORIZONTAL, pw(4)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -221,7 +221,7 @@ const _phaseIconSizeMap = new Map([
     [CHARACTER, new Map([
         [VERTICAL, pw(8.9)],
         // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [HORIZONTAL, pw(8.9)], // PLACEHOLDER
     ])],
 ]);
 const PHASE_ICON_X = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -235,7 +235,7 @@ const _baseFontSizeMap = new Map([
     [CHARACTER, new Map([
         [VERTICAL, pw(3.95)],
         // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [HORIZONTAL, pw(3.95)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -260,7 +260,10 @@ const _effectStartXMap = new Map([
             [BACK, pw(14.5)]
         ])],
         // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [HORIZONTAL, new Map([
+            [FRONT, pw(12.5)], // PLACEHOLDER
+            [BACK, pw(14.5)], // PLACEHOLDER
+        ])],
     ])],
 ]);
 const EFFECT_START_X = _effectStartXMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
@@ -274,7 +277,7 @@ const _effectEndXMap = new Map([
     [CHARACTER, new Map([
         [VERTICAL, pw(86.5)],
         // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [HORIZONTAL, pw(86.5)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_END_X =  _effectEndXMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -299,7 +302,10 @@ const _effectStartYMap = new Map([
             [BACK, ph(86)],
         ])],
         // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [HORIZONTAL, new Map([
+            [FRONT, ph(85.5)], // PLACEHOLDER
+            [BACK, ph(86)], // PLACEHOLDER
+        ])],
     ])],
 ]);
 const EFFECT_START_Y = _effectStartYMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
