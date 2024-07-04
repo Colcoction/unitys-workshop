@@ -824,10 +824,11 @@ function adjustBoxHeightOffset(parsedBlocks) {
 /** Draws the text box of a character card (but not the text inside it). */
 function drawCharacterBodyBox() {
   // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
-  const topLeft = [pw(10), ph(79) + boxHeightOffset];
-  const topRight = [pw(90), ph(79) + boxHeightOffset];
-  const bottomLeft = [pw(10), ph(94)];
-  const bottomRight = [pw(90), ph(93.3)];
+  const boxValues = CHARACTER_BODY_BOX;
+  const topLeft = [boxValues.topLeft.x, boxValues.topLeft.y + boxHeightOffset];
+  const topRight = [boxValues.topRight.x, boxValues.topRight.y + boxHeightOffset];
+  const bottomLeft = [boxValues.bottomLeft.x, boxValues.bottomLeft.y];
+  const bottomRight = [boxValues.bottomRight.x, boxValues.bottomRight.y];
 
   // Determine the initial shape of the box.
   const boxShape = new Path2D();
@@ -838,22 +839,22 @@ function drawCharacterBodyBox() {
   boxShape.closePath();
 
   // Semi-transparent white fill
-  ctx.fillStyle = "#ffffffcc"; // Last two digits are transparency
+  ctx.fillStyle = boxValues.bgColor;
   ctx.fill(boxShape);
 
   // Black border
   ctx.fillStyle = colorBlack;
-  ctx.lineWidth = pw(0.5);
+  ctx.lineWidth = boxValues.borderThickness;
   ctx.stroke(boxShape);
 
   // Box shadow (top-left)
   let shadowShape = new Path2D;
-  let shadowOffset = pw(-0.7);
+  let shadowOffset = boxValues.shadowThickness * -0.7;
   shadowShape.moveTo(bottomLeft[0] + shadowOffset, bottomLeft[1] + shadowOffset);
   shadowShape.lineTo(topLeft[0] + shadowOffset, topLeft[1] + shadowOffset);
   shadowShape.lineTo(topRight[0] + shadowOffset, topRight[1] + shadowOffset);
   ctx.fillStyle = colorBlack;
-  ctx.lineWidth = pw(1);
+  ctx.lineWidth = boxValues.shadowThickness;
   ctx.stroke(shadowShape);
 }
 

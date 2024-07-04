@@ -207,13 +207,13 @@ const _phaseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(4)],
-        [HORIZONTAL, pw(4)], // PLACEHOLDER
+        [HORIZONTAL, ph(4)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
 
-// Size of the phase icons placed next to labels
-const _phaseIconSizeMap = new Map([
+// X position of the icons next to phase labels
+const _phaseIconXMap = new Map([
     [DECK, new Map([
         [VERTICAL, pw(8.9)],
         [HORIZONTAL, pw(54)],
@@ -224,7 +224,7 @@ const _phaseIconSizeMap = new Map([
         [HORIZONTAL, pw(8.9)], // PLACEHOLDER
     ])],
 ]);
-const PHASE_ICON_X = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);
+const PHASE_ICON_X = _phaseIconXMap.get(CARD_FORM)?.get(ORIENTATION);
 
 // Font size for most effect text
 const _baseFontSizeMap = new Map([
@@ -235,7 +235,7 @@ const _baseFontSizeMap = new Map([
     [CHARACTER, new Map([
         [VERTICAL, pw(3.95)],
         // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, pw(3.95)], // PLACEHOLDER
+        [HORIZONTAL, ph(3.95)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -311,7 +311,39 @@ const _effectStartYMap = new Map([
 const EFFECT_START_Y = _effectStartYMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
 
 // The base line height. Used to set the line height for body text.
-const BODY_BASE_LINE_HEIGHT = ps(5);
+const BODY_BASE_LINE_HEIGHT = EFFECT_BASE_FONT_SIZE * 1.2345;
+
+
+// Default coordinates for character card game text box
+// NOTE: Deck values have intentionally been left null, since this does not apply to deck cards
+const _characterBodyBoxMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, null],
+        [HORIZONTAL, null],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, {
+            topLeft: {x: pw(10), y: ph(79)},
+            topRight: {x: pw(90), y: ph(79)},
+            bottomLeft: {x: pw(10), y: ph(94)},
+            bottomRight: {x: pw(90), y: ph(93.3)},
+            bgColor: '#ffffffcc',  // Last two digits are transparency
+            borderThickness: pw(0.5),
+            shadowThickness: pw(1),
+        }],
+        [HORIZONTAL, {
+            topLeft: {x: pw(10), y: ph(79)},
+            topRight: {x: pw(90), y: ph(79)},
+            bottomLeft: {x: pw(10), y: ph(94)},
+            bottomRight: {x: pw(90), y: ph(94)},
+            bgColor: '#ffffffff',  // Last two digits are transparency,
+            borderThickness: pw(0.3),
+            shadowThickness: pw(0.6),
+        }],
+    ])],
+]);
+const CHARACTER_BODY_BOX = _characterBodyBoxMap.get(CARD_FORM)?.get(ORIENTATION);
+
 
 // Values for quotes:
 // NOTE: All quote values have been left null for characters, given that no character card currently

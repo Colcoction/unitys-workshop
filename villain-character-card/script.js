@@ -189,9 +189,9 @@ function drawKeywords() {
   let keywordsWidth = ctx.measureText(keywords).width;
   // Box dimensions
   let boxMargin = pw(2); // Left and right margin between text and box border
-  let boxX = pw(84); // Right side of box (this is good)
-  let boxY = ph(79) + boxHeightOffset; // Bottom of box (still need to find this number)
-  let boxHeight = ph(3);
+  let boxX = pw(84); // Right side of box
+  let boxY = ph(79) + boxHeightOffset; // Bottom of box
+  let boxHeight = ph(7); // Height of box
   let boxExtraRight = pw(4);
   let boxWidth = keywordsWidth * keywordSquish + boxMargin * 2 + boxExtraRight;
   boxX -= boxWidth;
