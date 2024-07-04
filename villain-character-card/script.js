@@ -169,7 +169,6 @@ function drawDescription() {
   let descriptionWidth = ctx.measureText(description).width;
 
   // Box dimensions
-
   let boxMargin = pw(1.4); // Left and right margin between text and box border
   let boxX = pw(96); // Right side of box
   let boxY = ph(25); // Bottom of box
@@ -193,7 +192,6 @@ function drawDescription() {
   boxShape.lineTo(bottomLeft[0], bottomLeft[1]);
   boxShape.closePath();
 
-
   // Draw the box
   ctx.fillStyle = '#fff';
   ctx.fill(boxShape);
@@ -202,6 +200,15 @@ function drawDescription() {
   ctx.lineWidth = CHARACTER_BODY_BOX.borderThickness;
   ctx.stroke(boxShape);
 
+  // Box shadow (top-left)
+  let shadowShape = new Path2D;
+  let shadowOffset = CHARACTER_BODY_BOX.shadowThickness * -0.7;
+  shadowShape.moveTo(bottomLeft[0] + shadowOffset, bottomLeft[1] + shadowOffset);
+  shadowShape.lineTo(topLeft[0] + shadowOffset, topLeft[1] + shadowOffset);
+  shadowShape.lineTo(topRight[0] + shadowOffset, topRight[1] + shadowOffset);
+  ctx.fillStyle = colorBlack;
+  ctx.lineWidth = CHARACTER_BODY_BOX.shadowThickness;
+  ctx.stroke(shadowShape);
 
   // Set the remaining font styles
   ctx.fillStyle = '#fcb024';
@@ -220,47 +227,6 @@ function drawDescription() {
   // Undo the squish for future drawings
   ctx.restore();
 }
-
-
-/* Copied */
-/** Draws the text box of a character card (but not the text inside it). */
-function drawCharacterBodyBox() {
-  // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
-  const boxValues = CHARACTER_BODY_BOX;
-  const topLeft = [boxValues.topLeft.x, boxValues.topLeft.y + boxHeightOffset];
-  const topRight = [boxValues.topRight.x, boxValues.topRight.y + boxHeightOffset];
-  const bottomRight = [boxValues.bottomRight.x, boxValues.bottomRight.y];
-  const bottomLeft = [boxValues.bottomLeft.x, boxValues.bottomLeft.y];
-
-  // Determine the initial shape of the box.
-  const boxShape = new Path2D();
-  boxShape.moveTo(topLeft[0], topLeft[1]);
-  boxShape.lineTo(topRight[0], topRight[1]);
-  boxShape.lineTo(bottomRight[0], bottomRight[1]);
-  boxShape.lineTo(bottomLeft[0], bottomLeft[1]);
-  boxShape.closePath();
-
-  // White background
-  ctx.fillStyle = boxValues.bgColor;
-  ctx.fill(boxShape);
-
-  // Black border
-  ctx.fillStyle = colorBlack;
-  ctx.lineWidth = boxValues.borderThickness;
-  ctx.stroke(boxShape);
-
-  // Box shadow (top-left)
-  let shadowShape = new Path2D;
-  let shadowOffset = boxValues.shadowThickness * -0.7;
-  shadowShape.moveTo(bottomLeft[0] + shadowOffset, bottomLeft[1] + shadowOffset);
-  shadowShape.lineTo(topLeft[0] + shadowOffset, topLeft[1] + shadowOffset);
-  shadowShape.lineTo(topRight[0] + shadowOffset, topRight[1] + shadowOffset);
-  ctx.fillStyle = colorBlack;
-  ctx.lineWidth = boxValues.shadowThickness;
-  ctx.stroke(shadowShape);
-}
-
-
 
 
 /**

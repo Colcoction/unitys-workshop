@@ -347,8 +347,8 @@ const _characterBodyBoxMap = new Map([
             bottomRight: {x: pw(93), y: ph(95)},
             bottomLeft: {x: pw(58), y: ph(95)},
             bgColor: '#ffffffff',  // Last two digits are transparency,
-            borderThickness: pw(0.3),
-            shadowThickness: pw(0.6),
+            borderThickness: pw(0.25),
+            shadowThickness: pw(0.5),
         }],
     ])],
 ]);
