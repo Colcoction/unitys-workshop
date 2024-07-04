@@ -112,11 +112,11 @@ function drawCardCanvas() {
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // === Draw the background art
+  // Draw the background art
   drawArtInCroppedArea('hccf_backgroundArt');
 
   if (showBorder) {
-    // === Draw the card border
+    // Draw the card border
     ctx.drawImage(loadedGraphics['Border'], 0, 0, canvas.width, canvas.height);
   }
   // Draw the foreground art
@@ -127,37 +127,17 @@ function drawCardCanvas() {
   // Draw the character body box, and the text in the card body.
   drawCharacterBodyBox();
   drawBodyText(parsedBlocks);
-  
-  // Draw the variant tag if it's enabled
-  if (isVariant) {
-    drawVariantTag();
-  }
 
-  // == Draw the power name
-  const powerNameX = pw(12.5);
-  const powerNameY = ph(82.5) + boxHeightOffset;
-  const powerNameFontSize = pw(4);
-
-  ctx.font = "400 " + powerNameFontSize + "px Avengeance Mightiest Avenger";
-  ctx.fillStyle = "white";
-  ctx.strokeStyle = colorBlack;
-  ctx.lineWidth = powerNameFontSize * 0.2;
-  ctx.lineJoin = "miter";
-  ctx.miterLimit = 3;
-
-  let powerName = $('#inputPowerName').val();
-  powerName = powerName.toUpperCase();
-
-  ctx.strokeText(powerName, powerNameX, powerNameY);
-  ctx.fillText(powerName, powerNameX, powerNameY);
-
-  // === Draw the keyword box ("Hero")
+  // Draw the keyword box ("Villain")
   drawKeywords();
 
-  // === Draw the HP
+  // Draw the description box "Armored Mad Scientist"
+  drawDescription()
+
+  // Draw the HP
   drawHP();
 
-  // === Draw the Nemesis Icon
+  // Draw the Nemesis Icon
   if (loadedUserImages['nemesisIcon']) {
     // Draw the nemesis icon image
     drawArtInCroppedArea('hccf_nemesisIcon');
@@ -168,8 +148,123 @@ function drawCardCanvas() {
   }
 }
 
+
 /**
- * Draws the keywords on an hero character card.
+ * Draws the description on a villain character card.
+ */
+function drawDescription() {
+  // Check for description input. The input with this ID will always exist, so we can call toUpperCase() here safely.
+  const description = $('#inputDescription').prop('value').toUpperCase();
+  // If we don't have an input, don't draw anything
+  if (description === '') {
+    return;
+  }
+
+  // Set some font styles before drawing the box
+  let descriptionFontSize = pw(2.7);
+  ctx.font = "600 " + descriptionFontSize + "px Boogaloo";
+  // Squish the description font a little (1 = neutral)
+  let descriptionSquish = 1.06;
+  // Get description text width
+  let descriptionWidth = ctx.measureText(description).width;
+
+  // Box dimensions
+
+  let boxMargin = pw(1.4); // Left and right margin between text and box border
+  let boxX = pw(96); // Right side of box
+  let boxY = ph(25); // Bottom of box
+  let boxHeight = ph(5.5); // Height of box
+  let boxExtraRight = pw(7.5);
+  let boxWidth = descriptionWidth * descriptionSquish + boxMargin * 2 + boxExtraRight;
+  boxX -= boxWidth;
+  boxY -= boxHeight;
+
+  // Sets the coordinates of the corners of the textbox.
+  const topLeft = [boxX, boxY + ph(0.3)];
+  const topRight = [boxX + boxWidth, boxY];
+  const bottomRight = [boxX + boxWidth, boxY + boxHeight];
+  const bottomLeft = [boxX + ph(0.5), boxY + boxHeight - ph(0.3)];
+
+  // Determine the initial shape of the box.
+  const boxShape = new Path2D();
+  boxShape.moveTo(topLeft[0], topLeft[1]);
+  boxShape.lineTo(topRight[0], topRight[1]);
+  boxShape.lineTo(bottomRight[0], bottomRight[1]);
+  boxShape.lineTo(bottomLeft[0], bottomLeft[1]);
+  boxShape.closePath();
+
+
+  // Draw the box
+  ctx.fillStyle = '#fff';
+  ctx.fill(boxShape);
+  // Black border
+  ctx.fillStyle = colorBlack;
+  ctx.lineWidth = CHARACTER_BODY_BOX.borderThickness;
+  ctx.stroke(boxShape);
+
+
+  // Set the remaining font styles
+  ctx.fillStyle = '#fcb024';
+  ctx.strokeStyle = colorBlack;
+  ctx.lineWidth = descriptionFontSize * 0.15;
+  ctx.lineJoin = "miter";
+  ctx.miterLimit = 3;
+  let descriptionX = (boxX + boxMargin * 1.6) * 1 / descriptionSquish;
+  let descriptionY = boxY + boxHeight * 0.75;
+  ctx.textAlign = "left";
+  ctx.save();
+  ctx.scale(descriptionSquish, 1);
+  // Draw the description
+  ctx.strokeText(description, descriptionX, descriptionY);
+  ctx.fillText(description, descriptionX, descriptionY);
+  // Undo the squish for future drawings
+  ctx.restore();
+}
+
+
+/* Copied */
+/** Draws the text box of a character card (but not the text inside it). */
+function drawCharacterBodyBox() {
+  // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
+  const boxValues = CHARACTER_BODY_BOX;
+  const topLeft = [boxValues.topLeft.x, boxValues.topLeft.y + boxHeightOffset];
+  const topRight = [boxValues.topRight.x, boxValues.topRight.y + boxHeightOffset];
+  const bottomRight = [boxValues.bottomRight.x, boxValues.bottomRight.y];
+  const bottomLeft = [boxValues.bottomLeft.x, boxValues.bottomLeft.y];
+
+  // Determine the initial shape of the box.
+  const boxShape = new Path2D();
+  boxShape.moveTo(topLeft[0], topLeft[1]);
+  boxShape.lineTo(topRight[0], topRight[1]);
+  boxShape.lineTo(bottomRight[0], bottomRight[1]);
+  boxShape.lineTo(bottomLeft[0], bottomLeft[1]);
+  boxShape.closePath();
+
+  // White background
+  ctx.fillStyle = boxValues.bgColor;
+  ctx.fill(boxShape);
+
+  // Black border
+  ctx.fillStyle = colorBlack;
+  ctx.lineWidth = boxValues.borderThickness;
+  ctx.stroke(boxShape);
+
+  // Box shadow (top-left)
+  let shadowShape = new Path2D;
+  let shadowOffset = boxValues.shadowThickness * -0.7;
+  shadowShape.moveTo(bottomLeft[0] + shadowOffset, bottomLeft[1] + shadowOffset);
+  shadowShape.lineTo(topLeft[0] + shadowOffset, topLeft[1] + shadowOffset);
+  shadowShape.lineTo(topRight[0] + shadowOffset, topRight[1] + shadowOffset);
+  ctx.fillStyle = colorBlack;
+  ctx.lineWidth = boxValues.shadowThickness;
+  ctx.stroke(shadowShape);
+}
+
+
+
+
+/**
+ * Draws the keywords on a villain character card.
  */
 function drawKeywords() {
   // Check for keyword input. The input with this ID will always exist, so we can call toUpperCase() here safely.
@@ -181,18 +276,18 @@ function drawKeywords() {
   // Convert to all uppercase letters
   // keywords = keywords.toUpperCase();
   // Keyword font
-  let keywordFontSize = pw(3);
+  let keywordFontSize = pw(1.8);
   ctx.font = "400 " + keywordFontSize + "px Avengeance Mightiest Avenger";
   // Squish the keyword font a little (1 = neutral)
   let keywordSquish = 1;
   // Get keywords text width
   let keywordsWidth = ctx.measureText(keywords).width;
   // Box dimensions
-  let boxMargin = pw(2); // Left and right margin between text and box border
-  let boxX = pw(84); // Right side of box
-  let boxY = ph(79) + boxHeightOffset; // Bottom of box
-  let boxHeight = ph(7); // Height of box
-  let boxExtraRight = pw(4);
+  let boxMargin = pw(1); // Left and right margin between text and box border
+  let boxX = pw(96); // Right side of box
+  let boxY = ph(29.5); // Bottom of box
+  let boxHeight = ph(5); // Height of box
+  let boxExtraRight = pw(7.5);
   let boxWidth = keywordsWidth * keywordSquish + boxMargin * 2 + boxExtraRight;
   boxX -= boxWidth;
   boxY -= boxHeight;
@@ -214,7 +309,7 @@ function drawKeywords() {
 }
 
 /**
- * Draws the HP on a hero character card.
+ * Draws the HP on a villain character card.
  */
 function drawHP() {
   // Check for HP input
@@ -224,42 +319,22 @@ function drawHP() {
     return;
   }
   // Draw the HP graphic
-  let hpGraphicSize = pw(17);
-  let hpGraphicX = pw(78);
-  let hpGraphicY = ph(72) + boxHeightOffset;
-  ctx.drawImage(loadedGraphics['HP Graphic'], hpGraphicX, hpGraphicY, hpGraphicSize * 1.1, hpGraphicSize);
+  let hpGraphicSize = pw(10);
+  let hpGraphicX = pw(88);
+  let hpGraphicY = ph(15);
+  ctx.drawImage(loadedGraphics['HP Graphic'], hpGraphicX, hpGraphicY, hpGraphicSize, hpGraphicSize);
   // Draw the HP text
-  let hpFontSize = pw(7.3);
+  let hpFontSize = pw(4.2);
   // Downsize if more than 2 digits
   if (inputHP.length > 2) {
-    hpFontSize = pw(6.2);
+    hpFontSize = pw(3.8);
   }
   ctx.font = "600 " + hpFontSize + "px Boogaloo";
   ctx.fillStyle = colorBlack;
   ctx.textAlign = "center";
-  let hpTextX = hpGraphicX + hpGraphicSize * 1.1 / 2.09;
+  let hpTextX = hpGraphicX + hpGraphicSize / 2.09;
   let hpTextY = hpGraphicY + hpGraphicSize / 2 + hpFontSize / 2.8;
   ctx.fillText(inputHP, hpTextX, hpTextY);
   // Reset
   ctx.textAlign = "left";
-}
-
-/**
- * Draws the Variant tag on a Hero character card.
- */
-function drawVariantTag() {
-  let tagX = pw(77);
-  // TODO(sjzhu): Make this change when CC reminder text is applied
-  let tagY = ph(94.6);
-  let tagFontSize = pw(2.7);
-  ctx.save();
-  if(!variantTextColor) {
-    ctx.fillStyle = colorBlack;
-  } else {
-    ctx.fillStyle = "#ffffff";
-  }
-  ctx.font = "400 " + tagFontSize + "px Avengeance Mightiest Avenger";
-  ctx.textAlign = "left";
-  ctx.fillText("VARIANT", tagX, tagY);
-  ctx.restore();
 }

@@ -838,7 +838,7 @@ function drawCharacterBodyBox() {
   boxShape.lineTo(bottomLeft[0], bottomLeft[1]);
   boxShape.closePath();
 
-  // Semi-transparent white fill
+  // White background
   ctx.fillStyle = boxValues.bgColor;
   ctx.fill(boxShape);
 
