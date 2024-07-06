@@ -825,7 +825,11 @@ function adjustBoxHeightOffset(parsedBlocks) {
   ctx = calculationCanvas.getContext("2d");
   boxHeightOffset = 0;
   drawBodyText(parsedBlocks);
-  boxHeightOffset = Math.min(Math.round(EFFECT_START_Y - currentOffsetY + 137), 0);
+  let minimumSizeCap = 0;
+  if (drawingAdvanced) {
+    minimumSizeCap = ph(100); // Remove minimum size for advanced box
+  }
+  boxHeightOffset = Math.min(Math.round(EFFECT_START_Y - currentOffsetY + 137), minimumSizeCap);
   currentOffsetY = 0;
   // Return to the main canvas
   ctx = canvas.getContext("2d");
