@@ -97,11 +97,6 @@ Drawing the canvas
 
 // Draw the canvas from scratch (this function gets called whenever an input changes)
 function drawCardCanvas() {
-  // First, parse the blocks of this card's body text.
-  const parsedBlocks = parseCardBody();
-
-  // Adjust the box height offset.
-  adjustBoxHeightOffset(parsedBlocks);
 
   // Clear the canvas and reset the context states
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -122,11 +117,31 @@ function drawCardCanvas() {
   // Draw the foreground art
   drawArtInCroppedArea('hccf_foregroundArt');
   drawArtInCroppedArea('hccf_heroNameArt');
-  loadEffectList();
+  loadEffectList(); // Loads in list of terms to style with bold or italics
 
-  // Draw the character body box, and the text in the card body.
+  // Advanced game text ========
+  // Flag that we're drawing the advanced game text
+  drawingAdvanced = true;
+  // First, parse the blocks of this card's body text.
+  const advancedParsedBlocks = parseCardBody();
+  // Adjust the box height offset.
+  adjustBoxHeightOffset(advancedParsedBlocks);
+  // Draw the box, then the text
+  drawCharacterBodyBox();
+  drawBodyText(advancedParsedBlocks);
+  // End
+  drawingAdvanced = false;
+
+  // Normal game text ========
+  // First, parse the blocks of this card's body text.
+  const parsedBlocks = parseCardBody();
+  // Adjust the box height offset.
+  adjustBoxHeightOffset(parsedBlocks);
+  // Draw the box, then the text
   drawCharacterBodyBox();
   drawBodyText(parsedBlocks);
+
+// GAME TEXT
 
   // Draw the keyword box ("Villain")
   drawKeywords();

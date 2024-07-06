@@ -154,12 +154,6 @@
       </div>
 
       <div class="inputGroup">
-        <label for="inputBoldWords">Bolded Terms</label>
-        <input type="text" class="contentInput" id="inputBoldWords">
-      </div>
-
-
-      <div class="inputGroup">
         <label for="inputImageFile">Nemesis Icon</label>
         <input type="file" accept="image/*" data-image-purpose="nemesisIcon" class="contentInput inputImageFile">
         <details>
@@ -178,33 +172,6 @@
 
           <button style="margin-top: 10px;" data-image-purpose="nemesisIcon" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
-      </div>
-
-      <div class="inputGroup">
-        <details>
-          <summary>Advanced Formatting</summary>
-          <div class="checkboxGroup" style="margin-top: 5px">
-            <input type="checkbox" class="contentInput" id="inputDisplayBorder" checked="true">
-            <label for="inputDisplayBorder">Show border</label>
-          </div>
-        </details>
-      </div>
-
-
-    </div>
-
-    <div>
-      <div class="inputGroup">
-        <label for="inputEffect">Game Text</label>
-        <textarea rows="6" class="contentInput" id="inputEffect">-1 damage dealt by Hero targets.&#13;START PHASE If Mask of the Matriarch is not in play: [flip]&#13;END PHASE The Matriarch deals each Hero target 1 projectile damage.</textarea>
-        <label for="inputEffectTextSize" style="margin-top: 10px;">Text Size</label>
-        <input type="range" class="contentInput" id="inputEffectTextSize" min="85" max="100" value="100">
-        <label for="inputEffectBoxWidth" style="margin-top: 10px;">Box Width</label>
-        <input type="range" class="contentInput" id="inputEffectBoxWidth" min="70" max="110" value="90">
-        <div class="checkboxGroup" style="margin-top: 10px;">
-          <input type="checkbox" class="contentInput" id="inputUseHighConstrast" checked=”true”>
-          <label for="inputUseHighConstrast">Use higher contrast phase labels</label>
-        </div>
       </div>
 
       <div class="inputGroup">
@@ -270,6 +237,50 @@
         </details>
       </div>
 
+    </div>
+
+    <div>
+      <div class="inputGroup">
+        <label for="inputEffect">Game Text</label>
+        <textarea rows="6" class="contentInput" id="inputEffect">-1 damage dealt by Hero targets.&#13;START PHASE If Mask of the Matriarch is not in play: [flip]&#13;END PHASE The Matriarch deals each Hero target 1 projectile damage.</textarea>
+        <label for="inputEffectTextSize" style="margin-top: 10px;">Text Size</label>
+        <input type="range" class="contentInput" id="inputEffectTextSize" min="85" max="110" value="100">
+        <label for="inputEffectBoxWidth" style="margin-top: 10px;">Box Width</label>
+        <input type="range" class="contentInput" id="inputEffectBoxWidth" min="70" max="110" value="90">
+        <div class="checkboxGroup" style="margin-top: 10px;">
+          <input type="checkbox" class="contentInput" id="inputUseHighConstrast" checked=”true”>
+          <label for="inputUseHighConstrast">Use higher contrast phase labels</label>
+        </div>
+      </div>
+
+      <div class="inputGroup">
+        <label for="inputAdvancedPhase">Advanced Phase</label>
+        <select class="contentInput" id="inputAdvancedPhase">
+          <option>None</option>
+          <option>Start Phase</option>
+          <option>Play Phase</option>
+          <option>End Phase</option>
+        </select>
+        <label for="inputAdvanced" style="margin-top: 10px;">Advanced Game Text</label>
+        <textarea rows="3" class="contentInput" id="inputAdvanced">+1 damage dealt by Villain targets.&#13;+1 damage dealt by Villain targets.&#13;+1 damage dealt by Villain targets.&#13;+1 damage dealt by Villain targets.</textarea>
+        <label for="inputAdvancedBoxWidth" style="margin-top: 10px;">Box Width</label>
+        <input type="range" class="contentInput" id="inputAdvancedBoxWidth" min="70" max="110" value="90">
+      </div>
+
+      <div class="inputGroup">
+        <label for="inputBoldWords">Bolded Terms</label>
+        <input type="text" class="contentInput" id="inputBoldWords">
+      </div>
+
+      <div class="inputGroup">
+        <details>
+          <summary>Advanced Formatting</summary>
+          <div class="checkboxGroup" style="margin-top: 5px">
+            <input type="checkbox" class="contentInput" id="inputDisplayBorder" checked="true">
+            <label for="inputDisplayBorder">Show border</label>
+          </div>
+        </details>
+      </div>
 
     </div>
 

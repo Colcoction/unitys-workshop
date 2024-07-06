@@ -796,7 +796,13 @@ function parseBodyText(originalLine) {
 /** Parses and returns the body text for a card. */
 function parseCardBody() {
   // Get the text the user entered into the textarea
-  const inputValue = $('#inputEffect').prop('value');
+  let inputValue;
+  if (drawingAdvanced) {
+    inputValue = $('#inputAdvanced').prop('value');
+  }
+  else {
+    inputValue = $('#inputEffect').prop('value');
+  }
 
   // Split at line returns, then iterate through the array to build an ordered list of blocks
   const parsedBlocks = inputValue
@@ -815,31 +821,50 @@ function parseCardBody() {
  * of our box (increasing the offset moves our Y position *downwards*, so a positive number yields a smaller box).
  */
 function adjustBoxHeightOffset(parsedBlocks) {
+  // Draw on the invisible calculation canvas instead of the main canvas
+  ctx = calculationCanvas.getContext("2d");
   boxHeightOffset = 0;
   drawBodyText(parsedBlocks);
   boxHeightOffset = Math.min(Math.round(EFFECT_START_Y - currentOffsetY + 137), 0);
   currentOffsetY = 0;
+  // Return to the main canvas
+  ctx = canvas.getContext("2d");
 }
 
 /** Updates the game text box width adjustment for villain character cards */
 let bodyWidthAdjustment = 1;
 function updateBodyWidthAdjustment() {
-  if ($('#inputEffectBoxWidth').length > 0) {
-    bodyWidthAdjustment = $('#inputEffectBoxWidth').val()/100;
+  if (drawingAdvanced) {
+    if ($('#inputAdvancedBoxWidth').length > 0) {
+      bodyWidthAdjustment = $('#inputAdvancedBoxWidth').val()/100;
+    }
+  }
+  else {
+    if ($('#inputEffectBoxWidth').length > 0) {
+      bodyWidthAdjustment = $('#inputEffectBoxWidth').val()/100;
+    }
   }
 }
+
+// Variable for adjusting the normal game text Y values based on the advanced game text Y values
+let advancedBoxYAdjustment = 0;
 
 /** Draws the text box of a character card (but not the text inside it). */
 function drawCharacterBodyBox() {
   // Check for width adjustment (for villain character cards)
   updateBodyWidthAdjustment();
 
+  // Reset advanced adjustment
+  if (drawingAdvanced) {
+    advancedBoxYAdjustment = 0;
+  }
+
   // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
   const boxValues = CHARACTER_BODY_BOX;
-  const topLeft = [boxValues.topLeft.x * bodyWidthAdjustment, boxValues.topLeft.y + boxHeightOffset];
-  const topRight = [boxValues.topRight.x, boxValues.topRight.y + boxHeightOffset];
-  const bottomRight = [boxValues.bottomRight.x, boxValues.bottomRight.y];
-  const bottomLeft = [boxValues.bottomLeft.x * bodyWidthAdjustment, boxValues.bottomLeft.y];
+  const topLeft = [boxValues.topLeft.x * bodyWidthAdjustment, boxValues.topLeft.y + boxHeightOffset + advancedBoxYAdjustment];
+  const topRight = [boxValues.topRight.x, boxValues.topRight.y + boxHeightOffset + advancedBoxYAdjustment];
+  const bottomRight = [boxValues.bottomRight.x, boxValues.bottomRight.y + advancedBoxYAdjustment];
+  const bottomLeft = [boxValues.bottomLeft.x * bodyWidthAdjustment, boxValues.bottomLeft.y + advancedBoxYAdjustment];
 
   // Determine the initial shape of the box.
   const boxShape = new Path2D();
@@ -859,24 +884,44 @@ function drawCharacterBodyBox() {
   ctx.stroke(boxShape);
 
   // Box shadow (top-left)
-  let shadowShape = new Path2D;
-  let shadowOffset = boxValues.shadowThickness * -0.7;
-  shadowShape.moveTo(bottomLeft[0] + shadowOffset, bottomLeft[1] + shadowOffset);
-  shadowShape.lineTo(topLeft[0] + shadowOffset, topLeft[1] + shadowOffset);
-  shadowShape.lineTo(topRight[0] + shadowOffset, topRight[1] + shadowOffset);
-  ctx.fillStyle = colorBlack;
-  ctx.lineWidth = boxValues.shadowThickness;
-  ctx.stroke(shadowShape);
+  if (drawingAdvanced) {
+    // Ignore
+  }
+  else {
+    let shadowShape = new Path2D;
+    let shadowOffset = boxValues.shadowThickness * -0.7;
+    shadowShape.moveTo(bottomLeft[0] + shadowOffset, bottomLeft[1] + shadowOffset);
+    shadowShape.lineTo(topLeft[0] + shadowOffset, topLeft[1] + shadowOffset);
+    shadowShape.lineTo(topRight[0] + shadowOffset, topRight[1] + shadowOffset);
+    ctx.fillStyle = colorBlack;
+    ctx.lineWidth = boxValues.shadowThickness;
+    ctx.stroke(shadowShape);
+  }
+
+  // Set advanced Y adjustment
+  if (drawingAdvanced) {
+    // It's the final height of the drawn advanced box, plus a gap
+    const gap = ph(2);
+    advancedBoxYAdjustment = (boxValues.bottomLeft.y - boxValues.topLeft.y - boxHeightOffset + gap) * -1;
+  }
 }
+
+// Variable for adjusting the normal game text Y values based on the advanced game text Y values
+let advancedTextYAdjustment = 0;
 
 /** Given an array of blocks, draw the body of a card from a deck. */
 function drawBodyText(parsedBlocks) {
   // Check for width adjustment (for villain character cards)
   updateBodyWidthAdjustment();
 
+  // Reset advanced adjustment
+  if (drawingAdvanced) {
+    advancedTextYAdjustment = 0;
+  }
+
   // Initialize positioning values
   currentOffsetX = EFFECT_START_X * bodyWidthAdjustment;
-  currentOffsetY = EFFECT_START_Y + boxHeightOffset;
+  currentOffsetY = EFFECT_START_Y + boxHeightOffset + advancedTextYAdjustment;
 
   // Get and apply the text scale the user chose
   effectFontScale = $('#inputEffectTextSize').prop('value') / 100; // Result is between 0 and 1
@@ -888,6 +933,12 @@ function drawBodyText(parsedBlocks) {
   parsedBlocks.forEach((block, index) => {
     drawBlock(block, index == 0);
   });
+
+  // Set advanced Y adjustment
+  if (!drawingAdvanced) {
+    advancedTextYAdjustment = advancedBoxYAdjustment;
+    // (I'll be honest, I don't understand why this works here, but it does.)
+  }
 
   return currentOffsetY;
 }

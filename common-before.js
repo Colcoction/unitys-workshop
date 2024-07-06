@@ -191,6 +191,14 @@ var ctx = canvas.getContext("2d");
 ctx.save();
 setCanvasWidth(MEDIUM);
 
+// Make invisible second canvas for running calculations
+const clonedCanvas = $(canvas).clone().appendTo("#canvasContainer");
+$(clonedCanvas).attr({
+    'id': 'calculationCanvas',
+    'style': 'visibility: hidden'
+});
+var calculationCanvas = document.getElementById("calculationCanvas");
+
 /*
 ============================================================================
 Initialization-Dependent Global Variables
@@ -483,3 +491,6 @@ let isVariant = $('#inputVariantToggle').length > 0 ? $('#inputVariantToggle')[0
 
 // Simple color toggle for variant text (if we ever decide to do more advanced variant stuff, this should be deleted)
 let variantTextColor = $('#inputVariantColor').length > 0 ? $('#inputVariantColor')[0].checked : false;
+
+// Whether an Advanced game text box is being drawn
+let drawingAdvanced = false;
