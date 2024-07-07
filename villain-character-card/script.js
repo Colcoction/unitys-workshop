@@ -170,8 +170,26 @@ function drawCardCanvas() {
  * Most of this code was copied from drawCharacterBodyBox.
  */
 function drawAdvancedLabel() {
+
+  // Get the phase label
+  const phaseLabel = $('#inputAdvancedPhase').val();
+
   // Width of label box
-  const boxWidth = pw(15);
+  let boxWidth;
+  switch (phaseLabel) {
+    case "start":
+      boxWidth = pw(19);
+      break;
+    case "play":
+      boxWidth = pw(18);
+      break;
+    case "end":
+      boxWidth = pw(17);
+      break;
+    default:
+      boxWidth = pw(17);
+      break;
+  }
 
   // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
   const boxValues = CHARACTER_BODY_BOX;
@@ -196,6 +214,81 @@ function drawAdvancedLabel() {
   ctx.fillStyle = colorBlack;
   ctx.lineWidth = boxValues.borderThickness;
   ctx.stroke(boxShape);
+
+  // Draw the text
+
+  // Draw without phase label
+  if (phaseLabel === "none") {
+    // "Advanced..." style properties
+    ctx.fillStyle = colorBlack;
+    const advancedFontSize = ph(4.4);
+    const verticalAlign = ph(1.3);
+    ctx.font = "400 italic " + advancedFontSize + "px Unmasked BB";
+    ctx.textAlign = "center";
+    const advancedCenterX = topLeft[0] + (topRight[0] - topLeft[0]) / 2;
+    const advancedCenterY = topLeft[1] + (bottomLeft[1] - topLeft[1]) / 2 + verticalAlign;
+
+    // Set the string of text to render
+    const advancedString = "Advanced...";
+
+    // Draw the line of text
+    ctx.fillText(advancedString, advancedCenterX, advancedCenterY);
+    ctx.textAlign = "left";
+  }
+
+  // Draw with phase label
+  else {
+    // "Advanced..." style properties
+    ctx.fillStyle = colorBlack;
+    const advancedFontSize = ph(2.6);
+    const verticalAlign = ph(-1.2);
+    const horizontalAlign = pw(0.9);
+    ctx.font = "400 italic " + advancedFontSize + "px Unmasked BB";
+    ctx.textAlign = "left";
+    const advancedLeftX = topLeft[0] + horizontalAlign;
+    const advancedCenterY = topLeft[1] + (bottomLeft[1] - topLeft[1]) / 2 + verticalAlign;
+
+    // Set the string of text to render
+    const advancedString = "Advanced...";
+
+    // Draw the line of text
+    ctx.fillText(advancedString, advancedLeftX, advancedCenterY);
+    ctx.textAlign = "left";
+
+    // Get the phase code
+    const phase = phaseLabel;
+
+    // Get some information specific to this phase
+    const phaseColor = PHASE_COLOR_MAP.get(useHighContrastPhaseLabels ? HIGH_CONTRAST : ORIGINAL_CONTRAST).get(phase);
+    const phaseText = PHASE_TEXT_MAP.get(phase);
+
+    // Get the phase icon to use
+    const phaseIconKey = PHASE_ICON_MAP.get(phase) + (useHighContrastPhaseLabels ? " High Contrast" : "");
+    const phaseIcon = loadedGraphics[phaseIconKey];
+    if (!phaseIcon) {
+      throw new Error(`Failed to get a phase icon: {phase: ${phase}, icon: ${phaseIcon}}.`)
+    }
+
+    // Draw the icon
+    const iconWidth = iconHeight = PHASE_ICON_SIZE; // Icon graphics have 1:1 proportions
+    const iconX = advancedLeftX - pw(0.3);
+    const iconY = advancedCenterY + ph(0.4);
+    ctx.drawImage(phaseIcon, iconX, iconY, iconWidth, iconHeight);
+
+    // Draw the text after the icon
+    const phaseX = advancedLeftX + iconWidth + pw(0.2);
+    const phaseY = iconY + EFFECT_PHASE_FONT_SIZE;
+    ctx.font = `400 ${EFFECT_PHASE_FONT_SIZE}px ${PHASE_FONT_FAMILY}`;
+    ctx.strokeStyle = colorBlack;
+    ctx.line = EFFECT_PHASE_FONT_SIZE
+    ctx.lineWidth = EFFECT_PHASE_FONT_SIZE * 0.2;
+    ctx.lineJoin = MITER;
+    ctx.miterLimit = 3;
+    ctx.strokeText(phaseText, phaseX, phaseY);
+    ctx.fillStyle = phaseColor;
+    ctx.fillText(phaseText, phaseX, phaseY);
+  }
+
 }
 
 /**
