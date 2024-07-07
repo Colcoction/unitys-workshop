@@ -84,6 +84,7 @@ const INDENT_LABEL_SPECIFIERS = Array.from(INDENT_LABEL_MAP.keys());
 const INDENT_INDEX = 1;
 // Colors for card effects
 const colorBlack = '#231f20';
+const colorYellow = '#fcb024';
 const PHASE_COLOR_MAP = new Map([
     [ORIGINAL_CONTRAST, new Map([
         [START_PHASE, "#3fae49"],

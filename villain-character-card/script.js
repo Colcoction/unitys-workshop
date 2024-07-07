@@ -129,6 +129,7 @@ function drawCardCanvas() {
   // Draw the box, then the text
   drawCharacterBodyBox();
   drawBodyText(advancedParsedBlocks);
+  drawAdvancedLabel(); // Yellow box
   // End
   drawingAdvanced = false;
 
@@ -163,6 +164,39 @@ function drawCardCanvas() {
   }
 }
 
+
+/**
+ * Draws the advanced game text label that indicates which phase it applies to, if any.
+ * Most of this code was copied from drawCharacterBodyBox.
+ */
+function drawAdvancedLabel() {
+  // Width of label box
+  const boxWidth = pw(15);
+
+  // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
+  const boxValues = CHARACTER_BODY_BOX;
+  const topLeft = [boxValues.topLeft.x * bodyWidthAdjustment - boxWidth, boxValues.topLeft.y + boxHeightOffset];
+  const topRight = [boxValues.topLeft.x * bodyWidthAdjustment, boxValues.topLeft.y + boxHeightOffset];
+  const bottomRight = [boxValues.bottomLeft.x * bodyWidthAdjustment, boxValues.bottomLeft.y];
+  const bottomLeft = [boxValues.bottomLeft.x * bodyWidthAdjustment - boxWidth, boxValues.bottomLeft.y];
+
+  // Determine the initial shape of the box.
+  const boxShape = new Path2D();
+  boxShape.moveTo(topLeft[0], topLeft[1]);
+  boxShape.lineTo(topRight[0], topRight[1]);
+  boxShape.lineTo(bottomRight[0], bottomRight[1]);
+  boxShape.lineTo(bottomLeft[0], bottomLeft[1]);
+  boxShape.closePath();
+
+  // White background
+  ctx.fillStyle = colorYellow;
+  ctx.fill(boxShape);
+
+  // Black border
+  ctx.fillStyle = colorBlack;
+  ctx.lineWidth = boxValues.borderThickness;
+  ctx.stroke(boxShape);
+}
 
 /**
  * Draws the description on a villain character card.
@@ -226,7 +260,7 @@ function drawDescription() {
   ctx.stroke(shadowShape);
 
   // Set the remaining font styles
-  ctx.fillStyle = '#fcb024';
+  ctx.fillStyle = colorYellow;
   ctx.strokeStyle = colorBlack;
   ctx.lineWidth = descriptionFontSize * 0.15;
   ctx.lineJoin = "miter";
