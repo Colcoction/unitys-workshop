@@ -142,8 +142,6 @@ function drawCardCanvas() {
   drawCharacterBodyBox();
   drawBodyText(parsedBlocks);
 
-// GAME TEXT
-
   // Draw the keyword box ("Villain")
   drawKeywords();
 
@@ -162,8 +160,94 @@ function drawCardCanvas() {
     let frameSize = pw(15);
     ctx.drawImage(loadedGraphics['Nemesis Icon Frame'], pw(11), ph(89), frameSize, frameSize);
   }
+
+  // Draw the setup instructions
+  drawSetup();
 }
 
+/**
+ * Draws the setup text.
+ * Much of this was copied from drawCardQuote().
+ */
+function drawSetup() {
+
+  // Get input value
+  const inputValue = $('#inputSetup').prop('value');
+
+  // Properties roperties
+  const setupFontSize = ph(3);
+  ctx.font = '400 normal ' + setupFontSize + 'px ' + EFFECT_FONT_FAMILY;
+  ctx.fillStyle = "#ffffff";
+  const setupMaxWidth = ph(90);
+  const setupStartX = pw(3);
+  const setupStartY = ph(95);
+  const setupLineHeight = setupFontSize * 1.2;
+
+  // Prepare sideways drawing orientation
+  ctx.save();
+  ctx.translate(setupStartX, setupStartY); // Move canvas origin to where we want to start drawing
+  ctx.rotate(-Math.PI/2); // Rotate the canvas 90deg
+
+  // Set the string of text to work with
+  const setupString = "Setup: " + inputValue;
+
+  // Extract all the words
+  const words = setupString.split(' ');
+
+  // Detect when there should be a line break
+  let lines = [''];
+  let currentLineIndex = 0;
+  for (let i = 0; i < words.length; i++) {
+    // First word of setup is easy
+    if (i === 0) {
+      lines[currentLineIndex] = words[i];
+      continue;
+    }
+    // For all other words...
+    // Check if adding this word would cause the line width to exceed the maximum
+    let lineWithWordAdded = lines[currentLineIndex] + ' ' + words[i];
+    if (ctx.measureText(lineWithWordAdded).width < setupMaxWidth) {
+      // Add word to current line
+      lines[currentLineIndex] += ' ' + words[i];
+    }
+    else {
+      // Break into new line
+      currentLineIndex++;
+      lines[currentLineIndex] = words[i];
+    }
+  }
+
+  // Iterate through lines
+  for (let i = 0; i < lines.length; i++) {
+    // Determine drawing origin
+    const drawX = 0;
+    const drawY = 0 + (setupLineHeight * i);
+    // First line is special because of "Setup" label
+    if (i == 0) {
+      // Draw the word "Setup" bold and italic, then draw the rest normal
+      // Part 1
+      const part1 = lines[i].substring(0, 5);
+      ctx.font = '600 italic ' + setupFontSize + 'px ' + EFFECT_FONT_FAMILY;
+      ctx.fillText(part1, drawX, drawY);
+      // Part 2
+      const part2 = lines[i].substring(5);
+      const part2X = drawX + ctx.measureText(part1).width;
+      ctx.font = '400 normal ' + setupFontSize + 'px ' + EFFECT_FONT_FAMILY;
+      ctx.fillText(part2, part2X, drawY);
+    }
+    // Any additional lines
+    else {
+      // Draw the whole line of text
+      ctx.fillText(lines[i], drawX, drawY);
+    }
+  }
+
+  // THIS MIGHT BE USEFUL LATER
+  const setupTotalHeight = setupLineHeight * lines.length;
+
+  // Return canvas orientation to normal
+  ctx.restore()
+}
 
 /**
  * Draws the advanced game text label that indicates which phase it applies to, if any.
