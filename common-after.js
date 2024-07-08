@@ -850,9 +850,6 @@ function updateBodyWidthAdjustment() {
   }
 }
 
-// Variable for adjusting the normal game text Y values based on the advanced game text Y values
-let advancedBoxYAdjustment = 0;
-
 /** Draws the text box of a character card (but not the text inside it). */
 function drawCharacterBodyBox() {
   // Check for width adjustment (for villain character cards)

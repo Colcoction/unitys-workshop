@@ -496,5 +496,11 @@ let variantTextColor = $('#inputVariantColor').length > 0 ? $('#inputVariantColo
 // Whether an Advanced game text box is being drawn
 let drawingAdvanced = false;
 
+// Variable for adjusting the normal game text Y values based on the advanced game text Y values
+let advancedBoxYAdjustment = 0;
+
 // Variable to hold vertical alignment for HP, keywords, and description
 let inputBelowNameLogoAlignment = 1;
+
+// How much the border in a Villain character card should adjust to fit the setup text
+let setupBorderOffset = 0;

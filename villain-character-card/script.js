@@ -130,14 +130,8 @@ function drawCardCanvas() {
   drawArtInCroppedArea('hccf_backgroundArt');
 
   // Draw the card border
-  if (showBorder) {
-    const yFix = ph(1);
-    ctx.drawImage(
-      loadedGraphics['Border'],
-      0, 0 + yFix,
-      canvas.width, canvas.height
-    );
-  }
+  drawBorder();
+
   // Draw the foreground art
   drawArtInCroppedArea('hccf_foregroundArt');
   drawArtInCroppedArea('hccf_heroNameArt');
@@ -188,6 +182,31 @@ function drawCardCanvas() {
 }
 
 /**
+ * Draws the border.
+ */
+function drawBorder() {
+  if (showBorder) {
+    // Get setup offset by fake-drawing the setup instructions
+    // (They will be drawn for real later)
+    ctx = calculationCanvas.getContext("2d");
+    drawSetup();
+    ctx = canvas.getContext("2d");
+
+    // Draw the unique frame
+    const yFix = ph(1);
+    ctx.drawImage(
+      loadedGraphics['Border'],
+      0 + setupBorderOffset, 0 + yFix,
+      canvas.width - setupBorderOffset, canvas.height
+    );
+
+    // Fill in the gap that the offset makes
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, setupBorderOffset, canvas.height);
+  }
+}
+
+/**
  * Draws the setup text.
  * Much of this was copied from drawCardQuote().
  */
@@ -198,6 +217,7 @@ function drawSetup() {
 
   // Don't draw anything if the field is blank
   if (inputValue == '') {
+    setupBorderOffset = pw(-2);
     return;
   }
 
@@ -205,8 +225,8 @@ function drawSetup() {
   const setupFontSize = ph(2.9);
   ctx.font = '400 normal ' + setupFontSize + 'px ' + EFFECT_FONT_FAMILY;
   ctx.fillStyle = "#ffffff";
-  const setupMaxWidth = ph(90);
-  const setupStartX = pw(3.5);
+  const setupMaxWidth = ph(93);
+  const setupStartX = pw(3.7);
   const setupStartY = ph(96.9);
   const setupLineHeight = setupFontSize * 1.2;
 
@@ -271,6 +291,8 @@ function drawSetup() {
 
   // THIS MIGHT BE USEFUL LATER
   const setupTotalHeight = setupLineHeight * lines.length;
+
+  setupBorderOffset = setupTotalHeight - pw(1.5);
 
   // Return canvas orientation to normal
   ctx.restore()
