@@ -216,7 +216,7 @@ const _phaseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(4)],
-        [HORIZONTAL, ph(3.3)], // PLACEHOLDER
+        [HORIZONTAL, ph(3.2)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -229,7 +229,7 @@ const _phaseIconXMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(9.2)],
-        [HORIZONTAL, pw(58)], // PLACEHOLDER
+        [HORIZONTAL, pw(58.5)], // PLACEHOLDER
     ])],
 ]);
 const PHASE_ICON_X = _phaseIconXMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -242,7 +242,7 @@ const _phaseIconSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, ps(5)],
-        [HORIZONTAL, ps(4)], // PLACEHOLDER
+        [HORIZONTAL, ps(3.8)], // PLACEHOLDER
     ])],
 ]);
 const PHASE_ICON_SIZE = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -255,7 +255,7 @@ const _baseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(3.95)],
-        [HORIZONTAL, ph(3)], // PLACEHOLDER
+        [HORIZONTAL, ph(2.9)], // PLACEHOLDER (was 3)
     ])],
 ]);
 const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -280,7 +280,7 @@ const _effectStartXMap = new Map([
             [BACK, pw(14.5)]
         ])],
         [HORIZONTAL, new Map([
-            [FRONT, pw(60)], // PLACEHOLDER
+            [FRONT, pw(60.25)], // PLACEHOLDER
             [BACK, null], // PLACEHOLDER
         ])],
     ])],
@@ -295,7 +295,7 @@ const _effectEndXMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(86.5)],
-        [HORIZONTAL, pw(97)], // PLACEHOLDER
+        [HORIZONTAL, pw(96.75)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_END_X =  _effectEndXMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -498,6 +498,7 @@ let drawingAdvanced = false;
 
 // Variable for adjusting the normal game text Y values based on the advanced game text Y values
 let advancedBoxYAdjustment = 0;
+let advancedTextYAdjustment = 0;
 
 // Variable to hold vertical alignment for HP, keywords, and description
 let inputBelowNameLogoAlignment = 1;

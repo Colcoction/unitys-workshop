@@ -827,7 +827,8 @@ function adjustBoxHeightOffset(parsedBlocks) {
   drawBodyText(parsedBlocks);
   let minimumSizeCap = 0;
   if (drawingAdvanced) {
-    minimumSizeCap = ph(9); // Unique minimum size for advanced box
+    // Unique minimum size for advanced box (higher number = smaller)
+    minimumSizeCap = ph(10);
   }
   boxHeightOffset = Math.min(Math.round(EFFECT_START_Y - currentOffsetY + 137), minimumSizeCap);
   currentOffsetY = 0;
@@ -840,12 +841,12 @@ let bodyWidthAdjustment = 1;
 function updateBodyWidthAdjustment() {
   if (drawingAdvanced) {
     if ($('#inputAdvancedBoxWidth').length > 0) {
-      bodyWidthAdjustment = $('#inputAdvancedBoxWidth').val()/100;
+      bodyWidthAdjustment = pw($('#inputAdvancedBoxWidth').val());
     }
   }
   else {
     if ($('#inputEffectBoxWidth').length > 0) {
-      bodyWidthAdjustment = $('#inputEffectBoxWidth').val()/100;
+      bodyWidthAdjustment = pw($('#inputEffectBoxWidth').val());
     }
   }
 }
@@ -862,10 +863,10 @@ function drawCharacterBodyBox() {
 
   // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
   const boxValues = CHARACTER_BODY_BOX;
-  const topLeft = [boxValues.topLeft.x * bodyWidthAdjustment, boxValues.topLeft.y + boxHeightOffset + advancedBoxYAdjustment];
+  const topLeft = [boxValues.topLeft.x + bodyWidthAdjustment, boxValues.topLeft.y + boxHeightOffset + advancedBoxYAdjustment];
   const topRight = [boxValues.topRight.x, boxValues.topRight.y + boxHeightOffset + advancedBoxYAdjustment];
   const bottomRight = [boxValues.bottomRight.x, boxValues.bottomRight.y + advancedBoxYAdjustment];
-  const bottomLeft = [boxValues.bottomLeft.x * bodyWidthAdjustment, boxValues.bottomLeft.y + advancedBoxYAdjustment];
+  const bottomLeft = [boxValues.bottomLeft.x + bodyWidthAdjustment, boxValues.bottomLeft.y + advancedBoxYAdjustment];
 
   // Determine the initial shape of the box.
   const boxShape = new Path2D();
@@ -907,9 +908,6 @@ function drawCharacterBodyBox() {
   }
 }
 
-// Variable for adjusting the normal game text Y values based on the advanced game text Y values
-let advancedTextYAdjustment = 0;
-
 /** Given an array of blocks, draw the body of a card from a deck. */
 function drawBodyText(parsedBlocks) {
   // Check for width adjustment (for villain character cards)
@@ -921,7 +919,7 @@ function drawBodyText(parsedBlocks) {
   }
 
   // Initialize positioning values
-  currentOffsetX = EFFECT_START_X * bodyWidthAdjustment;
+  currentOffsetX = EFFECT_START_X + bodyWidthAdjustment;
   currentOffsetY = EFFECT_START_Y + boxHeightOffset + advancedTextYAdjustment;
 
   // Get and apply the text scale the user chose
@@ -947,7 +945,7 @@ function drawBodyText(parsedBlocks) {
 /** Draws a single block from the array of parsed blocks. */
 function drawBlock(block, isFirstBlock) {
   // Reset indentation to default
-  currentIndentX = EFFECT_START_X * bodyWidthAdjustment;
+  currentIndentX = EFFECT_START_X + bodyWidthAdjustment;
 
   if (block.type === SPACE_BLOCK) {
     drawSpaceBlock(isFirstBlock);
@@ -994,7 +992,7 @@ function drawPhaseBlock(phase, isFirstBlock) {
 
   // Draw the icon
   const iconWidth = iconHeight = PHASE_ICON_SIZE; // Icon graphics have 1:1 proportions
-  const iconX = PHASE_ICON_X * bodyWidthAdjustment - iconWidth / 2;
+  const iconX = PHASE_ICON_X + bodyWidthAdjustment - iconWidth / 2;
   const iconY = currentOffsetY - EFFECT_PHASE_FONT_SIZE; // == iconHeight / 2.
   ctx.drawImage(phaseIcon, iconX, iconY, iconWidth, iconHeight);
 
@@ -1172,7 +1170,7 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
   });
 
   // After drawing all the words, prepare for the next block
-  currentOffsetX = EFFECT_START_X * bodyWidthAdjustment;
+  currentOffsetX = EFFECT_START_X + bodyWidthAdjustment;
   currentOffsetY += lineHeight * BLOCK_SPACING_FACTOR;
 }
 

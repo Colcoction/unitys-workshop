@@ -118,7 +118,7 @@ function drawCardCanvas() {
   );
 
   // Get vertical alignment of HP, keywords, and description
-  inputBelowNameLogoAlignment = ph($('#inputBelowNameLogoAlignment').val());
+  inputBelowNameLogoAlignment = ph($('#inputBelowNameLogoAlignment').val() * -1);
 
   // Draw the keyword box ("Villain")
   drawKeywords();
@@ -202,7 +202,7 @@ function drawBorder() {
 
     // Fill in the gap that the offset makes
     ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, setupBorderOffset, canvas.height);
+    ctx.fillRect(0, 0, setupBorderOffset + pw(0.5), canvas.height);
   }
 }
 
@@ -326,10 +326,10 @@ function drawAdvancedLabel() {
 
   // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
   const boxValues = CHARACTER_BODY_BOX;
-  const topLeft = [boxValues.topLeft.x * bodyWidthAdjustment - boxWidth, boxValues.topLeft.y + boxHeightOffset];
-  const topRight = [boxValues.topLeft.x * bodyWidthAdjustment, boxValues.topLeft.y + boxHeightOffset];
-  const bottomRight = [boxValues.bottomLeft.x * bodyWidthAdjustment, boxValues.bottomLeft.y];
-  const bottomLeft = [boxValues.bottomLeft.x * bodyWidthAdjustment - boxWidth, boxValues.bottomLeft.y];
+  const topLeft = [boxValues.topLeft.x + bodyWidthAdjustment - boxWidth, boxValues.topLeft.y + boxHeightOffset];
+  const topRight = [boxValues.topLeft.x + bodyWidthAdjustment, boxValues.topLeft.y + boxHeightOffset];
+  const bottomRight = [boxValues.bottomLeft.x + bodyWidthAdjustment, boxValues.bottomLeft.y];
+  const bottomLeft = [boxValues.bottomLeft.x + bodyWidthAdjustment - boxWidth, boxValues.bottomLeft.y];
 
   // Determine the initial shape of the box.
   const boxShape = new Path2D();
@@ -354,8 +354,8 @@ function drawAdvancedLabel() {
   if (phaseLabel === "none") {
     // "Advanced..." style properties
     ctx.fillStyle = colorBlack;
-    const advancedFontSize = ph(4.4);
-    const verticalAlign = ph(1.3);
+    const advancedFontSize = ph(4.2);
+    const verticalAlign = ph(1.2);
     ctx.font = "400 italic " + advancedFontSize + "px Unmasked BB";
     ctx.textAlign = "center";
     const advancedCenterX = topLeft[0] + (topRight[0] - topLeft[0]) / 2;
@@ -374,7 +374,7 @@ function drawAdvancedLabel() {
     // "Advanced..." style properties
     ctx.fillStyle = colorBlack;
     const advancedFontSize = ph(2.6);
-    const verticalAlign = ph(-1.2);
+    const verticalAlign = ph(-1.1);
     const horizontalAlign = pw(0.9);
     ctx.font = "400 italic " + advancedFontSize + "px Unmasked BB";
     ctx.textAlign = "left";
@@ -405,7 +405,7 @@ function drawAdvancedLabel() {
     // Draw the icon
     const iconWidth = iconHeight = PHASE_ICON_SIZE; // Icon graphics have 1:1 proportions
     const iconX = advancedLeftX - pw(0.3);
-    const iconY = advancedCenterY + ph(0.4);
+    const iconY = advancedCenterY + ph(0.1);
     ctx.drawImage(phaseIcon, iconX, iconY, iconWidth, iconHeight);
 
     // Draw the text after the icon
@@ -436,7 +436,7 @@ function drawDescription() {
   }
 
   // Set some font styles before drawing the box
-  let descriptionFontSize = pw(2.7);
+  let descriptionFontSize = pw(2.5);
   ctx.font = "600 " + descriptionFontSize + "px Boogaloo";
   // Squish the description font a little (1 = neutral)
   let descriptionSquish = 1.06;
@@ -445,9 +445,9 @@ function drawDescription() {
 
   // Box dimensions
   let boxMargin = pw(1.4); // Left and right margin between text and box border
-  let boxX = pw(98.5); // Right side of box
+  let boxX = pw(99); // Right side of box
   let boxY = ph(25) + inputBelowNameLogoAlignment; // Bottom of box
-  let boxHeight = ph(5.5); // Height of box
+  let boxHeight = ph(5.2); // Height of box
   let boxExtraRight = pw(7.5);
   let boxWidth = descriptionWidth * descriptionSquish + boxMargin * 2 + boxExtraRight;
   boxX -= boxWidth;
@@ -517,7 +517,7 @@ function drawKeywords() {
   // Convert to all uppercase letters
   // keywords = keywords.toUpperCase();
   // Keyword font
-  let keywordFontSize = pw(1.8);
+  let keywordFontSize = ph(2.4);
   ctx.font = "400 " + keywordFontSize + "px Avengeance Mightiest Avenger";
   // Squish the keyword font a little (1 = neutral)
   let keywordSquish = 1;
@@ -525,8 +525,8 @@ function drawKeywords() {
   let keywordsWidth = ctx.measureText(keywords).width;
   // Box dimensions
   let boxMargin = pw(1); // Left and right margin between text and box border
-  let boxX = pw(98.5); // Right side of box
-  let boxY = ph(29.5) + inputBelowNameLogoAlignment; // Bottom of box
+  let boxX = pw(99); // Right side of box
+  let boxY = ph(29) + inputBelowNameLogoAlignment; // Bottom of box
   let boxHeight = ph(5); // Height of box
   let boxExtraRight = pw(7.5);
   let boxWidth = keywordsWidth * keywordSquish + boxMargin * 2 + boxExtraRight;
@@ -539,7 +539,7 @@ function drawKeywords() {
   // Keywords style
   ctx.fillStyle = 'white';
   let keywordsX = (boxX + boxMargin) * 1 / keywordSquish;
-  let keywordsY = boxY + boxHeight * 0.7;
+  let keywordsY = boxY + ph(3.75);
   ctx.textAlign = "left";
   ctx.save();
   ctx.scale(keywordSquish, 1);
@@ -560,20 +560,20 @@ function drawHP() {
     return;
   }
   // Draw the HP graphic
-  let hpGraphicSize = pw(10);
-  let hpGraphicX = pw(90.5);
-  let hpGraphicY = ph(14.5) + inputBelowNameLogoAlignment;
+  let hpGraphicSize = pw(9.5);
+  let hpGraphicX = pw(91);
+  let hpGraphicY = ph(15) + inputBelowNameLogoAlignment;
   ctx.drawImage(loadedGraphics['HP Graphic'], hpGraphicX, hpGraphicY, hpGraphicSize, hpGraphicSize);
   // Draw the HP text
-  let hpFontSize = pw(4.2);
+  let hpFontSize = pw(4);
   // Downsize if more than 2 digits
   if (inputHP.length > 2) {
-    hpFontSize = pw(3.7);
+    hpFontSize = pw(3.5);
   }
   ctx.font = "600 " + hpFontSize + "px Boogaloo";
   ctx.fillStyle = colorBlack;
   ctx.textAlign = "center";
-  let hpTextX = hpGraphicX + hpGraphicSize / 2.09;
+  let hpTextX = hpGraphicX + hpGraphicSize / 2.07;
   let hpTextY = hpGraphicY + hpGraphicSize / 2 + hpFontSize / 2.7;
   ctx.fillText(inputHP, hpTextX, hpTextY);
   // Reset
