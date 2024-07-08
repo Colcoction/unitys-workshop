@@ -8,7 +8,7 @@ Loading and app prep-work
 // Get and load graphics
 // Note: Google Drive simple view link: https://drive.google.com/uc?id=FILE_ID
 let imagesToPreload = [
-  ['Border', '../_resources/hero character card border.png'],
+  // Generic
   ['test_ball', '../_resources/test_ball.png'],
   ['test_gyro', '../_resources/test_gyro.png'],
   ['test_shell', '../_resources/test_shell.png'],
@@ -26,7 +26,10 @@ let imagesToPreload = [
   ['Draw Phase Icon High Contrast', '../_resources/phase icon draw - high contrast.svg'],
   ['End Phase Icon High Contrast', '../_resources/phase icon end - high contrast.svg'],
   ['HP Graphic', '../_resources/HP Graphic.svg'],
-  ['Nemesis Icon Frame', '../_resources/nemesis icon frame.png']
+  ['Nemesis Icon Frame', '../_resources/nemesis icon frame.png'],
+
+  // Villain character card specific
+  ['Border', '../_resources/villain character card border.png'],
 ]
 
 // Make an object where each item is key = image name, value = Image element
@@ -103,50 +106,41 @@ function drawCardCanvas() {
   ctx.restore();
   ctx.save();
 
-  // Draw a blank white rectangle background (for if no image so it's not awkwardly transparent)
-  ctx.fillStyle = '#ffffff';
+  // Draw a blank white background with some black border padding
+  // (Draw white rectangle over black rectangle)
+  ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const padding = ph(2);
+  ctx.fillStyle = 'white';
+  ctx.fillRect(
+    0 + padding, 0 + padding,
+    canvas.width - padding*2, canvas.height - padding*2
+  );
 
-  // Draw the background art
-  drawArtInCroppedArea('hccf_backgroundArt');
-
-  if (showBorder) {
-    // Draw the card border
-    ctx.drawImage(loadedGraphics['Border'], 0, 0, canvas.width, canvas.height);
-  }
-  // Draw the foreground art
-  drawArtInCroppedArea('hccf_foregroundArt');
-  drawArtInCroppedArea('hccf_heroNameArt');
-  loadEffectList(); // Loads in list of terms to style with bold or italics
-
-  // Advanced game text ========
-  // Flag that we're drawing the advanced game text
-  drawingAdvanced = true;
-  // First, parse the blocks of this card's body text.
-  const advancedParsedBlocks = parseCardBody();
-  // Adjust the box height offset.
-  adjustBoxHeightOffset(advancedParsedBlocks);
-  // Draw the box, then the text
-  drawCharacterBodyBox();
-  drawBodyText(advancedParsedBlocks);
-  drawAdvancedLabel(); // Yellow box
-  // End
-  drawingAdvanced = false;
-
-  // Normal game text ========
-  // First, parse the blocks of this card's body text.
-  const parsedBlocks = parseCardBody();
-  // Adjust the box height offset.
-  adjustBoxHeightOffset(parsedBlocks);
-  // Draw the box, then the text
-  drawCharacterBodyBox();
-  drawBodyText(parsedBlocks);
+  // Get vertical alignment of HP, keywords, and description
+  inputBelowNameLogoAlignment = ph($('#inputBelowNameLogoAlignment').val());
 
   // Draw the keyword box ("Villain")
   drawKeywords();
 
   // Draw the description box "Armored Mad Scientist"
   drawDescription()
+
+  // Draw the background art
+  drawArtInCroppedArea('hccf_backgroundArt');
+
+  // Draw the card border
+  if (showBorder) {
+    const yFix = ph(1);
+    ctx.drawImage(
+      loadedGraphics['Border'],
+      0, 0 + yFix,
+      canvas.width, canvas.height
+    );
+  }
+  // Draw the foreground art
+  drawArtInCroppedArea('hccf_foregroundArt');
+  drawArtInCroppedArea('hccf_heroNameArt');
 
   // Draw the HP
   drawHP();
@@ -163,6 +157,34 @@ function drawCardCanvas() {
 
   // Draw the setup instructions
   drawSetup();
+
+  // Loads in list of terms to style with bold or italics
+  loadEffectList();
+
+  // Draw the advanced game text ========
+  // Flag that we're drawing the advanced game text
+  drawingAdvanced = true;
+  // First, parse the blocks of this card's body text.
+  const advancedParsedBlocks = parseCardBody();
+  // Adjust the box height offset.
+  adjustBoxHeightOffset(advancedParsedBlocks);
+  // Draw the box, then the text
+  drawCharacterBodyBox();
+  drawBodyText(advancedParsedBlocks);
+  drawAdvancedLabel(); // Yellow box that says "Advanced..."
+  // Done with advanced
+  drawingAdvanced = false;
+
+  // Draw the normal game text ========
+  // First, parse the blocks of this card's body text.
+  const parsedBlocks = parseCardBody();
+  // Adjust the box height offset.
+  adjustBoxHeightOffset(parsedBlocks);
+  // Draw the box, then the text
+  drawCharacterBodyBox();
+  drawBodyText(parsedBlocks);
+
+  // Canvas drawing complete!
 }
 
 /**
@@ -174,13 +196,18 @@ function drawSetup() {
   // Get input value
   const inputValue = $('#inputSetup').prop('value');
 
+  // Don't draw anything if the field is blank
+  if (inputValue == '') {
+    return;
+  }
+
   // Properties roperties
-  const setupFontSize = ph(3);
+  const setupFontSize = ph(2.9);
   ctx.font = '400 normal ' + setupFontSize + 'px ' + EFFECT_FONT_FAMILY;
   ctx.fillStyle = "#ffffff";
   const setupMaxWidth = ph(90);
-  const setupStartX = pw(3);
-  const setupStartY = ph(95);
+  const setupStartX = pw(3.5);
+  const setupStartY = ph(96.9);
   const setupLineHeight = setupFontSize * 1.2;
 
   // Prepare sideways drawing orientation
@@ -396,8 +423,8 @@ function drawDescription() {
 
   // Box dimensions
   let boxMargin = pw(1.4); // Left and right margin between text and box border
-  let boxX = pw(96); // Right side of box
-  let boxY = ph(25); // Bottom of box
+  let boxX = pw(98.5); // Right side of box
+  let boxY = ph(25) + inputBelowNameLogoAlignment; // Bottom of box
   let boxHeight = ph(5.5); // Height of box
   let boxExtraRight = pw(7.5);
   let boxWidth = descriptionWidth * descriptionSquish + boxMargin * 2 + boxExtraRight;
@@ -476,8 +503,8 @@ function drawKeywords() {
   let keywordsWidth = ctx.measureText(keywords).width;
   // Box dimensions
   let boxMargin = pw(1); // Left and right margin between text and box border
-  let boxX = pw(96); // Right side of box
-  let boxY = ph(29.5); // Bottom of box
+  let boxX = pw(98.5); // Right side of box
+  let boxY = ph(29.5) + inputBelowNameLogoAlignment; // Bottom of box
   let boxHeight = ph(5); // Height of box
   let boxExtraRight = pw(7.5);
   let boxWidth = keywordsWidth * keywordSquish + boxMargin * 2 + boxExtraRight;
@@ -512,20 +539,20 @@ function drawHP() {
   }
   // Draw the HP graphic
   let hpGraphicSize = pw(10);
-  let hpGraphicX = pw(88);
-  let hpGraphicY = ph(15);
+  let hpGraphicX = pw(90.5);
+  let hpGraphicY = ph(14.5) + inputBelowNameLogoAlignment;
   ctx.drawImage(loadedGraphics['HP Graphic'], hpGraphicX, hpGraphicY, hpGraphicSize, hpGraphicSize);
   // Draw the HP text
   let hpFontSize = pw(4.2);
   // Downsize if more than 2 digits
   if (inputHP.length > 2) {
-    hpFontSize = pw(3.8);
+    hpFontSize = pw(3.7);
   }
   ctx.font = "600 " + hpFontSize + "px Boogaloo";
   ctx.fillStyle = colorBlack;
   ctx.textAlign = "center";
   let hpTextX = hpGraphicX + hpGraphicSize / 2.09;
-  let hpTextY = hpGraphicY + hpGraphicSize / 2 + hpFontSize / 2.8;
+  let hpTextY = hpGraphicY + hpGraphicSize / 2 + hpFontSize / 2.7;
   ctx.fillText(inputHP, hpTextX, hpTextY);
   // Reset
   ctx.textAlign = "left";

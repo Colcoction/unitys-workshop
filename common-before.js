@@ -295,7 +295,7 @@ const _effectEndXMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(86.5)],
-        [HORIZONTAL, pw(92.5)], // PLACEHOLDER
+        [HORIZONTAL, pw(97)], // PLACEHOLDER
     ])],
 ]);
 const EFFECT_END_X =  _effectEndXMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -320,7 +320,7 @@ const _effectStartYMap = new Map([
             [BACK, ph(86)],
         ])],
         [HORIZONTAL, new Map([
-            [FRONT, ph(84)], // PLACEHOLDER
+            [FRONT, ph(86.25)], // PLACEHOLDER
             [BACK, null], // PLACEHOLDER
         ])],
     ])],
@@ -351,10 +351,10 @@ const _characterBodyBoxMap = new Map([
         }],
         // Villain character cards
         [HORIZONTAL, {
-            topLeft: {x: pw(58), y: ph(79)},
-            topRight: {x: pw(93), y: ph(79)},
-            bottomRight: {x: pw(93), y: ph(95)},
-            bottomLeft: {x: pw(58), y: ph(95)},
+            topLeft: {x: pw(58), y: ph(81.5)},
+            topRight: {x: pw(98), y: ph(81.5)},
+            bottomRight: {x: pw(98), y: ph(97)},
+            bottomLeft: {x: pw(58), y: ph(97)},
             bgColor: '#ffffffff',  // Last two digits are transparency,
             borderThickness: pw(0.25),
             shadowThickness: pw(0.5),
@@ -495,3 +495,6 @@ let variantTextColor = $('#inputVariantColor').length > 0 ? $('#inputVariantColo
 
 // Whether an Advanced game text box is being drawn
 let drawingAdvanced = false;
+
+// Variable to hold vertical alignment for HP, keywords, and description
+let inputBelowNameLogoAlignment = 1;

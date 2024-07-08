@@ -827,7 +827,7 @@ function adjustBoxHeightOffset(parsedBlocks) {
   drawBodyText(parsedBlocks);
   let minimumSizeCap = 0;
   if (drawingAdvanced) {
-    minimumSizeCap = ph(100); // Remove minimum size for advanced box
+    minimumSizeCap = ph(9); // Unique minimum size for advanced box
   }
   boxHeightOffset = Math.min(Math.round(EFFECT_START_Y - currentOffsetY + 137), minimumSizeCap);
   currentOffsetY = 0;
@@ -905,7 +905,7 @@ function drawCharacterBodyBox() {
   // Set advanced Y adjustment
   if (drawingAdvanced) {
     // It's the final height of the drawn advanced box, plus a gap
-    const gap = ph(2);
+    const gap = ph(1.8);
     advancedBoxYAdjustment = (boxValues.bottomLeft.y - boxValues.topLeft.y - boxHeightOffset + gap) * -1;
   }
 }
