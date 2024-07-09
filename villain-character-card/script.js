@@ -117,15 +117,6 @@ function drawCardCanvas() {
     canvas.width - padding*2, canvas.height - padding*2
   );
 
-  // Get vertical alignment of HP, keywords, and description
-  inputBelowNameLogoAlignment = ph($('#inputBelowNameLogoAlignment').val() * -1);
-
-  // Draw the keyword box ("Villain")
-  drawKeywords();
-
-  // Draw the description box "Armored Mad Scientist"
-  drawDescription()
-
   // Draw the background art
   drawArtInCroppedArea('vcc_backgroundArt');
 
@@ -135,6 +126,15 @@ function drawCardCanvas() {
   // Draw the foreground art
   drawArtInCroppedArea('vcc_foregroundArt');
   drawArtInCroppedArea('vcc_nameLogo');
+
+  // Get vertical alignment of HP, keywords, and description
+  inputBelowNameLogoAlignment = ph($('#inputBelowNameLogoAlignment').val() * -1);
+
+  // Draw the keyword box ("Villain")
+  drawKeywords();
+
+  // Draw the description box
+  drawDescription()
 
   // Draw the HP
   drawHP();
