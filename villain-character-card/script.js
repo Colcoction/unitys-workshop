@@ -127,27 +127,17 @@ function drawCardCanvas() {
   drawDescription()
 
   // Draw the background art
-  drawArtInCroppedArea('hccf_backgroundArt');
+  drawArtInCroppedArea('vcc_backgroundArt');
 
   // Draw the card border
   drawBorder();
 
   // Draw the foreground art
-  drawArtInCroppedArea('hccf_foregroundArt');
-  drawArtInCroppedArea('hccf_heroNameArt');
+  drawArtInCroppedArea('vcc_foregroundArt');
+  drawArtInCroppedArea('vcc_nameLogo');
 
   // Draw the HP
   drawHP();
-
-  // Draw the Nemesis Icon
-  if (loadedUserImages['nemesisIcon']) {
-    // Draw the nemesis icon image
-    drawArtInCroppedArea('hccf_nemesisIcon');
-
-    // Draw the nemesis icon frame
-    let frameSize = pw(15);
-    ctx.drawImage(loadedGraphics['Nemesis Icon Frame'], pw(11), ph(89), frameSize, frameSize);
-  }
 
   // Draw the setup instructions
   drawSetup();
@@ -177,6 +167,21 @@ function drawCardCanvas() {
   // Draw the box, then the text
   drawCharacterBodyBox();
   drawBodyText(parsedBlocks);
+
+  // Draw the Nemesis icon
+  if (loadedUserImages['nemesisIcon']) {
+    // Draw the nemesis icon image
+    drawArtInCroppedArea('vcc_nemesisIcon');
+
+    // Draw the nemesis icon frame
+    // let frameSize = pw(15);
+    // let nemesisX = pw(11) + bodyWidthAdjustment;
+    // ctx.drawImage(loadedGraphics['Nemesis Icon Frame'], nemesisX, ph(66), frameSize, frameSize);
+    let frameSize = pw(8.6);
+    let nemesisX = pw(50.5) + bodyWidthAdjustment;
+    let nemesisY = ph(86) + advancedBoxYAdjustment;
+    ctx.drawImage(loadedGraphics['Nemesis Icon Frame'], nemesisX, nemesisY, frameSize, frameSize);
+  }
 
   // Canvas drawing complete!
 }

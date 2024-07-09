@@ -233,6 +233,80 @@ imageAreas = {
     }
   },
   /*==========================================================
+  Villain Character Card Front
+  ==========================================================*/
+  // Villain Name
+  vcc_nameLogo: {
+    pathShape: coordinatesToPathShape([
+      [2.5, 2],
+      [97.5, 2],
+      [97.5, 30],
+      [2.5, 30]
+    ]),
+    scaleStyle: 'fit',
+    vAlign: 'top',
+    getImage: function () {
+      return getUserImage('nameLogo');
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments('nameLogo');
+    }
+  },
+  // Art in Foreground
+  vcc_foregroundArt: {
+    pathShape: coordinatesToPathShape([
+      [0, 0],
+      [100, 0],
+      [100, 100],
+      [0, 100]
+    ]),
+    scaleStyle: 'fill',
+    vAlign: 'center',
+    getImage: function () {
+      return getUserImage('foregroundArt');
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments('foregroundArt');
+    }
+  },
+  vcc_backgroundArt: {
+    pathShape: coordinatesToPathShape([
+      [0, 0],
+      [100, 0],
+      [100, 100],
+      [0, 100]
+    ]),
+    scaleStyle: 'fill',
+    vAlign: 'center',
+    getImage: function () {
+      //return loadedGraphics['test_gyrosaur cc front'];
+      return getUserImage('backgroundArt');
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments('backgroundArt');
+    }
+  },
+  vcc_nemesisIcon: {
+    pathShape: coordinatesToPathShape([
+      [51.4, 80.0],
+      [51.9, 79.7],
+
+      [57.5, 79.7],
+      [58.2, 80.8],
+
+      [55.0, 87.5],
+      [54.4, 87.5]
+    ]),
+    scaleStyle: 'fill',
+    vAlign: 'center',
+    getImage: function () {
+      return getUserImage('nemesisIcon');
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments('nemesisIcon');
+    }
+  },
+  /*==========================================================
   Hero Deck Back
   ==========================================================*/
   // Hero Name Art
@@ -462,22 +536,28 @@ function drawArtInCroppedArea(areaName) {
   // Get image area information
   let imageArea = imageAreas[areaName];
   let image = imageArea.getImage();
-  let pathShape = imageArea.pathShape;
+  let areaPathShape = imageArea.pathShape;
   let adjustments = imageArea.getAdjustments();
   let scaleStyle = imageArea.scaleStyle;
   let vAlign = imageArea.vAlign;
 
   // Stroke path - useful when working on a new image area
-  // ctx.strokeStyle = 'green';
-  // ctx.lineWidth = pw(1);
-  // ctx.stroke(pathShape.pathShape);
+  // ctx.strokeStyle = 'red';
+  // ctx.lineWidth = ps(0.5);
+  // ctx.stroke(areaPathShape.pathShape);
 
   if (!image) { return } // Cancel function if there's no image to draw (placed here to allow test stroke to be drawn)
 
   // Save context before clip
   ctx.save();
+
+  // Dynamically adjust nemesis icon placement on villain character cards
+  if (areaName == 'vcc_nemesisIcon') {
+    ctx.translate(bodyWidthAdjustment, 0);
+  }
+
   // Clip path shape
-  ctx.clip(pathShape.pathShape);
+  ctx.clip(areaPathShape.pathShape);
 
   // Get image information
   let imageWidth = image.width;
@@ -486,14 +566,14 @@ function drawArtInCroppedArea(areaName) {
 
   // Determine default scale of image by comparing image ratio to area shape ratio
   let initialScale = 1;
-  if ((scaleStyle == 'fill' && imageRatio > pathShape.ratio) ||
-    (scaleStyle == 'fit' && imageRatio < pathShape.ratio)) {
+  if ((scaleStyle == 'fill' && imageRatio > areaPathShape.ratio) ||
+    (scaleStyle == 'fit' && imageRatio < areaPathShape.ratio)) {
     // If image ratio is wider than image area ratio, fit to height
-    initialScale = pathShape.height / imageHeight;
+    initialScale = areaPathShape.height / imageHeight;
   }
   else {
     // Otherwise, fit to width
-    initialScale = pathShape.width / imageWidth;
+    initialScale = areaPathShape.width / imageWidth;
   }
 
   // Determine final scale of image based on user input
@@ -504,17 +584,17 @@ function drawArtInCroppedArea(areaName) {
   let drawHeight = imageHeight * finalScale;
 
   // Determine draw X by centering, then adding user input offset
-  let drawX = pathShape.centerX - drawWidth / 2;
+  let drawX = areaPathShape.centerX - drawWidth / 2;
   drawX += adjustments.xOffset * drawWidth;
 
   // Align image to that area's starting alignment, then add user input offset
   let drawY = 0;
   if (vAlign == 'center') {
-    drawY = pathShape.topmostY + pathShape.height / 2 - drawHeight / 2;
+    drawY = areaPathShape.topmostY + areaPathShape.height / 2 - drawHeight / 2;
     drawY += adjustments.yOffset * drawHeight;
   }
   else if (vAlign == 'top') {
-    drawY = pathShape.topmostY;
+    drawY = areaPathShape.topmostY;
     drawY += adjustments.yOffset * drawHeight;
   }
 
