@@ -106,16 +106,9 @@ function drawCardCanvas() {
   ctx.restore();
   ctx.save();
 
-  // Draw a blank white background with some black border padding
-  // (Draw white rectangle over black rectangle)
-  ctx.fillStyle = 'black';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  const padding = ph(2);
+  // Draw a blank white background
   ctx.fillStyle = 'white';
-  ctx.fillRect(
-    0 + padding, 0 + padding,
-    canvas.width - padding*2, canvas.height - padding*2
-  );
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Draw the background art
   drawArtInCroppedArea('vcc_backgroundArt');
@@ -197,17 +190,26 @@ function drawBorder() {
     drawSetup();
     ctx = canvas.getContext("2d");
 
-    // Draw the unique frame
-    const yFix = ph(1);
+    // Tweak to get the border asset closer to official components
+    const borderYFix = ph(1);
+
+    // Draw the border frame, using borderYFix and setupBorderOffset to get it just right
     ctx.drawImage(
       loadedGraphics['Border'],
-      0 + setupBorderOffset, 0 + yFix,
+      0 + setupBorderOffset, 0 + borderYFix,
       canvas.width - setupBorderOffset, canvas.height
     );
 
-    // Fill in the gap that the offset makes
+    // Add a bit of overlap just to make sure there's not a thin gap between the border and the fill-in
+    const overlap = pw(0.5);
+
+    // Fill in the gap that borderYFix makes
     ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, setupBorderOffset + pw(0.5), canvas.height);
+    ctx.fillRect(0, 0, canvas.width, borderYFix + overlap);
+
+    // Fill in the gap that setupBorderOffset makes
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, setupBorderOffset + overlap, canvas.height);
   }
 }
 
@@ -451,7 +453,7 @@ function drawDescription() {
   // Box dimensions
   let boxMargin = pw(1.4); // Left and right margin between text and box border
   let boxX = pw(99); // Right side of box
-  let boxY = ph(25) + inputBelowNameLogoAlignment; // Bottom of box
+  let boxY = ph(30) + inputBelowNameLogoAlignment; // Bottom of box
   let boxHeight = ph(5.2); // Height of box
   let boxExtraRight = pw(7.5);
   let boxWidth = descriptionWidth * descriptionSquish + boxMargin * 2 + boxExtraRight;
@@ -531,7 +533,7 @@ function drawKeywords() {
   // Box dimensions
   let boxMargin = pw(1); // Left and right margin between text and box border
   let boxX = pw(99); // Right side of box
-  let boxY = ph(29) + inputBelowNameLogoAlignment; // Bottom of box
+  let boxY = ph(34) + inputBelowNameLogoAlignment; // Bottom of box
   let boxHeight = ph(5); // Height of box
   let boxExtraRight = pw(7.5);
   let boxWidth = keywordsWidth * keywordSquish + boxMargin * 2 + boxExtraRight;
@@ -567,7 +569,7 @@ function drawHP() {
   // Draw the HP graphic
   let hpGraphicSize = pw(9.5);
   let hpGraphicX = pw(91);
-  let hpGraphicY = ph(15) + inputBelowNameLogoAlignment;
+  let hpGraphicY = ph(20) + inputBelowNameLogoAlignment;
   ctx.drawImage(loadedGraphics['HP Graphic'], hpGraphicX, hpGraphicY, hpGraphicSize, hpGraphicSize);
   // Draw the HP text
   let hpFontSize = pw(4);
