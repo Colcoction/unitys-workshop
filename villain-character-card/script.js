@@ -452,10 +452,10 @@ function drawDescription() {
 
   // Box dimensions
   let boxMargin = pw(1.4); // Left and right margin between text and box border
-  let boxX = pw(99); // Right side of box
+  let boxX = pw(98); // Right side of box
   let boxY = ph(30) + inputBelowNameLogoAlignment; // Bottom of box
   let boxHeight = ph(5.2); // Height of box
-  let boxExtraRight = pw(7.5);
+  let boxExtraRight = pw(6.6);
   let boxWidth = descriptionWidth * descriptionSquish + boxMargin * 2 + boxExtraRight;
   boxX -= boxWidth;
   boxY -= boxHeight;
@@ -521,8 +521,6 @@ function drawKeywords() {
   if (keywords === '') {
     return;
   }
-  // Convert to all uppercase letters
-  // keywords = keywords.toUpperCase();
   // Keyword font
   let keywordFontSize = ph(2.4);
   ctx.font = "400 " + keywordFontSize + "px Avengeance Mightiest Avenger";

@@ -140,17 +140,16 @@
 
       <div class="inputGroup">
         <label for="inputHP">HP</label>
-        <input type="text" class="contentInput" id="inputHP" value="120">
-      </div>
-
-      <div class="inputGroup">
-        <label for="inputDescription">Description</label>
-        <input type="text" class="contentInput" id="inputDescription" value="Chaos-Bound Creator">
-      </div>
-
-      <div class="inputGroup">
-        <label for="inputTitle">Keywords</label>
+        <input type="text" class="contentInput" id="inputHP" value="">
+      
+        <label for="inputDescription" style="margin-top: 10px;">Description</label>
+        <input type="text" class="contentInput" id="inputDescription" value="">
+        
+        <label for="inputTitle" style="margin-top: 10px;">Keywords</label>
         <input type="text" class="contentInput" id="inputKeywords" value="Villain">
+        
+        <label for="inputBelowNameLogoAlignment" style="margin-top: 10px;">Alignment</label>
+        <input type="range" class="contentInput" id="inputBelowNameLogoAlignment" min="-20" max="20" value="0">
       </div>
 
       <div class="inputGroup">
@@ -236,23 +235,17 @@
           <button style="margin-top: 10px;" data-image-purpose="nameLogo" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
       </div>
-
-      <div class="inputGroup">
-        <label for="inputBelowNameLogoAlignment">Below Name Logo Alignment</label>
-        <input type="range" class="contentInput" id="inputBelowNameLogoAlignment" min="-20" max="20" value="0">
-      </div>
-
     </div>
 
     <div>
       <div class="inputGroup">
-        <label for="inputSetup">Setup</label>
-        <textarea rows="2" class="contentInput" id="inputSetup">Shuffle and set the Akash'Bhuta deck in the Villain play area. Put both copies of Harsh Renewal under this card.</textarea>
+        <label for="inputSetup">Setup Text</label>
+        <textarea rows="2" class="contentInput" id="inputSetup"></textarea>
       </div>
 
       <div class="inputGroup">
         <label for="inputEffect">Game Text</label>
-        <textarea rows="6" class="contentInput" id="inputEffect">START PHASE If there are at least (H) Citizen cards in the Villain trash: [flip]&#13;Citizen Dawn only flips once this way per game.&#13;END PHASE Citizen Dawn deals the Hero target with the highest HP (H) minus 2 energy damage.</textarea>
+        <textarea rows="6" class="contentInput" id="inputEffect"></textarea>
         <label for="inputEffectTextSize" style="margin-top: 10px;">Text Size</label>
         <input type="range" class="contentInput" id="inputEffectTextSize" min="90" max="100" value="100">
         <label for="inputEffectBoxWidth" style="margin-top: 10px;">Box Width</label>
@@ -272,7 +265,7 @@
           <option value="end">End Phase</option>
         </select>
         <label for="inputAdvanced" style="margin-top: 10px;">Advanced Game Text</label>
-        <textarea rows="3" class="contentInput" id="inputAdvanced">+1 damage dealt by Villain targets.</textarea>
+        <textarea rows="3" class="contentInput" id="inputAdvanced"></textarea>
         <label for="inputAdvancedBoxWidth" style="margin-top: 10px;">Box Width</label>
         <input type="range" class="contentInput" id="inputAdvancedBoxWidth" min="-33" max="10" value="-10">
       </div>
@@ -314,7 +307,7 @@
     const CARD_FORM = "character";
     const ORIENTATION = "horizontal";
     const FACE = "front";
-    const DEFAULT_DOWNLOAD_NAME = "villain-character";
+    const DEFAULT_DOWNLOAD_NAME = "villain-character-card";
   </script>
   <!-- Common script -->
   <script src="../common-before.js"></script>
