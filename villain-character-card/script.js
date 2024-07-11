@@ -200,15 +200,13 @@ function drawBorder() {
       canvas.width - setupBorderOffset, canvas.height
     );
 
+    // Fill in the gaps that borderYFix and setupBorderOffset make
+    ctx.fillStyle = colorBlack;
     // Add a bit of overlap just to make sure there's not a thin gap between the border and the fill-in
     const overlap = pw(0.5);
-
-    // Fill in the gap that borderYFix makes
-    ctx.fillStyle = 'black';
+    // borderYFix
     ctx.fillRect(0, 0, canvas.width, borderYFix + overlap);
-
-    // Fill in the gap that setupBorderOffset makes
-    ctx.fillStyle = 'black';
+    // setupBorderOffset
     ctx.fillRect(0, 0, setupBorderOffset + overlap, canvas.height);
   }
 }
