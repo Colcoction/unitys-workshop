@@ -238,10 +238,10 @@ imageAreas = {
   // Villain Name
   vcc_nameLogo: {
     pathShape: coordinatesToPathShape([
-      [2.5, 2],
-      [97.5, 2],
-      [97.5, 30],
-      [2.5, 30]
+      [50, 2],
+      [98.5, 2],
+      [98.5, 40],
+      [50, 40]
     ]),
     scaleStyle: 'fit',
     vAlign: 'top',
@@ -541,7 +541,7 @@ function drawArtInCroppedArea(areaName) {
   let scaleStyle = imageArea.scaleStyle;
   let vAlign = imageArea.vAlign;
 
-  // Stroke path - useful when working on a new image area
+  // Stroke path - useful to toggle on when working on a new image area
   // ctx.strokeStyle = 'red';
   // ctx.lineWidth = ps(0.5);
   // ctx.stroke(areaPathShape.pathShape);
