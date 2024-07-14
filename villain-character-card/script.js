@@ -173,7 +173,7 @@ function drawCardCanvas() {
     // let nemesisX = pw(11) + bodyWidthAdjustment;
     // ctx.drawImage(loadedGraphics['Nemesis Icon Frame'], nemesisX, ph(66), frameSize, frameSize);
     let frameSize = pw(8.6);
-    let nemesisX = pw(50.5) + bodyWidthAdjustment;
+    let nemesisX = pw(48) + bodyWidthAdjustment;
     let nemesisY = ph(86) + advancedBoxYAdjustment;
     ctx.drawImage(loadedGraphics['Nemesis Icon Frame'], nemesisX, nemesisY, frameSize, frameSize);
   }

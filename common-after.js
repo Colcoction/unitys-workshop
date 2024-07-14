@@ -233,7 +233,7 @@ imageAreas = {
     }
   },
   /*==========================================================
-  Villain Character Card Front
+  Villain Character Card
   ==========================================================*/
   // Villain Name
   vcc_nameLogo: {
@@ -288,14 +288,14 @@ imageAreas = {
   },
   vcc_nemesisIcon: {
     pathShape: coordinatesToPathShape([
-      [51.4, 80.0],
-      [51.9, 79.7],
+      [48.9, 80.0],
+      [49.4, 79.7],
 
-      [57.5, 79.7],
-      [58.2, 80.8],
+      [55.0, 79.7],
+      [55.7, 80.8],
 
-      [55.0, 87.5],
-      [54.4, 87.5]
+      [52.5, 87.5],
+      [51.9, 87.5]
     ]),
     scaleStyle: 'fill',
     vAlign: 'center',
