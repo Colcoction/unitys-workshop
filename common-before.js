@@ -196,7 +196,7 @@ setCanvasWidth(MEDIUM);
 const clonedCanvas = $(canvas).clone().appendTo("#canvasContainer");
 $(clonedCanvas).attr({
     'id': 'calculationCanvas',
-    'style': 'visibility: hidden'
+    'style': 'display: none;'
 });
 var calculationCanvas = document.getElementById("calculationCanvas");
 
