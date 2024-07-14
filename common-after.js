@@ -288,14 +288,14 @@ imageAreas = {
   },
   vcc_nemesisIcon: {
     pathShape: coordinatesToPathShape([
-      [48.9, 80.0],
-      [49.4, 79.7],
+      [48.9, 89.8],
+      [49.4, 88.7],
 
-      [55.0, 79.7],
-      [55.7, 80.8],
+      [55.0, 88.7],
+      [55.5, 89.8],
 
-      [52.5, 87.5],
-      [51.9, 87.5]
+      [52.5, 96.5],
+      [51.9, 96.5]
     ]),
     scaleStyle: 'fill',
     vAlign: 'center',
@@ -553,7 +553,7 @@ function drawArtInCroppedArea(areaName) {
 
   // Dynamically adjust nemesis icon placement on villain character cards
   if (areaName == 'vcc_nemesisIcon') {
-    ctx.translate(bodyWidthAdjustment, 0);
+    ctx.translate(bodyWidthAdjustment, advancedBoxYAdjustment);
   }
 
   // Clip path shape
