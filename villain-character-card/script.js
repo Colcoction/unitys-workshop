@@ -437,26 +437,26 @@ function drawAdvancedLabel() {
 function drawDescription() {
   // Check for description input. The input with this ID will always exist, so we can call toUpperCase() here safely.
   const description = $('#inputDescription').prop('value').toUpperCase();
-  // If we don't have an input, don't draw anything
-  if (description === '') {
-    return;
-  }
 
   // Set some font styles before drawing the box
-  let descriptionFontSize = pw(2.5);
+  const descriptionFontSize = pw(2.5);
   ctx.font = "600 " + descriptionFontSize + "px Boogaloo";
   // Squish the description font a little (1 = neutral)
-  let descriptionSquish = 1.06;
+  const descriptionSquish = 1.06;
   // Get description text width
   let descriptionWidth = ctx.measureText(description).width;
+  // Apply a minimum width if the field is blank
+  if (description === '') {
+    descriptionWidth = pw(6);
+  }
 
   // Box dimensions
-  let boxMargin = pw(1.4); // Left and right margin between text and box border
+  const boxMargin = pw(1.4); // Left and right margin between text and box border
   let boxX = pw(98); // Right side of box
   let boxY = ph(30) + inputBelowNameLogoAlignment; // Bottom of box
-  let boxHeight = ph(5.2); // Height of box
-  let boxExtraRight = pw(6.6);
-  let boxWidth = descriptionWidth * descriptionSquish + boxMargin * 2 + boxExtraRight;
+  const boxHeight = ph(5.2); // Height of box
+  const boxExtraRight = pw(6.6);
+  const boxWidth = descriptionWidth * descriptionSquish + boxMargin * 2 + boxExtraRight;
   boxX -= boxWidth;
   boxY -= boxHeight;
 
