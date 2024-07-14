@@ -119,21 +119,6 @@ function drawCardCanvas() {
   // Draw the foreground art
   drawArtInCroppedArea('vcc_foregroundArt');
 
-  // Get vertical alignment of HP, keywords, and description
-  inputBelowNameLogoAlignment = ph($('#inputBelowNameLogoAlignment').val() * -1);
-
-  // Draw the keyword box
-  drawKeywords();
-
-  // Draw the description box
-  drawDescription()
-
-  // Draw the name logo
-  drawArtInCroppedArea('vcc_nameLogo');
-
-  // Draw the HP
-  drawHP();
-
   // Draw the setup instructions
   drawSetup();
 
@@ -177,6 +162,21 @@ function drawCardCanvas() {
     let nemesisY = ph(86) + advancedBoxYAdjustment;
     ctx.drawImage(loadedGraphics['Nemesis Icon Frame'], nemesisX, nemesisY, frameSize, frameSize);
   }
+
+  // Get vertical alignment of HP, keywords, and description
+  inputBelowNameLogoAlignment = ph($('#inputBelowNameLogoAlignment').val() * -1);
+
+  // Draw the keyword box
+  drawKeywords();
+
+  // Draw the description box
+  drawDescription()
+
+  // Draw the name logo
+  drawArtInCroppedArea('vcc_nameLogo');
+
+  // Draw the HP
+  drawHP();
 
   // Canvas drawing complete!
 }
