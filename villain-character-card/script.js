@@ -242,8 +242,14 @@ function drawSetup() {
   ctx.translate(setupStartX, setupStartY); // Move canvas origin to where we want to start drawing
   ctx.rotate(-Math.PI/2); // Rotate the canvas 90deg
 
+  // Do any modifications to the text to support symbols
+  let modifiedInputValue = inputValue;
+  // Replace placeholder H and F with custom symbols
+  modifiedInputValue = modifiedInputValue.replaceAll('(H)', '҈____');
+  modifiedInputValue = modifiedInputValue.replaceAll('(F)', '҉____');
+
   // Set the string of text to work with
-  const setupString = "Setup: " + inputValue;
+  const setupString = "Setup: " + modifiedInputValue;
 
   // Extract all the words
   const words = setupString.split(' ');
@@ -276,15 +282,17 @@ function drawSetup() {
     // Determine drawing origin
     const drawX = 0;
     const drawY = 0 + (setupLineHeight * i);
+    // Replace underscores with spaces as we do with effect text
+    const line = lines[i].replaceAll('_', ' ');
     // First line is special because of "Setup" label
     if (i == 0) {
       // Draw the word "Setup" bold and italic, then draw the rest normal
       // Part 1
-      const part1 = lines[i].substring(0, 5);
+      const part1 = line.substring(0, 5);
       ctx.font = '600 italic ' + setupFontSize + 'px ' + EFFECT_FONT_FAMILY;
       ctx.fillText(part1, drawX, drawY);
       // Part 2
-      const part2 = lines[i].substring(5);
+      const part2 = line.substring(5);
       const part2X = drawX + ctx.measureText(part1).width;
       ctx.font = '400 normal ' + setupFontSize + 'px ' + EFFECT_FONT_FAMILY;
       ctx.fillText(part2, part2X, drawY);
@@ -292,7 +300,7 @@ function drawSetup() {
     // Any additional lines
     else {
       // Draw the whole line of text
-      ctx.fillText(lines[i], drawX, drawY);
+      ctx.fillText(line, drawX, drawY);
     }
   }
 

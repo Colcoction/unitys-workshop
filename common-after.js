@@ -1167,6 +1167,10 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
   // Make minus signs more readable by replacing hyphens with en-dashes
   blockString = blockString.replaceAll('-', '–');
 
+  // Replace placeholder H and flip with custom symbols
+  blockString = blockString.replaceAll('(H)', '҈____');
+  blockString = blockString.replaceAll('(F)', '҉____');
+
   // Extract all the words
   // add special processing for spaces after numbers
   let words = blockString.split(' ').flatMap((word) => {

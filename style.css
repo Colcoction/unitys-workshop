@@ -7,7 +7,10 @@ Light blue: #0f76bc
 
 */
 
-
+@font-face {
+  font-family: "NotoSentinels";
+  src: url('./_resources/NotoSans-Sentinels.woff2');
+}
 
 body {
   background-color: #0f76bc;

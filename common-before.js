@@ -111,7 +111,7 @@ const INDENT_LABEL_SIZE_FACTOR = 1.08;
 const MITER = "miter";
 // Body text properties
 const EFFECT_FONT_WEIGHT = 400;
-const EFFECT_FONT_FAMILY = 'Noto Sans';
+const EFFECT_FONT_FAMILY = "NotoSentinels";
 // Font-weight-normalized space between words
 const SPACE_WIDTH_FACTOR = 0.26;
 // A multiplicative factor used to determine the distance of 2 blocks
