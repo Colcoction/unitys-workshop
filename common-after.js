@@ -1196,7 +1196,11 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
     let styleValue = "normal";
     if (thisWord.isBold) { weightValue = "600" }
     if (thisWord.isItalics) { styleValue = "italic" }
-    ctx.font = weightValue + ' ' + styleValue + ' ' + effectFontSize + 'px ' + EFFECT_FONT_FAMILY;
+    if (thisWord.isBold || thisWord.isItalics) {
+      ctx.font = weightValue + ' ' + styleValue + ' ' + effectFontSize + 'px ' + BACKUP_FONT_FAMILY;
+    } else {
+      ctx.font = weightValue + ' ' + styleValue + ' ' + effectFontSize + 'px ' + EFFECT_FONT_FAMILY;
+    }
     ctx.fillStyle = colorBlack;
 
     // Break up special bold/italics phrases into their component words
