@@ -1168,8 +1168,10 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
   blockString = blockString.replaceAll('-', '–');
 
   // Replace placeholder H and flip with custom symbols
+  // Valid: '(H)' - case sensitive
   blockString = blockString.replaceAll('(H)', '҈____');
-  blockString = blockString.replaceAll('(F)', '҉____');
+  // Valid: '[flip]', '(flip)', '(F)' - not case sensitive
+  blockString = blockString.replaceAll(/\[flip\]|\(flip\)|\(F\)/gi, '҉____');
 
   // Extract all the words
   // add special processing for spaces after numbers
