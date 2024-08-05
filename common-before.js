@@ -257,7 +257,7 @@ const _baseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(3.95)],
-        [HORIZONTAL, ph(2.9)], (was 3)
+        [HORIZONTAL, ph(2.9)],
     ])],
 ]);
 const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
