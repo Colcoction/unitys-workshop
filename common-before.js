@@ -322,7 +322,7 @@ const _effectStartYMap = new Map([
             [BACK, ph(86)],
         ])],
         [HORIZONTAL, new Map([
-            [FRONT, ph(86.25)],
+            [FRONT, ph(86.1)],
             [BACK, null],
         ])],
     ])],
