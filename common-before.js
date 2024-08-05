@@ -218,7 +218,7 @@ const _phaseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(4)],
-        [HORIZONTAL, ph(3.2)], // PLACEHOLDER
+        [HORIZONTAL, ph(3.2)],
     ])],
 ]);
 const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -231,7 +231,7 @@ const _phaseIconXMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(9.2)],
-        [HORIZONTAL, pw(58.5)], // PLACEHOLDER
+        [HORIZONTAL, pw(58.5)],
     ])],
 ]);
 const PHASE_ICON_X = _phaseIconXMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -244,7 +244,7 @@ const _phaseIconSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, ps(5)],
-        [HORIZONTAL, ps(3.8)], // PLACEHOLDER
+        [HORIZONTAL, ps(3.8)],
     ])],
 ]);
 const PHASE_ICON_SIZE = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -257,7 +257,7 @@ const _baseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(3.95)],
-        [HORIZONTAL, ph(2.9)], // PLACEHOLDER (was 3)
+        [HORIZONTAL, ph(2.9)], (was 3)
     ])],
 ]);
 const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -282,8 +282,8 @@ const _effectStartXMap = new Map([
             [BACK, pw(14.5)]
         ])],
         [HORIZONTAL, new Map([
-            [FRONT, pw(60.25)], // PLACEHOLDER
-            [BACK, null], // PLACEHOLDER
+            [FRONT, pw(60.25)],
+            [BACK, null],
         ])],
     ])],
 ]);
@@ -297,7 +297,7 @@ const _effectEndXMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(86.5)],
-        [HORIZONTAL, pw(96.75)], // PLACEHOLDER
+        [HORIZONTAL, pw(96.75)],
     ])],
 ]);
 const EFFECT_END_X =  _effectEndXMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -322,8 +322,8 @@ const _effectStartYMap = new Map([
             [BACK, ph(86)],
         ])],
         [HORIZONTAL, new Map([
-            [FRONT, ph(86.25)], // PLACEHOLDER
-            [BACK, null], // PLACEHOLDER
+            [FRONT, ph(86.25)],
+            [BACK, null],
         ])],
     ])],
 ]);
