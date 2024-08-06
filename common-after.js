@@ -205,7 +205,7 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      //return loadedGraphics['test_gyrosaur cc front'];
+      //return loadedGraphics['test_herocc'];
       return getUserImage('backgroundArt');
     },
     getAdjustments: function () {
@@ -279,7 +279,7 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      //return loadedGraphics['test_gyrosaur cc front'];
+      //return loadedGraphics['test_herocc'];
       return getUserImage('backgroundArt');
     },
     getAdjustments: function () {

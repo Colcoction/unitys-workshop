@@ -4,8 +4,13 @@ then ran this in _resources folder (future uses would need to be more narrow to 
 
 for file in Scans/*/*/*; do cwebp -q 20 "$file" -o "${file%.*}.webp"; done
 
-
-
-new files conversion:
+_new files conversion:
 
 for file in Scans/_new/*/*; do cwebp -q 20 "$file" -o "${file%.*}.webp"; done
+
+
+== SINGLE FOLDER METHOD ==
+
+To convert all files in a single folder, run this command in that folder:
+
+for file in *; do cwebp -q 20 "$file" -o "${file%.*}.webp"; done

@@ -91,6 +91,11 @@ function loadCards(tsvData, dataGroup) {
         imagePath1 = "/_resources/Scans/" + dataGroup + "/" + folderName + "/" + fileName + ".webp";
         // Strip out quotation marks and question marks because the files name's can't have them
         imagePath1 = imagePath1.replaceAll('"', '').replaceAll('?', '');
+        // Deck Back
+        fileName = folderName;
+        imagePath2 = "/_resources/Scans/Deck Backs/" + fileName + ".webp";
+        // Strip out quotation marks and question marks because the files name's can't have them
+        imagePath2 = imagePath2.replaceAll('"', '').replaceAll('?', '');
         break;
 
       case 'Villain Cards':
@@ -99,6 +104,11 @@ function loadCards(tsvData, dataGroup) {
         imagePath1 = "/_resources/Scans/" + dataGroup + "/" + folderName + "/" + fileName + ".webp";
         // Strip out quotation marks and question marks because the files name's can't have them
         imagePath1 = imagePath1.replaceAll('"', '').replaceAll('?', '');
+        // Deck Back
+        fileName = folderName;
+        imagePath2 = "/_resources/Scans/Deck Backs/" + fileName + ".webp";
+        // Strip out quotation marks and question marks because the files name's can't have them
+        imagePath2 = imagePath2.replaceAll('"', '').replaceAll('?', '');
         break;
 
       case 'Hero Character Cards':
@@ -162,13 +172,13 @@ function loadCards(tsvData, dataGroup) {
     let extraClasses = '';
     switch (dataGroup) {
       case 'Hero Cards':
-        extraClasses += ' heroCard';
+        extraClasses += ' heroCard flippable';
         break;
       case 'Villain Cards':
-        extraClasses += ' villainCard';
+        extraClasses += ' villainCard flippable';
         break;
       case 'Environment Cards':
-        extraClasses += ' environmentCard';
+        extraClasses += ' environmentCard flippable';
         break;
       case 'Hero Character Cards':
         extraClasses += ' heroCharacterCard flippable';

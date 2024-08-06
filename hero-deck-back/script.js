@@ -15,7 +15,7 @@ let imagesToPreload = [
   ['test_gyro', '../_resources/test_gyro.png'],
   ['test_shell', '../_resources/test_shell.png'],
   ['test_hyperspin', '../_resources/test_hyperspin.png'],
-  ['test_name', '../_resources/Gyrosaur title.png']
+  ['test_name', '../_resources/test_namelogo.png']
 ]
 
 // Make an object where each item is key = image name, value = Image element
