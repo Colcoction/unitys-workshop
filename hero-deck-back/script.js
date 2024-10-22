@@ -39,7 +39,7 @@ let loadedUserImages = {
   leftArt: null,
   rightArt: null,
   bottomArt: null,
-  heroNameArt: null
+  nameLogo: null
 };
 
 
