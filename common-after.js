@@ -172,10 +172,10 @@ imageAreas = {
     scaleStyle: 'fit',
     vAlign: 'top',
     getImage: function () {
-      return getUserImage('heroNameArt');
+      return getUserImage('nameLogo');
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('heroNameArt');
+      return getUserImageAdjustments('nameLogo');
     }
   },
   // Art in Foreground
@@ -320,10 +320,10 @@ imageAreas = {
     scaleStyle: 'fit',
     vAlign: 'top',
     getImage: function () {
-      return getUserImage('heroNameArt');
+      return getUserImage('nameLogo');
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('heroNameArt');
+      return getUserImageAdjustments('nameLogo');
     }
   },
   // Left Art
@@ -391,10 +391,10 @@ imageAreas = {
     scaleStyle: 'fit',
     vAlign: 'top',
     getImage: function () {
-      return getUserImage('villainNameArt');
+      return getUserImage('nameLogo');
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('villainNameArt');
+      return getUserImageAdjustments('nameLogo');
     }
   },
   // Top Art
