@@ -149,7 +149,7 @@ $('#parseJsonInputButton').on('click', function () {
 
 // Output JSON Input button
 $('#outputJsonButton').on('click', function () {
-  outputJSONData(CARD_FORM);
+  outputJSONData(CARD_FORM, ORIENTATION);
 });
 
 /*
@@ -700,12 +700,14 @@ function parseJSONData(data) {
       suddenly = false;
     }
   }
-  // Character card fields
+  // Hero Character card fields
   if('PowerName' in data) {
     $('#inputPowerName').val(data.PowerName);
   } else {
     $('#inputPowerName').val('');
   }
+
+  // Common Character card fields
   if('NemesisIconURL' in data && data.NemesisIconURL.length != 0) {
     loadedUserImages['nemesisIcon'] = new Image();
     loadedUserImages['nemesisIcon'].src = data.NemesisIconURL;
@@ -793,41 +795,78 @@ function parseJSONData(data) {
   } else {
     $('.inputImageScale[data-image-purpose=foregroundArt]').val(0);
   }
-  if('CharacterLogoURL' in data && data.CharacterLogoURL.length != 0) {
-    loadedUserImages['heroNameArt'] = new Image();
-    loadedUserImages['heroNameArt'].src = data.CharacterLogoURL;
-    loadedUserImages['heroNameArt'].onload = function () {
+  if('NameLogoURL' in data && data.NameLogoURL.length != 0) {
+    loadedUserImages['nameLogo'] = new Image();
+    loadedUserImages['nameLogo'].src = data.NameLogoURL;
+    loadedUserImages['nameLogo'].onload = function () {
       // Once the Image has loaded, redraw the canvas so it immediately appears
       drawCardCanvas();
     }
   } else {
-    loadedUserImages['heroNameArt'] = null;
+    loadedUserImages['nameLogo'] = null;
   }
-  if('CharacterLogoX' in data) {
-    $('.inputImageOffsetX[data-image-purpose=heroNameArt]').val(data.CharacterLogoX);
+  if('NameLogoX' in data) {
+    $('.inputImageOffsetX[data-image-purpose=nameLogo]').val(data.NameLogoX);
   } else {
-    $('.inputImageOffsetX[data-image-purpose=heroNameArt]').val(0);
+    $('.inputImageOffsetX[data-image-purpose=nameLogo]').val(0);
   }
-  if('CharacterLogoY' in data) {
-    $('.inputImageOffsetY[data-image-purpose=heroNameArt]').val(data.CharacterLogoY);
+  if('NameLogoY' in data) {
+    $('.inputImageOffsetY[data-image-purpose=nameLogo]').val(data.NameLogoY);
   } else {
-    $('.inputImageOffsetY[data-image-purpose=heroNameArt]').val(0);
+    $('.inputImageOffsetY[data-image-purpose=nameLogo]').val(0);
   }
-  if('CharacterLogoZoom' in data) {
-    let zoomVal = parseInt(data.CharacterLogoZoom);
+  if('NameLogoZoom' in data) {
+    let zoomVal = parseInt(data.NameLogoZoom);
     if (zoomVal == NaN) {
       zoomVal = 0;
     }
-    $('.inputImageScale[data-image-purpose=heroNameArt]').val(zoomVal);
+    $('.inputImageScale[data-image-purpose=nameLogo]').val(zoomVal);
   } else {
-    $('.inputImageScale[data-image-purpose=heroNameArt]').val(0);
+    $('.inputImageScale[data-image-purpose=nameLogo]').val(0);
+  }
+
+  // Villain Character card fields
+  if('Description' in data) {
+    $('#inputDescription').val(data.Description);
+  } else {
+    $('#inputDescription').val('');
+  }
+  if('VerticalAlignment' in data) {
+    $('#inputBelowNameLogoAlignment').val(data.VerticalAlignment);
+  } else {
+    $('#inputBelowNameLogoAlignment').val(0);
+  }
+  if('SetupText' in data) {
+    $('#inputSetup').val(data.SetupText);
+  } else {
+    $('#inputSetup').val('');
+  }
+  if('GameTextBoxWidth' in data) {
+    $('#inputEffectBoxWidth').val(data.GameTextBoxWidth);
+  } else {
+    $('#inputEffectBoxWidth').val(0);
+  }
+  if('AdvancedPhase' in data) {
+    $('#inputAdvancedPhase').val(data.AdvancedPhase);
+  } else {
+    $('#inputAdvancedPhase').val('none');
+  }
+  if('AdvancedGameText' in data) {
+    $('#inputAdvanced').val(data.AdvancedGameText);
+  } else {
+    $('#inputAdvanced').val('');
+  }
+  if('AdvancedGameTextBoxWidth' in data) {
+    $('#inputAdvancedBoxWidth').val(data.AdvancedGameTextBoxWidth);
+  } else {
+    $('#inputAdvancedBoxWidth').val(0);
   }
   drawCardCanvas();
 }
 
-function outputJSONData(type="deck") {
+function outputJSONData(form="deck", orientation="vertical") {
   var outputJSON = '';
-  if(type == "deck") {
+  if(form == "deck") {
     outputJSON = `{
       "Title": ${JSON.stringify($('#inputTitle').val())},
       "HP": ${JSON.stringify($('#inputHP').val())},
@@ -844,34 +883,68 @@ function outputJSONData(type="deck") {
       "ImageZoom": ${JSON.stringify($('.inputImageScale').val())},
       "Suddenly": ${isChecked('#suddenly')}
     },`;
-  } else if (type == "character") {
-    outputJSON = `{
-      "HP": ${JSON.stringify($('#inputHP').val())},
-      "Keywords": ${JSON.stringify($('#inputKeywords').val())},
-      "BoldedTerms": ${JSON.stringify($('#inputBoldWords').val())},
-      "PowerName": ${JSON.stringify($('#inputPowerName').val())},
-      "GameText": ${JSON.stringify($('#inputEffect').val())},
-      "GameTextSize": ${JSON.stringify($('#inputEffectTextSize').val())},
-      "NemesisIconURL": ${JSON.stringify(extractImageURL("nemesisIcon"))},
-      "NemesisX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=nemesisIcon]').val())},
-      "NemesisY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=nemesisIcon]').val())},
-      "NemesisZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=nemesisIcon]').val())},
-      "BackgroundArtURL": ${JSON.stringify(extractImageURL("backgroundArt"))},
-      "BackgroundArtX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=backgroundArt]').val())},
-      "BackgroundArtY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=backgroundArt]').val())},
-      "BackgroundArtZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=backgroundArt]').val())},
-      "ForegroundArtURL": ${JSON.stringify(extractImageURL("foregroundArt"))},
-      "ForegroundArtX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=foregroundArt]').val())},
-      "ForegroundArtY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=foregroundArt]').val())},
-      "ForegroundArtZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=foregroundArt]').val())},
-      "CharacterLogoURL": ${JSON.stringify(extractImageURL("heroNameArt"))},
-      "CharacterLogoX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=heroNameArt]').val())},
-      "CharacterLogoY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=heroNameArt]').val())},
-      "CharacterLogoZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=heroNameArt]').val())},
-      "ShowBorder": ${isChecked('#inputDisplayBorder')},
-      "VariantToggle": ${isChecked('#inputVariantToggle')},
-      "WhiteVariantText": ${isChecked('#inputVariantColor')},
-    }`
+  } else if (form == "character") {
+    if (orientation == "vertical") {
+      outputJSON = `{
+        "HP": ${JSON.stringify($('#inputHP').val())},
+        "Keywords": ${JSON.stringify($('#inputKeywords').val())},
+        "BoldedTerms": ${JSON.stringify($('#inputBoldWords').val())},
+        "PowerName": ${JSON.stringify($('#inputPowerName').val())},
+        "GameText": ${JSON.stringify($('#inputEffect').val())},
+        "GameTextSize": ${JSON.stringify($('#inputEffectTextSize').val())},
+        "NemesisIconURL": ${JSON.stringify(extractImageURL("nemesisIcon"))},
+        "NemesisX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=nemesisIcon]').val())},
+        "NemesisY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=nemesisIcon]').val())},
+        "NemesisZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=nemesisIcon]').val())},
+        "BackgroundArtURL": ${JSON.stringify(extractImageURL("backgroundArt"))},
+        "BackgroundArtX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=backgroundArt]').val())},
+        "BackgroundArtY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=backgroundArt]').val())},
+        "BackgroundArtZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=backgroundArt]').val())},
+        "ForegroundArtURL": ${JSON.stringify(extractImageURL("foregroundArt"))},
+        "ForegroundArtX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=foregroundArt]').val())},
+        "ForegroundArtY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=foregroundArt]').val())},
+        "ForegroundArtZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=foregroundArt]').val())},
+        "CharacterLogoURL": ${JSON.stringify(extractImageURL("nameLogo"))},
+        "CharacterLogoX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=nameLogo]').val())},
+        "CharacterLogoY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=nameLogo]').val())},
+        "CharacterLogoZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=nameLogo]').val())},
+        "ShowBorder": ${isChecked('#inputDisplayBorder')},
+        "VariantToggle": ${isChecked('#inputVariantToggle')},
+        "WhiteVariantText": ${isChecked('#inputVariantColor')}
+      }`
+    } else if (orientation == "horizontal") {
+      outputJSON = `{
+        "HP": ${JSON.stringify($('#inputHP').val())},
+        "Description": ${JSON.stringify($('#inputDescription').val())},
+        "Keywords": ${JSON.stringify($('#inputKeywords').val())},
+        "VerticalAlignment": ${JSON.stringify($('#inputBelowNameLogoAlignment').val())},
+        "NemesisIconURL": ${JSON.stringify(extractImageURL("nemesisIcon"))},
+        "NemesisX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=nemesisIcon]').val())},
+        "NemesisY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=nemesisIcon]').val())},
+        "NemesisZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=nemesisIcon]').val())},
+        "BackgroundArtURL": ${JSON.stringify(extractImageURL("backgroundArt"))},
+        "BackgroundArtX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=backgroundArt]').val())},
+        "BackgroundArtY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=backgroundArt]').val())},
+        "BackgroundArtZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=backgroundArt]').val())},
+        "ForegroundArtURL": ${JSON.stringify(extractImageURL("foregroundArt"))},
+        "ForegroundArtX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=foregroundArt]').val())},
+        "ForegroundArtY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=foregroundArt]').val())},
+        "ForegroundArtZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=foregroundArt]').val())},
+        "NameLogoURL": ${JSON.stringify(extractImageURL("nameLogo"))},
+        "NameLogoX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=nameLogo]').val())},
+        "NameLogoY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=nameLogo]').val())},
+        "NameLogoZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=nameLogo]').val())},
+        "SetupText": ${JSON.stringify($('#inputSetup').val())},
+        "GameText": ${JSON.stringify($('#inputEffect').val())},
+        "GameTextSize": ${JSON.stringify($('#inputEffectTextSize').val())},
+        "GameTextBoxWidth": ${JSON.stringify($('#inputEffectBoxWidth').val())},
+        "AdvancedPhase": ${JSON.stringify($('#inputAdvancedPhase').val())},
+        "AdvancedGameText": ${JSON.stringify($('#inputAdvanced').val())},
+        "AdvancedGameTextBoxWidth": ${JSON.stringify($('#inputAdvancedBoxWidth').val())},
+        "BoldedTerms": ${JSON.stringify($('#inputBoldWords').val())},
+        "ShowBorder": ${isChecked('#inputDisplayBorder')}
+      }`
+    }
   }
   $('#jsonInput').val(outputJSON);
 }
