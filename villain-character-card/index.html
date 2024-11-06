@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Villain Deck Back</title>
+  <title>Villain Character Card</title>
   <link rel="icon" type="image/x-icon" href="/_resources/favicon.png">
 
   <!-- CSS -->
@@ -114,7 +114,7 @@
 
   </div>
 
-  <h1>Villain Deck Back</h1>
+  <h1>Villain Character Card</h1>
 
   <div class="layout deckBack">
 
@@ -139,22 +139,98 @@
       </div>
 
       <div class="inputGroup">
-        <label for="inputImageFile">Name Logo</label>
-        <input type="file" accept="image/*" data-image-purpose="nameLogo" class="contentInput inputImageFile" id="">
+        <label for="inputHP">HP</label>
+        <input type="text" class="contentInput" id="inputHP" value="">
+      
+        <label for="inputDescription" style="margin-top: 10px;">Description</label>
+        <input type="text" class="contentInput" id="inputDescription" value="">
+        
+        <label for="inputTitle" style="margin-top: 10px;">Keywords</label>
+        <input type="text" class="contentInput" id="inputKeywords" value="Villain">
+        
+        <label for="inputBelowNameLogoAlignment" style="margin-top: 10px;">Vertical Alignment</label>
+        <input type="range" class="contentInput" id="inputBelowNameLogoAlignment" min="-20" max="20" value="0">
+      </div>
+
+      <div class="inputGroup">
+        <label for="inputImageFile">Nemesis Icon</label>
+        <input type="file" accept="image/*" data-image-purpose="nemesisIcon" class="contentInput inputImageFile">
         <details>
           <summary>Adjustment Controls</summary>
-          <!-- These ranges all represent percents, ex: 50 = 50% or times 0.5 -->
           <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
-          <input type="range" data-image-purpose="nameLogo" class="contentInput inputImageOffsetX rangeSlider" min="-50" max="50" data-default="0">
+          <input type="range" data-image-purpose="nemesisIcon" class="contentInput inputImageOffsetX rangeSlider" min="-50" max="50" data-default="0">
+          <input type="text" data-image-purpose="nemesisIcon" class="contentInput rangeText" data-default="0">
+
+          <label for="inputImageOffsetY">Y Position</label>
+          <input type="range" data-image-purpose="nemesisIcon" class="contentInput inputImageOffsetY rangeSlider" min="-50" max="50" data-default="0">
+          <input type="text" data-image-purpose="nemesisIcon" class="contentInput rangeText" data-default="0">
+
+          <label for="inputImageScale">Zoom</label>
+          <input type="range" data-image-purpose="nemesisIcon" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
+          <input type="text" data-image-purpose="nemesisIcon" class="contentInput rangeText" data-default="100">
+
+          <button style="margin-top: 10px;" data-image-purpose="nemesisIcon" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
+        </details>
+      </div>
+
+      <div class="inputGroup">
+        <label for="inputImageFile">Background Art</label>
+        <input type="file" accept="image/*" data-image-purpose="backgroundArt" class="contentInput inputImageFile">
+        <details>
+          <summary>Adjustment Controls</summary>
+          <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
+          <input type="range" data-image-purpose="backgroundArt" class="contentInput inputImageOffsetX rangeSlider" min="-50" max="50" data-default="0">
+          <input type="text" data-image-purpose="backgroundArt" class="contentInput rangeText" data-default="0">
+
+          <label for="inputImageOffsetY">Y Position</label>
+          <input type="range" data-image-purpose="backgroundArt" class="contentInput inputImageOffsetY rangeSlider" min="-50" max="50" data-default="0">
+          <input type="text" data-image-purpose="backgroundArt" class="contentInput rangeText" data-default="0">
+
+          <label for="inputImageScale">Zoom</label>
+          <input type="range" data-image-purpose="backgroundArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
+          <input type="text" data-image-purpose="backgroundArt" class="contentInput rangeText" data-default="100">
+
+          <button style="margin-top: 10px;" data-image-purpose="backgroundArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
+        </details>
+      </div>
+
+      <div class="inputGroup">
+        <label for="inputImageFile">Foreground Art</label>
+        <input type="file" accept="image/*" data-image-purpose="foregroundArt" class="contentInput inputImageFile">
+        <details>
+          <summary>Adjustment Controls</summary>
+          <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
+          <input type="range" data-image-purpose="foregroundArt" class="contentInput inputImageOffsetX rangeSlider" min="-60" max="60" data-default="0">
+          <input type="text" data-image-purpose="foregroundArt" class="contentInput rangeText" data-default="0">
+
+          <label for="inputImageOffsetY">Y Position</label>
+          <input type="range" data-image-purpose="foregroundArt" class="contentInput inputImageOffsetY rangeSlider" min="-60" max="60" data-default="0">
+          <input type="text" data-image-purpose="foregroundArt" class="contentInput rangeText" data-default="0">
+
+          <label for="inputImageScale">Zoom</label>
+          <input type="range" data-image-purpose="foregroundArt" class="contentInput inputImageScale rangeSlider" min="25" max="200" data-default="100">
+          <input type="text" data-image-purpose="foregroundArt" class="contentInput rangeText" data-default="100">
+
+          <button style="margin-top: 10px;" data-image-purpose="foregroundArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
+        </details>
+      </div>
+
+      <div class="inputGroup">
+        <label for="inputImageFile">Name Logo</label>
+        <input type="file" accept="image/*" data-image-purpose="nameLogo" class="contentInput inputImageFile">
+        <details>
+          <summary>Adjustment Controls</summary>
+          <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
+          <input type="range" data-image-purpose="nameLogo" class="contentInput inputImageOffsetX rangeSlider" min="-70" max="70" data-default="0">
           <input type="text" data-image-purpose="nameLogo" class="contentInput rangeText" data-default="0">
 
           <label for="inputImageOffsetY">Y Position</label>
-          <input type="range" data-image-purpose="nameLogo" class="contentInput inputImageOffsetY rangeSlider" min="-100" max="100" data-default="0">
+          <input type="range" data-image-purpose="nameLogo" class="contentInput inputImageOffsetY rangeSlider" min="-100" max="50" data-default="0">
           <input type="text" data-image-purpose="nameLogo" class="contentInput rangeText" data-default="0">
 
           <label for="inputImageScale">Zoom</label>
-          <input type="range" data-image-purpose="nameLogo" class="contentInput inputImageScale rangeSlider" min="50" max="200" data-default="90">
-          <input type="text" data-image-purpose="nameLogo" class="contentInput rangeText" data-default="90">
+          <input type="range" data-image-purpose="nameLogo" class="contentInput inputImageScale rangeSlider" min="50" max="200" data-default="100">
+          <input type="text" data-image-purpose="nameLogo" class="contentInput rangeText" data-default="100">
 
           <button style="margin-top: 10px;" data-image-purpose="nameLogo" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
@@ -163,78 +239,68 @@
 
     <div>
       <div class="inputGroup">
-        <label for="inputImageFile">Top Art</label>
-        <input type="file" accept="image/*" data-image-purpose="topArt" class="contentInput inputImageFile" id="">
-        <details>
-          <summary>Adjustment Controls</summary>
-          <!-- These ranges all represent percents, ex: 50 = 50% or times 0.5 -->
-          <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
-          <input type="range" data-image-purpose="topArt" class="contentInput inputImageOffsetX rangeSlider" min="-50" max="50" data-default="0">
-          <input type="text" data-image-purpose="topArt" class="contentInput rangeText" data-default="0">
-
-          <label for="inputImageOffsetY">Y Position</label>
-          <input type="range" data-image-purpose="topArt" class="contentInput inputImageOffsetY rangeSlider" min="-50" max="50" data-default="0">
-          <input type="text" data-image-purpose="topArt" class="contentInput rangeText" data-default="0">
-
-          <label for="inputImageScale">Zoom</label>
-          <input type="range" data-image-purpose="topArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
-          <input type="text" data-image-purpose="topArt" class="contentInput rangeText" data-default="100">
-
-          <button style="margin-top: 10px;" data-image-purpose="topArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
-        </details>
+        <label for="inputSetup">Setup Text</label>
+        <textarea rows="2" class="contentInput" id="inputSetup"></textarea>
       </div>
 
       <div class="inputGroup">
-        <label for="inputImageFile">Left Art</label>
-        <input type="file" accept="image/*" data-image-purpose="leftArt" class="contentInput inputImageFile" id="">
-        <details>
-          <summary>Adjustment Controls</summary>
-          <!-- These ranges all represent percents, ex: 50 = 50% or times 0.5 -->
-          <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
-          <input type="range" data-image-purpose="leftArt" class="contentInput inputImageOffsetX rangeSlider" min="-50" max="50" data-default="0">
-          <input type="text" data-image-purpose="leftArt" class="contentInput rangeText" data-default="0">
-
-          <label for="inputImageOffsetY">Y Position</label>
-          <input type="range" data-image-purpose="leftArt" class="contentInput inputImageOffsetY rangeSlider" min="-50" max="50" data-default="0">
-          <input type="text" data-image-purpose="leftArt" class="contentInput rangeText" data-default="0">
-
-          <label for="inputImageScale">Zoom</label>
-          <input type="range" data-image-purpose="leftArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
-          <input type="text" data-image-purpose="leftArt" class="contentInput rangeText" data-default="100">
-
-          <button style="margin-top: 10px;" data-image-purpose="leftArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
-        </details>
+        <label for="inputEffect">Game Text</label>
+        <textarea rows="6" class="contentInput" id="inputEffect"></textarea>
+        <label for="inputEffectTextSize" style="margin-top: 10px;">Text Size</label>
+        <input type="range" class="contentInput" id="inputEffectTextSize" min="90" max="100" value="100">
+        <label for="inputEffectBoxWidth" style="margin-top: 10px;">Box Width</label>
+        <input type="range" class="contentInput" id="inputEffectBoxWidth" min="-33" max="10" value="0">
+        <div class="checkboxGroup" style="margin-top: 10px;">
+          <input type="checkbox" class="contentInput" id="inputUseHighConstrast" checked=”true”>
+          <label for="inputUseHighConstrast">Use higher contrast phase labels</label>
+        </div>
       </div>
 
       <div class="inputGroup">
-        <label for="inputImageFile">Right Art</label>
-        <input type="file" accept="image/*" data-image-purpose="rightArt" class="contentInput inputImageFile">
+        <label for="inputAdvancedPhase">Advanced Phase</label>
+        <select class="contentInput" id="inputAdvancedPhase">
+          <option value="none" selected="selected">None</option>
+          <option value="start">Start Phase</option>
+          <option value="play">Play Phase</option>
+          <option value="end">End Phase</option>
+        </select>
+        <label for="inputAdvanced" style="margin-top: 10px;">Advanced Game Text</label>
+        <textarea rows="3" class="contentInput" id="inputAdvanced"></textarea>
+        <label for="inputAdvancedBoxWidth" style="margin-top: 10px;">Box Width</label>
+        <input type="range" class="contentInput" id="inputAdvancedBoxWidth" min="-33" max="10" value="-10">
+      </div>
+
+      <div class="inputGroup">
+        <label for="inputBoldWords">Bolded Terms</label>
+        <input type="text" class="contentInput" id="inputBoldWords">
+      </div>
+
+      <div class="inputGroup">
         <details>
-          <summary>Adjustment Controls</summary>
-          <!-- These ranges all represent percents, ex: 50 = 50% or times 0.5 -->
-          <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
-          <input type="range" data-image-purpose="rightArt" class="contentInput inputImageOffsetX rangeSlider" min="-50" max="50" data-default="0">
-          <input type="text" data-image-purpose="rightArt" class="contentInput rangeText" data-default="0">
-
-          <label for="inputImageOffsetY">Y Position</label>
-          <input type="range" data-image-purpose="rightArt" class="contentInput inputImageOffsetY rangeSlider" min="-50" max="50" data-default="0">
-          <input type="text" data-image-purpose="rightArt" class="contentInput rangeText" data-default="0">
-
-          <label for="inputImageScale">Zoom</label>
-          <input type="range" data-image-purpose="rightArt" class="contentInput inputImageScale rangeSlider" min="50" max="500" data-default="100">
-          <input type="text" data-image-purpose="rightArt" class="contentInput rangeText" data-default="100">
-
-          <button style="margin-top: 10px;" data-image-purpose="rightArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
+          <summary>Advanced Formatting</summary>
+          <div class="checkboxGroup" style="margin-top: 5px">
+            <input type="checkbox" class="contentInput" id="inputDisplayBorder" checked="true">
+            <label for="inputDisplayBorder">Show border</label>
+          </div>
         </details>
       </div>
+
     </div>
 
     <div>
       <div id="canvasContainer">
-        <canvas id="myCanvas" width="744" height="1039"></canvas>
+        <canvas id="myCanvas" width="1536" height="1040"></canvas>
         <!-- This canvas is the size of the card at 300dpi (multiply mm by 11.81103)-->
-        <!-- Standard US / Poker card size is 63mm x 88mm -->
+        <!-- Physical card size: 130mm x 88mm -->
+        <div class="inputGroup">
+          <label for="jsonInput">JSON Input/Output</label>
+          <div id="jsonError" class="errorMessage"></div>
+          <textarea rows="10" class="contentInput" id="jsonInput"></textarea>
+          <button style="margin-top: 10px;" id="parseJsonInputButton">Parse JSON</button>
+          <button style="margin-top: 10px;" id="outputJsonButton">Output JSON</button>
+        </div>
       </div>
+
     </div>
 
   </div>
@@ -246,10 +312,10 @@
 
   <!-- Declarations -->
   <script>
-    const CARD_FORM = "back";
-    const ORIENTATION = "vertical";
-    const FACE = "back";
-    const DEFAULT_DOWNLOAD_NAME = "villain-deck-back";
+    const CARD_FORM = "character";
+    const ORIENTATION = "horizontal";
+    const FACE = "front";
+    const DEFAULT_DOWNLOAD_NAME = "villain-character-card";
   </script>
   <!-- Common script -->
   <script src="../common-before.js"></script>

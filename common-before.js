@@ -26,8 +26,8 @@ const canvasSizes = new Map([
     ])],
     [HORIZONTAL, new Map([
         [SMALL,   400],
-        [MEDIUM,  500],
-        [LARGE,  600],
+        [MEDIUM,  550],
+        [LARGE,   700],
     ])],
 ]);
 // Block types when parsing card text
@@ -84,6 +84,7 @@ const INDENT_LABEL_SPECIFIERS = Array.from(INDENT_LABEL_MAP.keys());
 const INDENT_INDEX = 1;
 // Colors for card effects
 const colorBlack = '#231f20';
+const colorYellow = '#fcb024';
 const PHASE_COLOR_MAP = new Map([
     [ORIGINAL_CONTRAST, new Map([
         [START_PHASE, "#3fae49"],
@@ -110,7 +111,9 @@ const INDENT_LABEL_SIZE_FACTOR = 1.08;
 const MITER = "miter";
 // Body text properties
 const EFFECT_FONT_WEIGHT = 400;
-const EFFECT_FONT_FAMILY = 'Noto Sans';
+const EFFECT_FONT_FAMILY = "NotoSentinels";
+// Backup font for bold effects
+const BACKUP_FONT_FAMILY = 'Noto Sans';
 // Font-weight-normalized space between words
 const SPACE_WIDTH_FACTOR = 0.26;
 // A multiplicative factor used to determine the distance of 2 blocks
@@ -128,7 +131,17 @@ const DEFAULT_ITALICS_LIST = new Set(["PERFORM", "ACCOMPANY"]);
 const BACKGROUND_ART = "backgroundArt";
 const FOREGROUND_ART = "foregroundArt";
 const NEMESIS_ICON = "nemesisIcon";
-const HERO_NAME_ART = "heroNameArt";
+const BACK_TOP_ART = "topArt";
+const BACK_LEFT_ART = "leftArt";
+const BACK_RIGHT_ART = "rightArt";
+const BACK_BOTTOM_ART = "bottomArt";
+const NAME_LOGO = "nameLogo";
+
+// Common image style classes
+const IMAGE_X = "inputImageOffsetX"
+const IMAGE_Y = "inputImageOffsetY"
+const IMAGE_ZOOM = "inputImageScale"
+
 
 /*
 ============================================================================
@@ -197,6 +210,14 @@ var ctx = canvas.getContext("2d");
 ctx.save();
 setCanvasWidth(MEDIUM);
 
+// Make invisible second canvas for running calculations
+const clonedCanvas = $(canvas).clone().appendTo("#canvasContainer");
+$(clonedCanvas).attr({
+    'id': 'calculationCanvas',
+    'style': 'display: none;'
+});
+var calculationCanvas = document.getElementById("calculationCanvas");
+
 /*
 ============================================================================
 Initialization-Dependent Global Variables
@@ -213,24 +234,36 @@ const _phaseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(4)],
-        [HORIZONTAL, ph(4)],
+        [HORIZONTAL, ph(3.2)],
     ])],
 ]);
 const EFFECT_PHASE_FONT_SIZE = _phaseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
 
-// Size of the phase icons placed next to labels
-const _phaseIconSizeMap = new Map([
+// X position of the icons next to phase labels
+const _phaseIconXMap = new Map([
     [DECK, new Map([
         [VERTICAL, pw(8.9)],
         [HORIZONTAL, pw(54)],
     ])],
     [CHARACTER, new Map([
-        [VERTICAL, pw(8.9)],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [VERTICAL, pw(9.2)],
+        [HORIZONTAL, pw(58.5)],
     ])],
 ]);
-const PHASE_ICON_X = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);
+const PHASE_ICON_X = _phaseIconXMap.get(CARD_FORM)?.get(ORIENTATION);
+
+// Size of the icons next to phase labels
+const _phaseIconSizeMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, ps(5)],
+        [HORIZONTAL, ps(5)],
+    ])],
+    [CHARACTER, new Map([
+        [VERTICAL, ps(5)],
+        [HORIZONTAL, ps(3.8)],
+    ])],
+]);
+const PHASE_ICON_SIZE = _phaseIconSizeMap.get(CARD_FORM)?.get(ORIENTATION);
 
 // Font size for most effect text
 const _baseFontSizeMap = new Map([
@@ -240,8 +273,7 @@ const _baseFontSizeMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(3.95)],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [HORIZONTAL, ph(2.9)],
     ])],
 ]);
 const EFFECT_BASE_FONT_SIZE = _baseFontSizeMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -265,8 +297,10 @@ const _effectStartXMap = new Map([
             [FRONT, pw(12.5)],
             [BACK, pw(14.5)]
         ])],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [HORIZONTAL, new Map([
+            [FRONT, pw(60.25)],
+            [BACK, null],
+        ])],
     ])],
 ]);
 const EFFECT_START_X = _effectStartXMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
@@ -279,8 +313,7 @@ const _effectEndXMap = new Map([
     ])],
     [CHARACTER, new Map([
         [VERTICAL, pw(86.5)],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [HORIZONTAL, pw(96.75)],
     ])],
 ]);
 const EFFECT_END_X =  _effectEndXMap.get(CARD_FORM)?.get(ORIENTATION);
@@ -304,14 +337,50 @@ const _effectStartYMap = new Map([
             [FRONT, ph(85.5)],
             [BACK, ph(86)],
         ])],
-        // Intentionally null. See TODO: HORIZONTAL CHARACTERS above
-        [HORIZONTAL, null],
+        [HORIZONTAL, new Map([
+            [FRONT, ph(86.1)],
+            [BACK, null],
+        ])],
     ])],
 ]);
 const EFFECT_START_Y = _effectStartYMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
 
 // The base line height. Used to set the line height for body text.
-const BODY_BASE_LINE_HEIGHT = ps(5);
+const BODY_BASE_LINE_HEIGHT = EFFECT_BASE_FONT_SIZE * 1.2345;
+
+
+// Default coordinates for character card game text box
+// NOTE: Deck values have intentionally been left null, since this does not apply to deck cards
+const _characterBodyBoxMap = new Map([
+    [DECK, new Map([
+        [VERTICAL, null],
+        [HORIZONTAL, null],
+    ])],
+    [CHARACTER, new Map([
+        // Hero character cards
+        [VERTICAL, {
+            topLeft: {x: pw(10), y: ph(79)},
+            topRight: {x: pw(90), y: ph(79)},
+            bottomRight: {x: pw(90), y: ph(93.3)},
+            bottomLeft: {x: pw(10), y: ph(94)},
+            bgColor: '#ffffffcc',  // Last two digits are transparency
+            borderThickness: pw(0.5),
+            shadowThickness: pw(1),
+        }],
+        // Villain character cards
+        [HORIZONTAL, {
+            topLeft: {x: pw(58), y: ph(81.5)},
+            topRight: {x: pw(98), y: ph(81.5)},
+            bottomRight: {x: pw(98), y: ph(97)},
+            bottomLeft: {x: pw(58), y: ph(97)},
+            bgColor: '#ffffffff',  // Last two digits are transparency,
+            borderThickness: pw(0.25),
+            shadowThickness: pw(0.5),
+        }],
+    ])],
+]);
+const CHARACTER_BODY_BOX = _characterBodyBoxMap.get(CARD_FORM)?.get(ORIENTATION);
+
 
 // Values for quotes:
 // NOTE: All quote values have been left null for characters, given that no character card currently
@@ -435,3 +504,22 @@ let currentOffsetY = 0;
 
 // Whether to display the card border for character cards
 let showBorder = $('#inputDisplayBorder').length > 0 ? $('#inputDisplayBorder')[0].checked : true;
+
+// Whether to display the variant tag for Hero character cards
+let isVariant = $('#inputVariantToggle').length > 0 ? $('#inputVariantToggle')[0].checked : false;
+
+// Simple color toggle for variant text (if we ever decide to do more advanced variant stuff, this should be deleted)
+let variantTextColor = $('#inputVariantColor').length > 0 ? $('#inputVariantColor')[0].checked : false;
+
+// Whether an Advanced game text box is being drawn
+let drawingAdvanced = false;
+
+// Variable for adjusting the normal game text Y values based on the advanced game text Y values
+let advancedBoxYAdjustment = 0;
+let advancedTextYAdjustment = 0;
+
+// Variable to hold vertical alignment for HP, keywords, and description
+let inputBelowNameLogoAlignment = 1;
+
+// How much the border in a Villain character card should adjust to fit the setup text
+let setupBorderOffset = 0;

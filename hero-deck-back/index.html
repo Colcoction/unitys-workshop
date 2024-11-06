@@ -41,7 +41,7 @@
       <button class="closeButton">Close</button>
       <h2>Documentation</h2>
 
-      <p>Current Version: 1.1.1</p>
+      
 
       <details>
         <summary>Current Limitations</summary>
@@ -49,7 +49,6 @@
           <li>This app only uses free fonts, which means the text will never look exactly the same as official cards.</li>
           <li>There is no manual formatting to do things like make certain words bold or wrap lines at certain points.</li>
           <li>There is no way to add custom icons.</li>
-          <li>There is no way to add an (H) or (Flip) symbol.</li>
           <li>The app may have issues on some devices or browsers, especially mobile.</li>
         </ul>
       </details>
@@ -62,6 +61,7 @@
           <li>In general, special formatting detection is not case-sensitive. (Ex: "Power:" and "POWER:" are both valid.)</li>
           <li>To make the arrow bullet points on the Hero Character Card Back, use ">" or "-".</li>
           <li>To make phase sections, you can use "Start Phase: " or "Start Phase" or "[Start Phase]". You can put the corresponding game text on the same line as the label or on the line below the label.</li>
+          <li>To make an (H) symbol, type "(H)". To make a  [flip] symbol, type "[flip]", "(flip)", or "(F)".</li>
           <li>
             <details>
               <summary>JSON Input</summary>
@@ -150,23 +150,23 @@
 
       <div class="inputGroup">
         <label for="inputImageFile">Name Logo</label>
-        <input type="file" accept="image/*" data-image-purpose="heroNameArt" class="contentInput inputImageFile" id="">
+        <input type="file" accept="image/*" data-image-purpose="nameLogo" class="contentInput inputImageFile" id="">
         <details>
           <summary>Adjustment Controls</summary>
           <!-- These ranges all represent percents, ex: 50 = 50% or times 0.5 -->
           <label for="inputImageOffsetX" style="margin-top: 10px;">X Position</label>
-          <input type="range" data-image-purpose="heroNameArt" class="contentInput inputImageOffsetX rangeSlider" min="-50" max="50" data-default="0">
-          <input type="text" data-image-purpose="heroNameArt" class="contentInput rangeText" data-default="0">
+          <input type="range" data-image-purpose="nameLogo" class="contentInput inputImageOffsetX rangeSlider" min="-50" max="50" data-default="0">
+          <input type="text" data-image-purpose="nameLogo" class="contentInput rangeText" data-default="0">
 
           <label for="inputImageOffsetY">Y Position</label>
-          <input type="range" data-image-purpose="heroNameArt" class="contentInput inputImageOffsetY rangeSlider" min="-100" max="100" data-default="10">
-          <input type="text" data-image-purpose="heroNameArt" class="contentInput rangeText" data-default="10">
+          <input type="range" data-image-purpose="nameLogo" class="contentInput inputImageOffsetY rangeSlider" min="-100" max="100" data-default="10">
+          <input type="text" data-image-purpose="nameLogo" class="contentInput rangeText" data-default="10">
 
           <label for="inputImageScale">Zoom</label>
-          <input type="range" data-image-purpose="heroNameArt" class="contentInput inputImageScale rangeSlider" min="50" max="200" data-default="90">
-          <input type="text" data-image-purpose="heroNameArt" class="contentInput rangeText" data-default="90">
+          <input type="range" data-image-purpose="nameLogo" class="contentInput inputImageScale rangeSlider" min="50" max="200" data-default="90">
+          <input type="text" data-image-purpose="nameLogo" class="contentInput rangeText" data-default="90">
 
-          <button style="margin-top: 10px;" data-image-purpose="heroNameArt" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
+          <button style="margin-top: 10px;" data-image-purpose="nameLogo" class="adjustmentResetButton clearImageButton">Clear Image and Adjustments</button>
         </details>
       </div>
     </div>

@@ -99,13 +99,11 @@ $('#downloadButton').on('click', function () {
 $(window).on('load', drawCardCanvas);
 $('.contentInput').on('input', drawCardCanvas);
 
-
 // Toggle high contrast phase labels and re-draw
 $('#inputUseHighConstrast').on('input', function () {
   useHighContrastPhaseLabels = this.checked;
   drawCardCanvas();
 });
-
 
 // Toggle Suddenly! and re-draw
 $('#suddenly').on('input', function () {
@@ -116,6 +114,18 @@ $('#suddenly').on('input', function () {
 // Toggle card border and re-draw
 $('#inputDisplayBorder').on('input', function () {
   showBorder = this.checked;
+  drawCardCanvas();
+});
+
+// Toggle variant
+$('#inputVariantToggle').on('input', function () {
+  isVariant = this.checked;
+  drawCardCanvas();
+});
+
+// Toggle variant text color
+$('#inputVariantColor').on('input', function () {
+  variantTextColor = this.checked;
   drawCardCanvas();
 });
 
@@ -139,7 +149,7 @@ $('#parseJsonInputButton').on('click', function () {
 
 // Output JSON Input button
 $('#outputJsonButton').on('click', function () {
-  outputJSONData(CARD_FORM);
+  outputJSONData(CARD_FORM, ORIENTATION);
 });
 
 /*
@@ -162,10 +172,10 @@ imageAreas = {
     scaleStyle: 'fit',
     vAlign: 'top',
     getImage: function () {
-      return getUserImage('heroNameArt');
+      return getUserImage(NAME_LOGO);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('heroNameArt');
+      return getUserImageAdjustments(NAME_LOGO);
     }
   },
   // Art in Foreground
@@ -179,10 +189,10 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      return getUserImage('foregroundArt');
+      return getUserImage(FOREGROUND_ART);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('foregroundArt');
+      return getUserImageAdjustments(FOREGROUND_ART);
     }
   },
   hccf_backgroundArt: {
@@ -195,11 +205,11 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      //return loadedGraphics['test_gyrosaur cc front'];
-      return getUserImage('backgroundArt');
+      //return loadedGraphics['test_herocc'];
+      return getUserImage(BACKGROUND_ART);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('backgroundArt');
+      return getUserImageAdjustments(BACKGROUND_ART);
     }
   },
   hccf_nemesisIcon: {
@@ -216,10 +226,84 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      return getUserImage('nemesisIcon');
+      return getUserImage(NEMESIS_ICON);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('nemesisIcon');
+      return getUserImageAdjustments(NEMESIS_ICON);
+    }
+  },
+  /*==========================================================
+  Villain Character Card
+  ==========================================================*/
+  // Villain Name
+  vcc_nameLogo: {
+    pathShape: coordinatesToPathShape([
+      [50, 2],
+      [98.5, 2],
+      [98.5, 40],
+      [50, 40]
+    ]),
+    scaleStyle: 'fit',
+    vAlign: 'top',
+    getImage: function () {
+      return getUserImage(NAME_LOGO);
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments(NAME_LOGO);
+    }
+  },
+  // Art in Foreground
+  vcc_foregroundArt: {
+    pathShape: coordinatesToPathShape([
+      [0, 0],
+      [100, 0],
+      [100, 100],
+      [0, 100]
+    ]),
+    scaleStyle: 'fill',
+    vAlign: 'center',
+    getImage: function () {
+      return getUserImage(FOREGROUND_ART);
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments(FOREGROUND_ART);
+    }
+  },
+  vcc_backgroundArt: {
+    pathShape: coordinatesToPathShape([
+      [0, 0],
+      [100, 0],
+      [100, 100],
+      [0, 100]
+    ]),
+    scaleStyle: 'fill',
+    vAlign: 'center',
+    getImage: function () {
+      //return loadedGraphics['test_herocc'];
+      return getUserImage(BACKGROUND_ART);
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments(BACKGROUND_ART);
+    }
+  },
+  vcc_nemesisIcon: {
+    pathShape: coordinatesToPathShape([
+      [48.9, 89.8],
+      [49.4, 88.7],
+
+      [55.0, 88.7],
+      [55.5, 89.8],
+
+      [52.5, 96.5],
+      [51.9, 96.5]
+    ]),
+    scaleStyle: 'fill',
+    vAlign: 'center',
+    getImage: function () {
+      return getUserImage(NEMESIS_ICON);
+    },
+    getAdjustments: function () {
+      return getUserImageAdjustments(NEMESIS_ICON);
     }
   },
   /*==========================================================
@@ -236,10 +320,10 @@ imageAreas = {
     scaleStyle: 'fit',
     vAlign: 'top',
     getImage: function () {
-      return getUserImage('heroNameArt');
+      return getUserImage(NAME_LOGO);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('heroNameArt');
+      return getUserImageAdjustments(NAME_LOGO);
     }
   },
   // Left Art
@@ -253,10 +337,10 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      return getUserImage('leftArt');
+      return getUserImage(BACK_LEFT_ART);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('leftArt');
+      return getUserImageAdjustments(BACK_LEFT_ART);
     }
   },
   // Right Art
@@ -270,10 +354,10 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      return getUserImage('rightArt');
+      return getUserImage(BACK_RIGHT_ART);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('rightArt');
+      return getUserImageAdjustments(BACK_RIGHT_ART);
     }
   },
   // Bottom Art
@@ -287,10 +371,10 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      return getUserImage('bottomArt');
+      return getUserImage(BACK_BOTTOM_ART);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('bottomArt');
+      return getUserImageAdjustments(BACK_BOTTOM_ART);
     }
   },
   /*==========================================================
@@ -307,10 +391,10 @@ imageAreas = {
     scaleStyle: 'fit',
     vAlign: 'top',
     getImage: function () {
-      return getUserImage('villainNameArt');
+      return getUserImage(NAME_LOGO);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('villainNameArt');
+      return getUserImageAdjustments(NAME_LOGO);
     }
   },
   // Top Art
@@ -325,10 +409,10 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      return getUserImage('topArt');
+      return getUserImage(BACK_TOP_ART);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('topArt');
+      return getUserImageAdjustments(BACK_TOP_ART);
     }
   },
   // Right Art
@@ -342,10 +426,10 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      return getUserImage('rightArt');
+      return getUserImage(BACK_RIGHT_ART);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('rightArt');
+      return getUserImageAdjustments(BACK_RIGHT_ART);
     }
   },
   // Left Art
@@ -359,11 +443,20 @@ imageAreas = {
     scaleStyle: 'fill',
     vAlign: 'center',
     getImage: function () {
-      return getUserImage('leftArt');
+      return getUserImage(BACK_LEFT_ART);
     },
     getAdjustments: function () {
-      return getUserImageAdjustments('leftArt');
+      return getUserImageAdjustments(BACK_LEFT_ART);
     }
+  }
+}
+
+// Helper function to get selection strings for input image variables
+function getImagePurposeSelector(className, purpose = "") {
+  if(purpose == "") {
+    return `.${className}`;
+  } else {
+    return `.${className}[data-image-purpose="${purpose}"]`;
   }
 }
 
@@ -376,9 +469,9 @@ function getUserImage(areaName) {
 function getUserImageAdjustments(areaName) {
   let xOffset, yOffset, scale;
   // Get the user input percentages
-  xOffset = $(`.inputImageOffsetX[data-image-purpose="${areaName}"]`).val() / 100;
-  yOffset = $(`.inputImageOffsetY[data-image-purpose="${areaName}"]`).val() / 100 * -1;
-  scale = $(`.inputImageScale[data-image-purpose="${areaName}"]`).val() / 100;
+  xOffset = $(getImagePurposeSelector(IMAGE_X, areaName)).val() / 100;
+  yOffset = $(getImagePurposeSelector(IMAGE_Y, areaName)).val() / 100 * -1;
+  scale = $(getImagePurposeSelector(IMAGE_ZOOM, areaName)).val() / 100;
   // Return a nice object with those values
   let adjustments = {
     xOffset: xOffset,
@@ -452,22 +545,28 @@ function drawArtInCroppedArea(areaName) {
   // Get image area information
   let imageArea = imageAreas[areaName];
   let image = imageArea.getImage();
-  let pathShape = imageArea.pathShape;
+  let areaPathShape = imageArea.pathShape;
   let adjustments = imageArea.getAdjustments();
   let scaleStyle = imageArea.scaleStyle;
   let vAlign = imageArea.vAlign;
 
-  // Stroke path - useful when working on a new image area
-  // ctx.strokeStyle = 'green';
-  // ctx.lineWidth = pw(1);
-  // ctx.stroke(pathShape.pathShape);
+  // Stroke path - useful to toggle on when working on a new image area
+  // ctx.strokeStyle = 'red';
+  // ctx.lineWidth = ps(0.5);
+  // ctx.stroke(areaPathShape.pathShape);
 
   if (!image) { return } // Cancel function if there's no image to draw (placed here to allow test stroke to be drawn)
 
   // Save context before clip
   ctx.save();
+
+  // Dynamically adjust nemesis icon placement on villain character cards
+  if (areaName == 'vcc_nemesisIcon') {
+    ctx.translate(bodyWidthAdjustment, advancedBoxYAdjustment);
+  }
+
   // Clip path shape
-  ctx.clip(pathShape.pathShape);
+  ctx.clip(areaPathShape.pathShape);
 
   // Get image information
   let imageWidth = image.width;
@@ -476,14 +575,14 @@ function drawArtInCroppedArea(areaName) {
 
   // Determine default scale of image by comparing image ratio to area shape ratio
   let initialScale = 1;
-  if ((scaleStyle == 'fill' && imageRatio > pathShape.ratio) ||
-    (scaleStyle == 'fit' && imageRatio < pathShape.ratio)) {
+  if ((scaleStyle == 'fill' && imageRatio > areaPathShape.ratio) ||
+    (scaleStyle == 'fit' && imageRatio < areaPathShape.ratio)) {
     // If image ratio is wider than image area ratio, fit to height
-    initialScale = pathShape.height / imageHeight;
+    initialScale = areaPathShape.height / imageHeight;
   }
   else {
     // Otherwise, fit to width
-    initialScale = pathShape.width / imageWidth;
+    initialScale = areaPathShape.width / imageWidth;
   }
 
   // Determine final scale of image based on user input
@@ -494,17 +593,17 @@ function drawArtInCroppedArea(areaName) {
   let drawHeight = imageHeight * finalScale;
 
   // Determine draw X by centering, then adding user input offset
-  let drawX = pathShape.centerX - drawWidth / 2;
+  let drawX = areaPathShape.centerX - drawWidth / 2;
   drawX += adjustments.xOffset * drawWidth;
 
   // Align image to that area's starting alignment, then add user input offset
   let drawY = 0;
   if (vAlign == 'center') {
-    drawY = pathShape.topmostY + pathShape.height / 2 - drawHeight / 2;
+    drawY = areaPathShape.topmostY + areaPathShape.height / 2 - drawHeight / 2;
     drawY += adjustments.yOffset * drawHeight;
   }
   else if (vAlign == 'top') {
-    drawY = pathShape.topmostY;
+    drawY = areaPathShape.topmostY;
     drawY += adjustments.yOffset * drawHeight;
   }
 
@@ -610,134 +709,173 @@ function parseJSONData(data) {
       suddenly = false;
     }
   }
-  // Character card fields
+  // Hero Character card fields
   if('PowerName' in data) {
     $('#inputPowerName').val(data.PowerName);
   } else {
     $('#inputPowerName').val('');
   }
+
+  // Common Character card fields
   if('NemesisIconURL' in data && data.NemesisIconURL.length != 0) {
-    loadedUserImages['nemesisIcon'] = new Image();
-    loadedUserImages['nemesisIcon'].src = data.NemesisIconURL;
-    loadedUserImages['nemesisIcon'].onload = function () {
+    loadedUserImages[NEMESIS_ICON] = new Image();
+    loadedUserImages[NEMESIS_ICON].src = data.NemesisIconURL;
+    loadedUserImages[NEMESIS_ICON].onload = function () {
       // Once the Image has loaded, redraw the canvas so it immediately appears
       drawCardCanvas();
     }
   } else {
-    loadedUserImages['nemesisIcon'] = null;
+    loadedUserImages[NEMESIS_ICON] = null;
   }
   if('NemesisX' in data) {
-    $('.inputImageOffsetX[data-image-purpose=nemesisIcon]').val(data.NemesisX);
+    $(getImagePurposeSelector(IMAGE_X, NEMESIS_ICON)).val(data.NemesisX);
   } else {
-    $('.inputImageOffsetX[data-image-purpose=nemesisIcon]').val(0);
+    $(getImagePurposeSelector(IMAGE_X, NEMESIS_ICON)).val(0);
   }
   if('NemesisY' in data) {
-    $('.inputImageOffsetY[data-image-purpose=nemesisIcon]').val(data.NemesisY);
+    $(getImagePurposeSelector(IMAGE_Y, NEMESIS_ICON)).val(data.NemesisY);
   } else {
-    $('.inputImageOffsetY[data-image-purpose=nemesisIcon]').val(0);
+    $(getImagePurposeSelector(IMAGE_Y, NEMESIS_ICON)).val(0);
   }
   if('NemesisZoom' in data) {
     let zoomVal = parseInt(data.NemesisZoom);
     if (zoomVal == NaN) {
       zoomVal = 0;
     }
-    $('.inputImageScale[data-image-purpose=nemesisIcon]').val(zoomVal);
+    $(getImagePurposeSelector(IMAGE_ZOOM, NEMESIS_ICON)).val(zoomVal);
   } else {
-    $('.inputImageScale[data-image-purpose=nemesisIcon]').val(0);
+    $(getImagePurposeSelector(IMAGE_ZOOM, NEMESIS_ICON)).val(0);
   }
   if('BackgroundArtURL' in data && data.BackgroundArtURL.length != 0) {
-    loadedUserImages['backgroundArt'] = new Image();
-    loadedUserImages['backgroundArt'].src = data.BackgroundArtURL;
-    loadedUserImages['backgroundArt'].onload = function () {
+    loadedUserImages[BACKGROUND_ART] = new Image();
+    loadedUserImages[BACKGROUND_ART].src = data.BackgroundArtURL;
+    loadedUserImages[BACKGROUND_ART].onload = function () {
       // Once the Image has loaded, redraw the canvas so it immediately appears
       drawCardCanvas();
     }
   } else {
-    loadedUserImages['backgroundArt'] = null;
+    loadedUserImages[BACKGROUND_ART] = null;
   }
   if('BackgroundArtX' in data) {
-    $('.inputImageOffsetX[data-image-purpose=backgroundArt]').val(data.BackgroundArtX);
+    $(getImagePurposeSelector(IMAGE_X, BACKGROUND_ART)).val(data.BackgroundArtX);
   } else {
-    $('.inputImageOffsetX[data-image-purpose=backgroundArt]').val(0);
+    $(getImagePurposeSelector(IMAGE_X, BACKGROUND_ART)).val(0);
   }
   if('BackgroundArtY' in data) {
-    $('.inputImageOffsetY[data-image-purpose=backgroundArt]').val(data.BackgroundArtY);
+    $(getImagePurposeSelector(IMAGE_Y, BACKGROUND_ART)).val(data.BackgroundArtY);
   } else {
-    $('.inputImageOffsetY[data-image-purpose=backgroundArt]').val(0);
+    $(getImagePurposeSelector(IMAGE_Y, BACKGROUND_ART)).val(0);
   }
   if('BackgroundArtZoom' in data) {
     let zoomVal = parseInt(data.BackgroundArtZoom);
     if (zoomVal == NaN) {
       zoomVal = 0;
     }
-    $('.inputImageScale[data-image-purpose=backgroundArt]').val(zoomVal);
+    $(getImagePurposeSelector(IMAGE_ZOOM, BACKGROUND_ART)).val(zoomVal);
   } else {
-    $('.inputImageScale[data-image-purpose=backgroundArt]').val(0);
+    $(getImagePurposeSelector(IMAGE_ZOOM, BACKGROUND_ART)).val(0);
   }
   if('ForegroundArtURL' in data && data.ForegroundArtURL.length != 0) {
-    loadedUserImages['foregroundArt'] = new Image();
-    loadedUserImages['foregroundArt'].src = data.ForegroundArtURL;
-    loadedUserImages['foregroundArt'].onload = function () {
+    loadedUserImages[FOREGROUND_ART] = new Image();
+    loadedUserImages[FOREGROUND_ART].src = data.ForegroundArtURL;
+    loadedUserImages[FOREGROUND_ART].onload = function () {
       // Once the Image has loaded, redraw the canvas so it immediately appears
       drawCardCanvas();
     }
   } else {
-    loadedUserImages['foregroundArt'] = null;
+    loadedUserImages[FOREGROUND_ART] = null;
   }
   if('ForegroundArtX' in data) {
-    $('.inputImageOffsetX[data-image-purpose=foregroundArt]').val(data.ForegroundArtX);
+    $(getImagePurposeSelector(IMAGE_X, FOREGROUND_ART)).val(data.ForegroundArtX);
   } else {
-    $('.inputImageOffsetX[data-image-purpose=foregroundArt]').val(0);
+    $(getImagePurposeSelector(IMAGE_X, FOREGROUND_ART)).val(0);
   }
   if('ForegroundArtY' in data) {
-    $('.inputImageOffsetY[data-image-purpose=foregroundArt]').val(data.ForegroundArtY);
+    $(getImagePurposeSelector(IMAGE_Y, FOREGROUND_ART)).val(data.ForegroundArtY);
   } else {
-    $('.inputImageOffsetY[data-image-purpose=foregroundArt]').val(0);
+    $(getImagePurposeSelector(IMAGE_Y, FOREGROUND_ART)).val(0);
   }
   if('ForegroundArtZoom' in data) {
     let zoomVal = parseInt(data.ForegroundArtZoom);
     if (zoomVal == NaN) {
       zoomVal = 0;
     }
-    $('.inputImageScale[data-image-purpose=foregroundArt]').val(zoomVal);
+    $(getImagePurposeSelector(IMAGE_ZOOM, FOREGROUND_ART)).val(zoomVal);
   } else {
-    $('.inputImageScale[data-image-purpose=foregroundArt]').val(0);
+    $(getImagePurposeSelector(IMAGE_ZOOM, FOREGROUND_ART)).val(0);
   }
-  if('CharacterLogoURL' in data && data.CharacterLogoURL.length != 0) {
-    loadedUserImages['heroNameArt'] = new Image();
-    loadedUserImages['heroNameArt'].src = data.CharacterLogoURL;
-    loadedUserImages['heroNameArt'].onload = function () {
+  if('NameLogoURL' in data && data.NameLogoURL.length != 0) {
+    loadedUserImages[NAME_LOGO] = new Image();
+    loadedUserImages[NAME_LOGO].src = data.NameLogoURL;
+    loadedUserImages[NAME_LOGO].onload = function () {
       // Once the Image has loaded, redraw the canvas so it immediately appears
       drawCardCanvas();
     }
   } else {
-    loadedUserImages['heroNameArt'] = null;
+    loadedUserImages[NAME_LOGO] = null;
   }
-  if('CharacterLogoX' in data) {
-    $('.inputImageOffsetX[data-image-purpose=heroNameArt]').val(data.CharacterLogoX);
+  if('NameLogoX' in data) {
+    $(getImagePurposeSelector(IMAGE_X, NAME_LOGO)).val(data.NameLogoX);
   } else {
-    $('.inputImageOffsetX[data-image-purpose=heroNameArt]').val(0);
+    $(getImagePurposeSelector(IMAGE_X, NAME_LOGO)).val(0);
   }
-  if('CharacterLogoY' in data) {
-    $('.inputImageOffsetY[data-image-purpose=heroNameArt]').val(data.CharacterLogoY);
+  if('NameLogoY' in data) {
+    $(getImagePurposeSelector(IMAGE_Y, NAME_LOGO)).val(data.NameLogoY);
   } else {
-    $('.inputImageOffsetY[data-image-purpose=heroNameArt]').val(0);
+    $(getImagePurposeSelector(IMAGE_Y, NAME_LOGO)).val(0);
   }
-  if('CharacterLogoZoom' in data) {
-    let zoomVal = parseInt(data.CharacterLogoZoom);
+  if('NameLogoZoom' in data) {
+    let zoomVal = parseInt(data.NameLogoZoom);
     if (zoomVal == NaN) {
       zoomVal = 0;
     }
-    $('.inputImageScale[data-image-purpose=heroNameArt]').val(zoomVal);
+    $(getImagePurposeSelector(IMAGE_ZOOM, NAME_LOGO)).val(zoomVal);
   } else {
-    $('.inputImageScale[data-image-purpose=heroNameArt]').val(0);
+    $(getImagePurposeSelector(IMAGE_ZOOM, NAME_LOGO)).val(0);
+  }
+
+  // Villain Character card fields
+  if('Description' in data) {
+    $('#inputDescription').val(data.Description);
+  } else {
+    $('#inputDescription').val('');
+  }
+  if('VerticalAlignment' in data) {
+    $('#inputBelowNameLogoAlignment').val(data.VerticalAlignment);
+  } else {
+    $('#inputBelowNameLogoAlignment').val(0);
+  }
+  if('SetupText' in data) {
+    $('#inputSetup').val(data.SetupText);
+  } else {
+    $('#inputSetup').val('');
+  }
+  if('GameTextBoxWidth' in data) {
+    $('#inputEffectBoxWidth').val(data.GameTextBoxWidth);
+  } else {
+    $('#inputEffectBoxWidth').val(0);
+  }
+  if('AdvancedPhase' in data) {
+    $('#inputAdvancedPhase').val(data.AdvancedPhase);
+  } else {
+    $('#inputAdvancedPhase').val('none');
+  }
+  if('AdvancedGameText' in data) {
+    $('#inputAdvanced').val(data.AdvancedGameText);
+  } else {
+    $('#inputAdvanced').val('');
+  }
+  if('AdvancedGameTextBoxWidth' in data) {
+    $('#inputAdvancedBoxWidth').val(data.AdvancedGameTextBoxWidth);
+  } else {
+    $('#inputAdvancedBoxWidth').val(0);
   }
   drawCardCanvas();
 }
 
-function outputJSONData(type="deck") {
+function outputJSONData(form="deck", orientation="vertical") {
   var outputJSON = '';
-  if(type == "deck") {
+  if(form == "deck") {
     outputJSON = `{
       "Title": ${JSON.stringify($('#inputTitle').val())},
       "HP": ${JSON.stringify($('#inputHP').val())},
@@ -752,36 +890,79 @@ function outputJSONData(type="deck") {
       "ImageX": ${JSON.stringify($('.inputImageOffsetX').val())},
       "ImageY": ${JSON.stringify($('.inputImageOffsetY').val())},
       "ImageZoom": ${JSON.stringify($('.inputImageScale').val())},
-      "Suddenly": "${JSON.stringify($('#suddenly')[0].checked)}"
+      "Suddenly": ${isChecked('#suddenly')}
     },`;
-  } else if (type == "character") {
-    outputJSON = `{
-      "HP": ${JSON.stringify($('#inputHP').val())},
-      "Keywords": ${JSON.stringify($('#inputKeywords').val())},
-      "BoldedTerms": ${JSON.stringify($('#inputBoldWords').val())},
-      "PowerName": ${JSON.stringify($('#inputPowerName').val())},
-      "GameText": ${JSON.stringify($('#inputEffect').val())},
-      "GameTextSize": ${JSON.stringify($('#inputEffectTextSize').val())},
-      "NemesisIconURL": ${JSON.stringify(extractImageURL("nemesisIcon"))},
-      "NemesisX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=nemesisIcon]').val())},
-      "NemesisY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=nemesisIcon]').val())},
-      "NemesisZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=nemesisIcon]').val())},
-      "BackgroundArtURL": ${JSON.stringify(extractImageURL("backgroundArt"))},
-      "BackgroundArtX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=backgroundArt]').val())},
-      "BackgroundArtY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=backgroundArt]').val())},
-      "BackgroundArtZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=backgroundArt]').val())},
-      "ForegroundArtURL": ${JSON.stringify(extractImageURL("foregroundArt"))},
-      "ForegroundArtX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=foregroundArt]').val())},
-      "ForegroundArtY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=foregroundArt]').val())},
-      "ForegroundArtZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=foregroundArt]').val())},
-      "CharacterLogoURL": ${JSON.stringify(extractImageURL("heroNameArt"))},
-      "CharacterLogoX": ${JSON.stringify($('.inputImageOffsetX[data-image-purpose=heroNameArt]').val())},
-      "CharacterLogoY": ${JSON.stringify($('.inputImageOffsetY[data-image-purpose=heroNameArt]').val())},
-      "CharacterLogoZoom": ${JSON.stringify($('.inputImageScale[data-image-purpose=heroNameArt]').val())}
-    }`
+  } else if (form == "character") {
+    if (orientation == "vertical") {
+      outputJSON = `{
+        "HP": ${JSON.stringify($('#inputHP').val())},
+        "Keywords": ${JSON.stringify($('#inputKeywords').val())},
+        "BoldedTerms": ${JSON.stringify($('#inputBoldWords').val())},
+        "PowerName": ${JSON.stringify($('#inputPowerName').val())},
+        "GameText": ${JSON.stringify($('#inputEffect').val())},
+        "GameTextSize": ${JSON.stringify($('#inputEffectTextSize').val())},
+        "NemesisIconURL": ${JSON.stringify(extractImageURL(NEMESIS_ICON))},
+        "NemesisX": ${JSON.stringify($(getImagePurposeSelector(IMAGE_X, NEMESIS_ICON)).val())},
+        "NemesisY": ${JSON.stringify($(getImagePurposeSelector(IMAGE_Y, NEMESIS_ICON)).val())},
+        "NemesisZoom": ${JSON.stringify($(getImagePurposeSelector(IMAGE_ZOOM, NEMESIS_ICON)).val())},
+        "BackgroundArtURL": ${JSON.stringify(extractImageURL(BACKGROUND_ART))},
+        "BackgroundArtX": ${JSON.stringify($(getImagePurposeSelector(IMAGE_X, BACKGROUND_ART)).val())},
+        "BackgroundArtY": ${JSON.stringify($(getImagePurposeSelector(IMAGE_Y, BACKGROUND_ART)).val())},
+        "BackgroundArtZoom": ${JSON.stringify($(getImagePurposeSelector(IMAGE_ZOOM, BACKGROUND_ART)).val())},
+        "ForegroundArtURL": ${JSON.stringify(extractImageURL(FOREGROUND_ART))},
+        "ForegroundArtX": ${JSON.stringify($(getImagePurposeSelector(IMAGE_X, FOREGROUND_ART)).val())},
+        "ForegroundArtY": ${JSON.stringify($(getImagePurposeSelector(IMAGE_Y, FOREGROUND_ART)).val())},
+        "ForegroundArtZoom": ${JSON.stringify($(getImagePurposeSelector(IMAGE_ZOOM, FOREGROUND_ART)).val())},
+        "CharacterLogoURL": ${JSON.stringify(extractImageURL(NAME_LOGO))},
+        "CharacterLogoX": ${JSON.stringify($(getImagePurposeSelector(IMAGE_X, NAME_LOGO)).val())},
+        "CharacterLogoY": ${JSON.stringify($(getImagePurposeSelector(IMAGE_Y, NAME_LOGO)).val())},
+        "CharacterLogoZoom": ${JSON.stringify($(getImagePurposeSelector(IMAGE_ZOOM, NAME_LOGO)).val())},
+        "ShowBorder": ${isChecked('#inputDisplayBorder')},
+        "VariantToggle": ${isChecked('#inputVariantToggle')},
+        "WhiteVariantText": ${isChecked('#inputVariantColor')}
+      }`
+    } else if (orientation == "horizontal") {
+      outputJSON = `{
+        "HP": ${JSON.stringify($('#inputHP').val())},
+        "Description": ${JSON.stringify($('#inputDescription').val())},
+        "Keywords": ${JSON.stringify($('#inputKeywords').val())},
+        "VerticalAlignment": ${JSON.stringify($('#inputBelowNameLogoAlignment').val())},
+        "NemesisIconURL": ${JSON.stringify(extractImageURL(NEMESIS_ICON))},
+        "NemesisX": ${JSON.stringify($(getImagePurposeSelector(IMAGE_X, NEMESIS_ICON)).val())},
+        "NemesisY": ${JSON.stringify($(getImagePurposeSelector(IMAGE_Y, NEMESIS_ICON)).val())},
+        "NemesisZoom": ${JSON.stringify($(getImagePurposeSelector(IMAGE_ZOOM, NEMESIS_ICON)).val())},
+        "BackgroundArtURL": ${JSON.stringify(extractImageURL(BACKGROUND_ART))},
+        "BackgroundArtX": ${JSON.stringify($(getImagePurposeSelector(IMAGE_X, BACKGROUND_ART)).val())},
+        "BackgroundArtY": ${JSON.stringify($(getImagePurposeSelector(IMAGE_Y, BACKGROUND_ART)).val())},
+        "BackgroundArtZoom": ${JSON.stringify($(getImagePurposeSelector(IMAGE_ZOOM, BACKGROUND_ART)).val())},
+        "ForegroundArtURL": ${JSON.stringify(extractImageURL(FOREGROUND_ART))},
+        "ForegroundArtX": ${JSON.stringify($(getImagePurposeSelector(IMAGE_X, FOREGROUND_ART)).val())},
+        "ForegroundArtY": ${JSON.stringify($(getImagePurposeSelector(IMAGE_Y, FOREGROUND_ART)).val())},
+        "ForegroundArtZoom": ${JSON.stringify($(getImagePurposeSelector(IMAGE_ZOOM, FOREGROUND_ART)).val())},
+        "NameLogoURL": ${JSON.stringify(extractImageURL(NAME_LOGO))},
+        "NameLogoX": ${JSON.stringify($(getImagePurposeSelector(IMAGE_X, NAME_LOGO)).val())},
+        "NameLogoY": ${JSON.stringify($(getImagePurposeSelector(IMAGE_Y, NAME_LOGO)).val())},
+        "NameLogoZoom": ${JSON.stringify($(getImagePurposeSelector(IMAGE_ZOOM, NAME_LOGO)).val())},
+        "SetupText": ${JSON.stringify($('#inputSetup').val())},
+        "GameText": ${JSON.stringify($('#inputEffect').val())},
+        "GameTextSize": ${JSON.stringify($('#inputEffectTextSize').val())},
+        "GameTextBoxWidth": ${JSON.stringify($('#inputEffectBoxWidth').val())},
+        "AdvancedPhase": ${JSON.stringify($('#inputAdvancedPhase').val())},
+        "AdvancedGameText": ${JSON.stringify($('#inputAdvanced').val())},
+        "AdvancedGameTextBoxWidth": ${JSON.stringify($('#inputAdvancedBoxWidth').val())},
+        "BoldedTerms": ${JSON.stringify($('#inputBoldWords').val())},
+        "ShowBorder": ${isChecked('#inputDisplayBorder')}
+      }`
+    }
   }
   $('#jsonInput').val(outputJSON);
 }
+
+// Helper method to get if a checkbox is checked without breaking if it doesn't exist
+function isChecked(jquery_id) {
+  return $(jquery_id).length? JSON.stringify($(jquery_id)[0].checked) : 'false'
+}
+
 function extractImageURL(purpose="") {
   var url = "";
   if (purpose == "") {
@@ -944,7 +1125,13 @@ function parseBodyText(originalLine) {
 /** Parses and returns the body text for a card. */
 function parseCardBody() {
   // Get the text the user entered into the textarea
-  const inputValue = $('#inputEffect').prop('value');
+  let inputValue;
+  if (drawingAdvanced) {
+    inputValue = $('#inputAdvanced').prop('value');
+  }
+  else {
+    inputValue = $('#inputEffect').prop('value');
+  }
 
   // Split at line returns, then iterate through the array to build an ordered list of blocks
   const parsedBlocks = inputValue
@@ -963,19 +1150,52 @@ function parseCardBody() {
  * of our box (increasing the offset moves our Y position *downwards*, so a positive number yields a smaller box).
  */
 function adjustBoxHeightOffset(parsedBlocks) {
+  // Draw on the invisible calculation canvas instead of the main canvas
+  ctx = calculationCanvas.getContext("2d");
   boxHeightOffset = 0;
   drawBodyText(parsedBlocks);
-  boxHeightOffset = Math.min(Math.round(EFFECT_START_Y - currentOffsetY + 137), 0);
+  let minimumSizeCap = 0;
+  if (drawingAdvanced) {
+    // Unique minimum size for advanced box (higher number = smaller)
+    minimumSizeCap = ph(10);
+  }
+  boxHeightOffset = Math.min(Math.round(EFFECT_START_Y - currentOffsetY + 137), minimumSizeCap);
   currentOffsetY = 0;
+  // Return to the main canvas
+  ctx = canvas.getContext("2d");
+}
+
+/** Updates the game text box width adjustment for villain character cards */
+let bodyWidthAdjustment = 1;
+function updateBodyWidthAdjustment() {
+  if (drawingAdvanced) {
+    if ($('#inputAdvancedBoxWidth').length > 0) {
+      bodyWidthAdjustment = pw($('#inputAdvancedBoxWidth').val());
+    }
+  }
+  else {
+    if ($('#inputEffectBoxWidth').length > 0) {
+      bodyWidthAdjustment = pw($('#inputEffectBoxWidth').val());
+    }
+  }
 }
 
 /** Draws the text box of a character card (but not the text inside it). */
 function drawCharacterBodyBox() {
+  // Check for width adjustment (for villain character cards)
+  updateBodyWidthAdjustment();
+
+  // Reset advanced adjustment
+  if (drawingAdvanced) {
+    advancedBoxYAdjustment = 0;
+  }
+
   // Sets the coordinates of the corners of the textbox. The bottom will never change, but the top can change based on boxHeightOffset
-  const topLeft = [pw(10), ph(79) + boxHeightOffset];
-  const topRight = [pw(90), ph(79) + boxHeightOffset];
-  const bottomLeft = [pw(10), ph(94)];
-  const bottomRight = [pw(90), ph(93.3)];
+  const boxValues = CHARACTER_BODY_BOX;
+  const topLeft = [boxValues.topLeft.x + bodyWidthAdjustment, boxValues.topLeft.y + boxHeightOffset + advancedBoxYAdjustment];
+  const topRight = [boxValues.topRight.x, boxValues.topRight.y + boxHeightOffset + advancedBoxYAdjustment];
+  const bottomRight = [boxValues.bottomRight.x, boxValues.bottomRight.y + advancedBoxYAdjustment];
+  const bottomLeft = [boxValues.bottomLeft.x + bodyWidthAdjustment, boxValues.bottomLeft.y + advancedBoxYAdjustment];
 
   // Determine the initial shape of the box.
   const boxShape = new Path2D();
@@ -985,31 +1205,51 @@ function drawCharacterBodyBox() {
   boxShape.lineTo(bottomLeft[0], bottomLeft[1]);
   boxShape.closePath();
 
-  // Semi-transparent white fill
-  ctx.fillStyle = "#ffffffcc"; // Last two digits are transparency
+  // White background
+  ctx.fillStyle = boxValues.bgColor;
   ctx.fill(boxShape);
 
   // Black border
   ctx.fillStyle = colorBlack;
-  ctx.lineWidth = pw(0.5);
+  ctx.lineWidth = boxValues.borderThickness;
   ctx.stroke(boxShape);
 
   // Box shadow (top-left)
-  let shadowShape = new Path2D;
-  let shadowOffset = pw(-0.7);
-  shadowShape.moveTo(bottomLeft[0] + shadowOffset, bottomLeft[1] + shadowOffset);
-  shadowShape.lineTo(topLeft[0] + shadowOffset, topLeft[1] + shadowOffset);
-  shadowShape.lineTo(topRight[0] + shadowOffset, topRight[1] + shadowOffset);
-  ctx.fillStyle = colorBlack;
-  ctx.lineWidth = pw(1);
-  ctx.stroke(shadowShape);
+  if (drawingAdvanced) {
+    // Ignore
+  }
+  else {
+    let shadowShape = new Path2D;
+    let shadowOffset = boxValues.shadowThickness * -0.7;
+    shadowShape.moveTo(bottomLeft[0] + shadowOffset, bottomLeft[1] + shadowOffset);
+    shadowShape.lineTo(topLeft[0] + shadowOffset, topLeft[1] + shadowOffset);
+    shadowShape.lineTo(topRight[0] + shadowOffset, topRight[1] + shadowOffset);
+    ctx.fillStyle = colorBlack;
+    ctx.lineWidth = boxValues.shadowThickness;
+    ctx.stroke(shadowShape);
+  }
+
+  // Set advanced Y adjustment
+  if (drawingAdvanced) {
+    // It's the final height of the drawn advanced box, plus a gap
+    const gap = ph(1.8);
+    advancedBoxYAdjustment = (boxValues.bottomLeft.y - boxValues.topLeft.y - boxHeightOffset + gap) * -1;
+  }
 }
 
 /** Given an array of blocks, draw the body of a card from a deck. */
 function drawBodyText(parsedBlocks) {
+  // Check for width adjustment (for villain character cards)
+  updateBodyWidthAdjustment();
+
+  // Reset advanced adjustment
+  if (drawingAdvanced) {
+    advancedTextYAdjustment = 0;
+  }
+
   // Initialize positioning values
-  currentOffsetX = EFFECT_START_X;
-  currentOffsetY = EFFECT_START_Y + boxHeightOffset;
+  currentOffsetX = EFFECT_START_X + bodyWidthAdjustment;
+  currentOffsetY = EFFECT_START_Y + boxHeightOffset + advancedTextYAdjustment;
 
   // Get and apply the text scale the user chose
   effectFontScale = $('#inputEffectTextSize').prop('value') / 100; // Result is between 0 and 1
@@ -1022,13 +1262,19 @@ function drawBodyText(parsedBlocks) {
     drawBlock(block, index == 0);
   });
 
+  // Set advanced Y adjustment
+  if (!drawingAdvanced) {
+    advancedTextYAdjustment = advancedBoxYAdjustment;
+    // (I'll be honest, I don't understand why this works here, but it does.)
+  }
+
   return currentOffsetY;
 }
 
 /** Draws a single block from the array of parsed blocks. */
 function drawBlock(block, isFirstBlock) {
   // Reset indentation to default
-  currentIndentX = EFFECT_START_X;
+  currentIndentX = EFFECT_START_X + bodyWidthAdjustment;
 
   if (block.type === SPACE_BLOCK) {
     drawSpaceBlock(isFirstBlock);
@@ -1059,7 +1305,12 @@ function drawPhaseBlock(phase, isFirstBlock) {
   const phaseText = PHASE_TEXT_MAP.get(phase);
 
   // Adjust line height based on whether this is the first block
-  currentOffsetY = isFirstBlock ? EFFECT_START_Y : currentOffsetY + lineHeight * PRE_PHASE_LINE_HEIGHT_FACTOR;
+  if (isFirstBlock) {
+    currentOffsetY = currentOffsetY;
+  }
+  else {
+    currentOffsetY = currentOffsetY + lineHeight * PRE_PHASE_LINE_HEIGHT_FACTOR;
+  }
 
   // Get the phase icon to use
   const phaseIconKey = PHASE_ICON_MAP.get(phase) + (useHighContrastPhaseLabels ? " High Contrast" : "");
@@ -1069,8 +1320,8 @@ function drawPhaseBlock(phase, isFirstBlock) {
   }
 
   // Draw the icon
-  const iconWidth = iconHeight = ps(5); // Icon graphics have 1:1 proportions
-  const iconX = PHASE_ICON_X - iconWidth / 2;
+  const iconWidth = iconHeight = PHASE_ICON_SIZE; // Icon graphics have 1:1 proportions
+  const iconX = PHASE_ICON_X + bodyWidthAdjustment - iconWidth / 2;
   const iconY = currentOffsetY - EFFECT_PHASE_FONT_SIZE; // == iconHeight / 2.
   ctx.drawImage(phaseIcon, iconX, iconY, iconWidth, iconHeight);
 
@@ -1165,6 +1416,12 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
   // Make minus signs more readable by replacing hyphens with en-dashes
   blockString = blockString.replaceAll('-', '–');
 
+  // Replace placeholder H and flip with custom symbols
+  // Valid: '(H)' - case sensitive
+  blockString = blockString.replaceAll('(H)', '҈____');
+  // Valid: '[flip]', '(flip)', '(F)' - not case sensitive
+  blockString = blockString.replaceAll(/\[flip\]|\(flip\)|\(F\)/gi, '҉____');
+
   // Extract all the words
   // add special processing for spaces after numbers
   let words = blockString.split(' ').flatMap((word) => {
@@ -1188,7 +1445,11 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
     let styleValue = "normal";
     if (thisWord.isBold) { weightValue = "600" }
     if (thisWord.isItalics) { styleValue = "italic" }
-    ctx.font = weightValue + ' ' + styleValue + ' ' + effectFontSize + 'px ' + EFFECT_FONT_FAMILY;
+    if (thisWord.isBold || thisWord.isItalics) {
+      ctx.font = weightValue + ' ' + styleValue + ' ' + effectFontSize + 'px ' + BACKUP_FONT_FAMILY;
+    } else {
+      ctx.font = weightValue + ' ' + styleValue + ' ' + effectFontSize + 'px ' + EFFECT_FONT_FAMILY;
+    }
     ctx.fillStyle = colorBlack;
 
     // Break up special bold/italics phrases into their component words
@@ -1248,7 +1509,7 @@ function drawSimpleBlock(simpleContent, isFirstBlock) {
   });
 
   // After drawing all the words, prepare for the next block
-  currentOffsetX = EFFECT_START_X;
+  currentOffsetX = EFFECT_START_X + bodyWidthAdjustment;
   currentOffsetY += lineHeight * BLOCK_SPACING_FACTOR;
 }
 

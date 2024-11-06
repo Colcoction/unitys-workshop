@@ -13,8 +13,8 @@ let imagesToPreload = [
   ['test_gyro', '../_resources/test_gyro.png'],
   ['test_shell', '../_resources/test_shell.png'],
   ['test_hyperspin', '../_resources/test_hyperspin.png'],
-  ['test_name', '../_resources/Gyrosaur title.png'],
-  ['test_gyrosaur cc front', '../_resources/test_gyrosaur cc front.png'],
+  ['test_name', '../_resources/test_namelogo.png'],
+  ['test_herocc', '../_resources/test_herocc.png'],
   ['Start Phase Icon', '../_resources/phase icon start.svg'],
   ['Play Phase Icon', '../_resources/phase icon play.svg'],
   ['Power Phase Icon', '../_resources/phase icon power.svg'],
@@ -65,10 +65,10 @@ $('#inputImageFile').on('input', function (e) {
 
 // This object is where user input images (specifically Image objects) are stored
 let loadedUserImages = {
-  BACKGROUND_ART: null,
-  FOREGROUND_ART: null,
-  NEMESIS_ICON: null,
-  HERO_NAME_ART: null
+  backgroundArt: null,
+  foregroundArt: null,
+  nemesisIcon: null,
+  nameLogo: null
 };
 
 
@@ -121,13 +121,18 @@ function drawCardCanvas() {
     ctx.drawImage(loadedGraphics['Border'], 0, 0, canvas.width, canvas.height);
   }
   // Draw the foreground art
-  drawArtInCroppedArea('hccf_foregroundArt');
   drawArtInCroppedArea('hccf_heroNameArt');
+  drawArtInCroppedArea('hccf_foregroundArt');
   loadEffectList();
 
   // Draw the character body box, and the text in the card body.
   drawCharacterBodyBox();
   drawBodyText(parsedBlocks);
+
+  // Draw the variant tag if it's enabled
+  if (isVariant) {
+    drawVariantTag();
+  }
 
   // == Draw the power name
   const powerNameX = pw(12.5);
@@ -185,9 +190,9 @@ function drawKeywords() {
   let keywordsWidth = ctx.measureText(keywords).width;
   // Box dimensions
   let boxMargin = pw(2); // Left and right margin between text and box border
-  let boxX = pw(84); // Right side of box (this is good)
-  let boxY = ph(79) + boxHeightOffset; // Bottom of box (still need to find this number)
-  let boxHeight = ph(3);
+  let boxX = pw(84); // Right side of box
+  let boxY = ph(79) + boxHeightOffset; // Bottom of box
+  let boxHeight = ph(3); // Height of box
   let boxExtraRight = pw(4);
   let boxWidth = keywordsWidth * keywordSquish + boxMargin * 2 + boxExtraRight;
   boxX -= boxWidth;
@@ -238,4 +243,24 @@ function drawHP() {
   ctx.fillText(inputHP, hpTextX, hpTextY);
   // Reset
   ctx.textAlign = "left";
+}
+
+/**
+ * Draws the Variant tag on a Hero character card.
+ */
+function drawVariantTag() {
+  let tagX = pw(77);
+  // TODO(sjzhu): Make this change when CC reminder text is applied
+  let tagY = ph(94.6);
+  let tagFontSize = pw(2.7);
+  ctx.save();
+  if(!variantTextColor) {
+    ctx.fillStyle = colorBlack;
+  } else {
+    ctx.fillStyle = "#ffffff";
+  }
+  ctx.font = "400 " + tagFontSize + "px Avengeance Mightiest Avenger";
+  ctx.textAlign = "left";
+  ctx.fillText("VARIANT", tagX, tagY);
+  ctx.restore();
 }
