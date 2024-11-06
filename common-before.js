@@ -127,6 +127,22 @@ const DEFAULT_BOLD_LIST = new Set(["START PHASE", "PLAY PHASE", "POWER PHASE", "
 // The terms that should be italicized by default
 const DEFAULT_ITALICS_LIST = new Set(["PERFORM", "ACCOMPANY"]);
 
+// Common Image Key Names
+const BACKGROUND_ART = "backgroundArt";
+const FOREGROUND_ART = "foregroundArt";
+const NEMESIS_ICON = "nemesisIcon";
+const BACK_TOP_ART = "topArt";
+const BACK_LEFT_ART = "leftArt";
+const BACK_RIGHT_ART = "rightArt";
+const BACK_BOTTOM_ART = "bottomArt";
+const NAME_LOGO = "nameLogo";
+
+// Common image style classes
+const IMAGE_X = "inputImageOffsetX"
+const IMAGE_Y = "inputImageOffsetY"
+const IMAGE_ZOOM = "inputImageScale"
+
+
 /*
 ============================================================================
 Global functions
