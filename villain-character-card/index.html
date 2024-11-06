@@ -41,7 +41,7 @@
       <button class="closeButton">Close</button>
       <h2>Documentation</h2>
 
-      
+
 
       <details>
         <summary>Current Limitations</summary>
@@ -141,13 +141,13 @@
       <div class="inputGroup">
         <label for="inputHP">HP</label>
         <input type="text" class="contentInput" id="inputHP" value="">
-      
+
         <label for="inputDescription" style="margin-top: 10px;">Description</label>
         <input type="text" class="contentInput" id="inputDescription" value="">
-        
+
         <label for="inputTitle" style="margin-top: 10px;">Keywords</label>
         <input type="text" class="contentInput" id="inputKeywords" value="Villain">
-        
+
         <label for="inputBelowNameLogoAlignment" style="margin-top: 10px;">Vertical Alignment</label>
         <input type="range" class="contentInput" id="inputBelowNameLogoAlignment" min="-20" max="20" value="0">
       </div>
@@ -292,15 +292,14 @@
         <canvas id="myCanvas" width="1536" height="1040"></canvas>
         <!-- This canvas is the size of the card at 300dpi (multiply mm by 11.81103)-->
         <!-- Physical card size: 130mm x 88mm -->
-        <div class="inputGroup">
-          <label for="jsonInput">JSON Input/Output</label>
-          <div id="jsonError" class="errorMessage"></div>
-          <textarea rows="10" class="contentInput" id="jsonInput"></textarea>
-          <button style="margin-top: 10px;" id="parseJsonInputButton">Parse JSON</button>
-          <button style="margin-top: 10px;" id="outputJsonButton">Output JSON</button>
-        </div>
       </div>
-
+      <div class="inputGroup" style="margin-top: 10px; max-width: 500px;">
+        <label for="jsonInput">JSON Input/Output</label>
+        <div id="jsonError" class="errorMessage"></div>
+        <textarea rows="10" class="contentInput" id="jsonInput" style="min-height: 200px;"></textarea>
+        <button style="margin-top: 10px;" id="parseJsonInputButton">Parse JSON</button>
+        <button style="margin-top: 10px;" id="outputJsonButton">Output JSON</button>
+      </div>
     </div>
 
   </div>
