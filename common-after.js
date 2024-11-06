@@ -238,10 +238,10 @@ imageAreas = {
   // Villain Name
   vcc_nameLogo: {
     pathShape: coordinatesToPathShape([
-      [50, 2],
-      [98.5, 2],
-      [98.5, 40],
-      [50, 40]
+      [0.5, 2],
+      [99.5, 2],
+      [99.5, 40],
+      [0.5, 40]
     ]),
     scaleStyle: 'fit',
     vAlign: 'top',
