@@ -512,6 +512,10 @@ function parseBoolean(boolString) {
   throw new Error(`Can't parse string to boolean: ${boolString}`);
 }
 
+function escapeRegex(string) {
+  return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
 /*
 ============================================================================
 Expressive Search Queries
@@ -605,7 +609,7 @@ class NemesisIconCond {
     this.regexp = regexp;
   }
   match(c) {
-    return listRegexMatch(c.nemesisIcons, regexp) || listRegexMatch(c.backNemesisIcons, regexp);
+    return listRegexMatch(c.nemesisIcons, this.regexp) || listRegexMatch(c.backNemesisIcons, this.regexp);
   }
 }
 
@@ -851,6 +855,8 @@ class HasBackCond {
  * @returns true if the search was successful. Returns false if any errors occurred parsing / resolving the query, or if the query doesn't use the expressive syntax. 
  */
 function expressiveSearch(queryString) {
+  queryString = escapeRegex(queryString);
+
   // Searches without query parameters should be handled in the future, but for now we can just bail and let legacy search handle it. Do a quick check for that.
   if (!queryString.match(/[:=<>]/i)) {
     return false;
@@ -862,38 +868,38 @@ function expressiveSearch(queryString) {
     while (!s.hasTerminated()) {
       if (s.scan(/[\s,]+/i)) {
         // pass
+      } else if (s.scan(/(?:g|gametext)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
+        conds.push(new GameTextCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
+      } else if (s.scan(/(?:t|title)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
+        conds.push(new TitleCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
+      } else if (s.scan(/(?:k|keyword)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
+        conds.push(new KeywordCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
+      } else if (s.scan(/(?:p|power|innatePowerEffect)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
+        conds.push(new InnatePowerEffectCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:deck)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new DeckNameCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:c|character)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new CharacterNameCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
-      } else if (s.scan(/(?:t|title)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
-        conds.push(new TitleCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
+      } else if (s.scan(/hp\s*(>=|>|<=|<|=|:)\s*(\d+)/i)) {
+        conds.push(new HpCond(s.getCapture(1), s.getCapture(0)))
       } else if (s.scan(/(?:v|variant)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new VariantCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:desc|description)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new DescriptionCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:date)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new DateCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
-      } else if (s.scan(/(?:k|keyword)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
-        conds.push(new KeywordCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
-      } else if (s.scan(/hp\s*(>=|>|<=|<|=|:)\s*(\d+)/i)) {
-        conds.push(new HpCond(s.getCapture(1), s.getCapture(0)))
       } else if (s.scan(/(?:l|limit|collectionLimit)\s*(>=|>|<=|<|=|:)\s*(\d+)/i)) {
         conds.push(new CollectionLimitCond(s.getCapture(1), s.getCapture(0)));
-      } else if (s.scan(/(?:nemesisIcons)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
+      } else if (s.scan(/(?:nemesisIcon|nemesisIcons)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new NemesisIconCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:innatePowerTitle)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new InnatePowerNameCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
-      } else if (s.scan(/(?:innatePowerEffect)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
-        conds.push(new InnatePowerEffectCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:eventRuleTitle)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new EventRuleTitleCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:eventRuleEffect)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new EventRuleEffectCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:s|setup)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new SetupCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
-      } else if (s.scan(/(?:g|gametext)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
-        conds.push(new GameTextCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:a|advanced)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new AdvancedGameTextCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:featuredIssue)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
@@ -935,7 +941,8 @@ function expressiveSearch(queryString) {
       }
     }
     filterByExpressiveConditions(conds);
-  } catch (e) {
+  } catch (ex) {
+    console.error(`Caught an error attempting to parse an expressive query.`, ex);
     return false;
   }
   return true;
@@ -950,6 +957,10 @@ function filterByExpressiveConditions(conds) {
         break;
       }
     }
-    matches ? $(`#${card.id}`).show() : $(`#${card.id}`).hide();
+    if (matches) {
+      $(`#${card.id}`).show()
+    } else {
+      $(`#${card.id}`).hide()
+    }
   }
 }
