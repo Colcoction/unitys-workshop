@@ -880,6 +880,12 @@ function expressiveSearch(queryString) {
         conds.push(new DeckNameCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:c|character)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new CharacterNameCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
+      } else if (s.scan(/(?:f|flavorText)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
+        conds.push(new FlavorTextCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
+      } else if (s.scan(/(?:s|setup)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
+        conds.push(new SetupCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
+      } else if (s.scan(/(?:a|advanced)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
+        conds.push(new AdvancedGameTextCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/hp\s*(>=|>|<=|<|=|:)\s*(\d+)/i)) {
         conds.push(new HpCond(s.getCapture(1), s.getCapture(0)))
       } else if (s.scan(/(?:v|variant)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
@@ -898,20 +904,16 @@ function expressiveSearch(queryString) {
         conds.push(new EventRuleTitleCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:eventRuleEffect)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new EventRuleEffectCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
-      } else if (s.scan(/(?:s|setup)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
-        conds.push(new SetupCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
-      } else if (s.scan(/(?:a|advanced)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
-        conds.push(new AdvancedGameTextCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:featuredIssue)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new FeaturedIssueCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
-      } else if (s.scan(/(?:f|flavorText)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
-        conds.push(new FlavorTextCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:flavorTextAttribution)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new FlavorTextAttributionCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:incapCaption)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new IncapCaptionCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:incapFeaturedIssue)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new IncapFeaturedIssueCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
+      } else if (s.scan(/(?:option|incapOption)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
+        conds.push(new IncapOptionCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:collectionFlavor|collectionFlavorText)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new CollectionFlavorTextCond(new RegExp(s.getCapture(0) || s.getCapture(1), "i")));
       } else if (s.scan(/(?:collectionFeaturedIssue)\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
