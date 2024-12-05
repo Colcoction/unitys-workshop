@@ -931,12 +931,25 @@ function expressiveSearch(queryString) {
       } else if (s.scan(/back\s*[:=]\s*(?:"(.*?)"|([^\s\)]+))/i)) {
         conds.push(new HasBackCond(parseBoolean(s.getCapture(0) || s.getCapture(1))));
       } else {
-        throw new Error("BAD! BAD! BAD!");
+        throw new Error(`Couldn't identify query string: ${queryString}`);
       }
     }
-    funSearch(conds);
+    filterByExpressiveConditions(conds);
   } catch (e) {
     return false;
   }
   return true;
+}
+
+function filterByExpressiveConditions(conds) {
+  for (let card of cards) {
+    let matches = true;
+    for (let cond of conds) {
+      if (!cond.match(card)) {
+        matches = false;
+        break;
+      }
+    }
+    matches ? $(`#${card.id}`).show() : $(`#${card.id}`).hide();
+  }
 }
