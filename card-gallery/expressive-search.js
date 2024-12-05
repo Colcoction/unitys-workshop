@@ -851,8 +851,8 @@ class HasBackCond {
  * @returns true if the search was successful. Returns false if any errors occurred parsing / resolving the query, or if the query doesn't use the expressive syntax. 
  */
 function expressiveSearch(queryString) {
-  // Searches without query parameters should be handled in the future, but for now we can just bail and let legacy search handle it.
-  if (queryString.match(/"(.*?)"/i)) {
+  // Searches without query parameters should be handled in the future, but for now we can just bail and let legacy search handle it. Do a quick check for that.
+  if (!queryString.match(/[:=<>]/i)) {
     return false;
   }
 
