@@ -523,3 +523,8 @@ let inputBelowNameLogoAlignment = 1;
 
 // How much the border in a Villain character card should adjust to fit the setup text
 let setupBorderOffset = 0;
+
+// This object is where user input images (specifically Image objects) are stored
+// currently unused for deck fronts, but needs to exist for JSON parsing to function correctly
+let loadedUserImages = {
+};
