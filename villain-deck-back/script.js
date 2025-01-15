@@ -33,15 +33,8 @@ for (let i = 0; i < imagesToPreload.length; i++) {
   }
 }
 
-
 // This object is where user input images (specifically Image objects) are stored
-let loadedUserImages = {
-  leftArt: null,
-  rightArt: null,
-  topArt: null,
-  nameLogo: null
-};
-
+VILLAIN_DECK_BACK_IMAGES.forEach(key => loadedUserImages[key] = null);
 
 // Handle user image uploading
 $('.inputImageFile').on('input', function () {

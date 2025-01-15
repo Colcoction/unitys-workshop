@@ -64,13 +64,7 @@ $('#inputImageFile').on('input', function (e) {
 })
 
 // This object is where user input images (specifically Image objects) are stored
-let loadedUserImages = {
-  backgroundArt: null,
-  foregroundArt: null,
-  nemesisIcon: null,
-  nameLogo: null
-};
-
+CC_FRONT_IMAGES.forEach(key => loadedUserImages[key] = null);
 
 // Handle user image uploading
 $('.inputImageFile').on('input', function () {

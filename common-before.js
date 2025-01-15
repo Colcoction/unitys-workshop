@@ -137,6 +137,13 @@ const BACK_RIGHT_ART = "rightArt";
 const BACK_BOTTOM_ART = "bottomArt";
 const NAME_LOGO = "nameLogo";
 
+// Common Image Sets
+const CC_FRONT_IMAGES = new Set([BACKGROUND_ART, FOREGROUND_ART, NEMESIS_ICON, NAME_LOGO]);
+const CC_BACK_IMAGES = new Set([BACKGROUND_ART]);
+const VCC_IMAGES = new Set([BACKGROUND_ART, FOREGROUND_ART, NEMESIS_ICON, NAME_LOGO]);
+const HERO_DECK_BACK_IMAGES = new Set([BACK_LEFT_ART, BACK_RIGHT_ART, BACK_BOTTOM_ART, NAME_LOGO]);
+const VILLAIN_DECK_BACK_IMAGES = new Set([BACK_TOP_ART, BACK_LEFT_ART, BACK_RIGHT_ART, NAME_LOGO]);
+
 // Common image style classes
 const IMAGE_X = "inputImageOffsetX"
 const IMAGE_Y = "inputImageOffsetY"
@@ -460,6 +467,11 @@ const _quoteWidthMap = new Map([
 ]);
 const QUOTE_WIDTH = _quoteWidthMap.get(CARD_FORM)?.get(ORIENTATION)?.get(FACE);
 
+// This object is where user input images (specifically Image objects) are stored
+// currently unused for deck fronts, but needs to exist for JSON parsing to function correctly
+const loadedUserImages = {
+};
+
 
 /*
 ============================================================================
@@ -523,8 +535,3 @@ let inputBelowNameLogoAlignment = 1;
 
 // How much the border in a Villain character card should adjust to fit the setup text
 let setupBorderOffset = 0;
-
-// This object is where user input images (specifically Image objects) are stored
-// currently unused for deck fronts, but needs to exist for JSON parsing to function correctly
-let loadedUserImages = {
-};
