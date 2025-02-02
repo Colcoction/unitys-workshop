@@ -692,13 +692,14 @@ function parseJSONData(data) {
   if('ImageZoom' in data) {
     // special parsing for the zoom value, as if it's fed a non-number, it will
     // default to the middle of the bar, which is not the default
+    // ImageZoom is used for card fronts, so it defaults to 100
     let zoomVal = parseInt(data.ImageZoom);
     if (zoomVal == NaN) {
-      zoomVal = 0;
+      zoomVal = 100;
     }
     $('.inputImageScale').val(zoomVal);
   } else {
-    $('.inputImageScale').val(0);
+    $('.inputImageScale').val(100);
   }
   if ($('#suddenly').length > 0) {
     if('Suddenly' in data && data.Suddenly.toUpperCase() == "TRUE") {
