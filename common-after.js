@@ -701,15 +701,20 @@ function parseJSONData(data) {
   } else {
     $('.inputImageScale').val(100);
   }
+
+  // this is complicated to allow for the fact that suddenly can be either a string or a boolean, depending on how people input it
   if ($('#suddenly').length > 0) {
-    if('Suddenly' in data && data.Suddenly.toUpperCase() == "TRUE") {
-      $('#suddenly')[0].checked = true;
-      suddenly = true;
+    if ('Suddenly' in data) {
+      const isSuddenlyTrue = (typeof data.Suddenly === 'boolean' && data.Suddenly) ||
+                             (typeof data.Suddenly === 'string' && data.Suddenly.toUpperCase() === 'TRUE');
+      $('#suddenly')[0].checked = isSuddenlyTrue;
+      suddenly = isSuddenlyTrue;
     } else {
       $('#suddenly')[0].checked = false;
       suddenly = false;
     }
   }
+
   // Hero Character card fields
   if('PowerName' in data) {
     $('#inputPowerName').val(data.PowerName);
