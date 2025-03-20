@@ -58,9 +58,6 @@ $('#inputImageFile').on('input', function (e) {
   }
 })
 
-// Whenever one of the content inputs has its value changed (including each character typed in a text input), redraw the canvas
-$('.contentInput').on('input', drawCardCanvas);
-
 /*
 ============================================================================
 Drawing the canvas
