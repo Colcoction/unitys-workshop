@@ -506,7 +506,13 @@ let effectBoldList = Array.from(DEFAULT_BOLD_LIST);
 let effectItalicsList = Array.from(DEFAULT_ITALICS_LIST);
 
 // The indentation of the X-position cursor when drawing indented blocks (such as Power, Reaction, and Bullet point blocks).
-let currentIndentX = EFFECT_START_X;
+var currentIndentX = EFFECT_START_X;
+/*
+Using "var" instead of "let" above to fix a bug that started happening within drawSimpleBlock(),
+where executing [currentOffsetX = currentIndentX;] caused both variables to then return as NaN,
+even though both logged as valid numbers immediately before.
+This bug randomly started occuring around 3/19/2025, in Google Chrome but not Firefox.
+*/
 
 // The X position for draw commands.
 let currentOffsetX = 0;
